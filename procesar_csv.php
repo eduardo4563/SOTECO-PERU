@@ -1,0 +1,104 @@
+<?php
+require 'conexion.php';
+
+// Obtener tipo de cambio USD a PEN
+$url = "https://open.er-api.com/v6/latest/USD";
+$json = @file_get_contents($url); // usar @ para evitar warning en error
+$data = json_decode($json, true);
+
+$tipo_cambio = 3.8; // valor por defecto
+if ($data && $data["result"] === "success") {
+    $tipo_cambio = round($data["rates"]["PEN"], 2); // redondeado
+}
+
+// Validar archivo HTML cargado
+if (isset($_FILES['archivo_html']) && $_FILES['archivo_html']['error'] === UPLOAD_ERR_OK) {
+    $archivo_tmp = $_FILES['archivo_html']['tmp_name'];
+    $html = file_get_contents($archivo_tmp);
+
+    libxml_use_internal_errors(true);
+    $dom = new DOMDocument();
+    $dom->loadHTML($html);
+    $xpath = new DOMXPath($dom);
+
+    $filas = $xpath->query('//table//tr[td]');
+    $productos_cargados = 0;
+    $categoria_actual = ''; // Aquí almacenamos la categoría
+
+    // Preparar la consulta segura con 9 columnas y 9 valores
+    $stmt = $conexion->prepare("INSERT INTO productos 
+        (codigo, categoria, descripcion, marca, unidad, stock, precio_costo, precio_venta, preciooriginal) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    if (!$stmt) {
+        die("❌ Error en prepare: " . $conexion->error);
+    }
+
+    foreach ($filas as $fila) {
+        $columnas = $fila->getElementsByTagName('td');
+
+        // Buscar encabezado de categoría
+        if ($columnas->length > 1) {
+            $bgcolor = $fila->getAttribute('bgcolor');
+            if (strtoupper($bgcolor) === '#AFC2CF') {
+                $categoria_texto = trim($columnas->item(1)->nodeValue);
+                $categoria_actual = preg_replace('/\s+/', ' ', $categoria_texto);
+                $categoria_actual = trim($categoria_actual);
+                continue;
+            }
+        }
+
+        if ($columnas->length < 9) continue;
+
+        // Código
+        $codigo_raw = trim($columnas->item(0)->nodeValue);
+        $codigo_lineas = explode("\n", $codigo_raw);
+        $codigo = trim($codigo_lineas[0]);
+        $codigo = preg_replace('/[^A-Z0-9\-]/i', '', $codigo);
+        if ($codigo == '' || stripos($codigo, 'CODIGO') !== false) continue;
+
+        // Descripción
+        $descripcion_raw = trim($columnas->item(1)->nodeValue);
+        $descripcion = preg_replace('/\[.*?\]/', '', $descripcion_raw);
+        $descripcion = preg_replace('/\s+/', ' ', $descripcion);
+        $descripcion = trim($descripcion);
+
+        // Stock
+        $stock_text = trim($columnas->item(2)->nodeValue);
+        $stock = 0;
+        if (preg_match('/\>?(\d+)/', $stock_text, $m)) {
+            $stock = (int)$m[1];
+        }
+
+        // Precio USD
+        $precio_texto = trim($columnas->item(3)->nodeValue);
+        $precio_dolares = 0.0;
+        if (preg_match('/\$([\d,.]+)/', $precio_texto, $m)) {
+            $precio_dolares = floatval(str_replace([','], '', $m[1]));
+        }
+
+        if ($stock <= 0 || $precio_dolares <= 0) continue;
+
+        // Marca
+        $marca = trim($columnas->item(8)->nodeValue);
+        $marca = preg_replace('/\s+/', ' ', $marca);
+
+        // Cálculo de precios
+        $precio_costo = round($precio_dolares * $tipo_cambio, 2);
+        $precio_venta = round($precio_costo * (1 + (2.3 / (log($precio_costo + 1) + 2.5))), 2);
+
+        $unidad = 'UND';
+        echo($codigo);
+        // 9 parámetros → "sssssiddd"
+        $stmt->bind_param("sssssiddd", $codigo, $categoria_actual, $descripcion, $marca, $unidad, $stock, $precio_costo, $precio_venta, $precio_dolares);
+        $stmt->execute();
+
+        $productos_cargados++;
+    }
+
+    $stmt->close();
+
+    echo "<br>✅ Se capturaron $productos_cargados productos con tipo de cambio S/ $tipo_cambio.";
+} else {
+    echo "❌ Error al subir el archivo HTML.";
+}
+?>

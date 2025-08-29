@@ -1,0 +1,1523 @@
+Imports Renci.SshNet
+Imports System.IO
+Imports Newtonsoft.Json.Linq
+Imports Microsoft.Office.Interop
+
+Public Class CONTABILIDAD_Comprobantes_Ventas_Registrar_Form
+
+    Private Sub CONTABILIDAD_Comprobantes_Ventas_Registrar_Form_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
+        If e.KeyCode = Keys.Enter Then SendKeys.Send("{TAB}")
+    End Sub
+
+    Private Sub CONTABILIDAD_Comprobantes_Ventas_Registrar_Form_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        llenarCombo(Me.ComboBox2, "Select sede from Sedes order by sede asc")
+        AutoCompletarTB(TextBox1, "Select RUC from cLIENTES")
+        AutoCompletarTB(TextBox2, "Select rs from cLIENTES")
+        With ComboBox1.Items
+            .Clear()
+            .Add("CONTADO")
+            .Add("CREDITO")
+            ComboBox1.SelectedIndex = -1
+        End With
+
+        With ComboBox3.Items
+            .Clear()
+            .Add("10")
+            .Add("12")
+            .Add("12 - Otros")
+
+            ComboBox3.SelectedIndex = -1
+        End With
+
+        dg1.Rows.Add("9824", "PEDIDO SAP")
+        dg1.Rows.Add("9825", "BOOKING")
+        dg1.Rows.Add("9826", "PACKING LIST")
+        dg1.Rows.Add("9827", "FACTURA EXPORTACION")
+        dg1.Rows.Add("9828", "PRODUCTO")
+        dg1.Rows.Add("9829", "DESTINO")
+        dg1.Rows.Add("9830", "CANTIDAD")
+        dg1.Rows.Add("9831", "FECHA DEL SERVICIO")
+        dg1.Rows.Add("9832", "REFERENCIA")
+        dg1.Rows.Add("9833", "PRODUCTO")
+        dg1.Rows.Add("9834", "CANTIDAD")
+        dg1.Rows.Add("9835", "PESO")
+        dg1.Rows.Add("9836", "FECHA DEL SERVICIO")
+
+        For Each dgwc As DataGridViewColumn In dg1.Columns
+
+            If dgwc.Name <> "Descripcion" Then
+                dgwc.ReadOnly = True
+            End If
+        Next
+
+
+    End Sub
+
+    Private Sub Panel1_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles Panel1.DragDrop
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            Dim ruta As String() = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            If Path.GetExtension(ruta(0)) = ".xls" Or System.IO.Path.GetExtension(ruta(0)) = ".xlsx" Then
+                Label38.Text = Path.GetFileName(ruta(0)) 'RUTA COMPLETA
+                Label39.Text = ruta(0) 'DIRECTORIO
+                Panel1.BackgroundImage = My.Resources.excel
+            End If
+        End If
+
+    End Sub
+    Private Sub Panel1_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles Panel1.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.All
+        End If
+    End Sub
+    Private Sub TextBox2_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox2.KeyPress
+        SoloNumeros(e.KeyChar, e)
+    End Sub
+
+    Private Sub TextBox2_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox2.LostFocus
+        If TextBox2.Text = "" Then TextBox2.Text = "01"
+        If TextBox2.Text = "01" Or TextBox2.Text = "03" Or TextBox2.Text = "07" Or TextBox2.Text = "04" Then
+
+        Else
+            TextBox2.Text = ""
+            TextBox2.Focus()
+            Exit Sub
+        End If
+
+        '        TextBox2.Text = Format(CInt(TextBox2.Text), "00")
+        Label14.Text = ObtenerDato("Select * from ContaTipoDocumento where TipoDocCod like '" & TextBox2.Text & "'", "Nombre")
+
+
+        If ObtenerDato("SELECT NOMBRE FROM TABLAVARIABLES WHERE TIPO LIKE 'FACTURA ELECTRONICA'", "Nombre") = "1" Then
+
+
+            Select Case CInt(TextBox2.Text)
+                Case 1
+                    TextBox3.Text = "F003"
+                Case 3
+                    TextBox3.Text = "B001"
+                Case 7
+                    TextBox3.Text = "FC01"
+                Case 4
+                    TextBox3.Text = "999"
+            End Select
+            My.Application.DoEvents()
+
+
+            Dim td As String = ObtenerDato("select * from contaTipodocumento where tipodocCOD like '" & TextBox2.Text & "'", "nombre")
+            Dim NUM As Integer
+            Dim sql As String = "SELECT ISNULL(MAX(CONVERT(INT,NUMERO)),0)AS NUMERO FROM OPERACIONES_FACTURACION WHERE SERIE LIKE '" & TextBox3.Text & "' and TIPODOCUMENTO LIKE '" & td & "'"
+            'Clipboard.SetText(sql)
+            NUM = CInt(ObtenerDato(sql, "Numero"))
+            NUM += 1
+            TextBox4.Text = Format(NUM, "00000000")
+
+            ' TextBox3.Enabled = False
+            'TextBox4.Enabled = False
+        Else
+            'TextBox3.Enabled = True
+            'TextBox4.Enabled = True
+        End If
+
+        If Label14.Text = "NOTA DE CRÉDITO" Or Label14.Text = "NOTA DE DÉBITO" Then
+            GroupBox5.Enabled = True
+            TextBox1.Enabled = False
+            TextBox5.Enabled = False
+            ComboBox2.Enabled = False
+            TextBox16.Focus()
+        Else
+            GroupBox5.Enabled = False
+            TextBox7.Text = ""
+            TextBox14.Text = ""
+            TextBox16.Text = ""
+            TextBox1.Enabled = True
+            TextBox5.Enabled = True
+        End If
+        TextBox9.Text = "0.00"
+        ObtenerTotal()
+        TextBox2.Enabled = False
+
+        If Label14.Text = "ORDEN DE SERVICIO" Then
+            CheckBox1.Checked = True
+            CheckBox1.Visible = False
+        End If
+
+    End Sub
+
+    Private Sub TextBox9_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox9.KeyPress
+        SoloNumerosMoneda(e.KeyChar, e)
+    End Sub
+
+    Private Sub TextBox9_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox9.LostFocus
+        ConvertirTBMoneda(TextBox9)
+        If CheckBox1.Checked = True Then
+            Label25.Text = "0.00"
+            Label24.Text = TextBox9.Text
+        Else
+            ObtenerTotal()
+        End If
+        If Label14.Text = "NOTA DE CRÉDITO" Then
+            If CDbl(TextBox9.Text) > 0 Then
+                TextBox9.Text = CStr(CDbl(TextBox9.Text) * (-1))
+                ObtenerTotal()
+
+            End If
+        End If
+        ConvertirTBMoneda(TextBox9)
+        TextBox13.Text = Label24.Text
+    End Sub
+
+    Public Sub ObtenerTotal()
+        Label24.Text = ConvertirTextoMoneda(CStr(CDbl(TextBox9.Text) * PorcIGV))
+        Label25.Text = ConvertirTextoMoneda(CStr(CDbl(Label24.Text) - CDbl(TextBox9.Text)))
+    End Sub
+
+    Private Sub TextBox3_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox3.KeyPress
+        'SoloNumeros(e.KeyChar, e)
+    End Sub
+
+    Private Sub TextBox4_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox4.KeyPress
+        SoloNumeros(e.KeyChar, e)
+    End Sub
+
+    Private Sub TextBox3_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox3.LostFocus
+        If TextBox3.Text = "" Then TextBox3.Text = "F003"
+
+        If TextBox3.Text = "BC01" Then
+            Dim td As String = ObtenerDato("select * from contaTipodocumento where tipodocCOD like '" & TextBox2.Text & "'", "nombre")
+            Dim NUM As Integer
+            Dim sql As String = "SELECT ISNULL(MAX(CONVERT(INT,NUMERO)),0)AS NUMERO FROM OPERACIONES_FACTURACION WHERE SERIE LIKE '" & TextBox3.Text & "' and TIPODOCUMENTO LIKE '" & td & "'"
+            'Clipboard.SetText(sql)
+            NUM = CInt(ObtenerDato(sql, "Numero"))
+            NUM += 1
+            TextBox4.Text = Format(NUM, "00000000")
+        End If
+
+        If TextBox3.Text = "F026" Or TextBox3.Text = "F003" Then
+            Dim td As String = ObtenerDato("select * from contaTipodocumento where tipodocCOD like '" & TextBox2.Text & "'", "nombre")
+            Dim NUM As Integer
+            Dim sql As String = "SELECT ISNULL(MAX(CONVERT(INT,NUMERO)),0)AS NUMERO FROM OPERACIONES_FACTURACION WHERE SERIE LIKE '" & TextBox3.Text & "' and TIPODOCUMENTO LIKE '" & td & "'"
+            'Clipboard.SetText(sql)
+            NUM = CInt(ObtenerDato(sql, "Numero"))
+            NUM += 1
+            TextBox4.Text = Format(NUM, "00000000")
+
+        End If
+
+        If TextBox1.Text <> "" Then
+            If ValidarSentencia("Select * from ClientesCredito where ruc like '" & TextBox1.Text & "'") = False Then
+                ComboBox1.Text = "CONTADO"
+            Else
+                Dim SERIEFAC As String = ObtenerDato("Select * from ClientesCredito where ruc like '" & TextBox1.Text & "'", "SERIE")
+                If SERIEFAC = "0" Then
+                    ComboBox1.Text = "CREDITO"
+                Else
+                    If TextBox3.Text = SERIEFAC Then
+                        ComboBox1.Text = "CREDITO"
+                    Else
+                        ComboBox1.Text = "CONTADO"
+
+                    End If
+
+
+                End If
+
+            End If
+
+        End If
+        'TextBox3.Text = Format(CInt(TextBox3.Text), "0000")
+    End Sub
+
+    Public Sub LIMPIAR()
+        TextBox1.Text = ""
+        TextBox2.Text = ""
+        Label14.Text = ""
+        TextBox3.Text = ""
+        TextBox4.Text = ""
+        TextBox5.Text = ""
+        TextBox9.Text = "0.00"
+        Label25.Text = ""
+        Label24.Text = ""
+        TextBox7.Text = ""
+        TextBox16.Text = ""
+        TextBox14.Text = ""
+        Label29.Text = ""
+        TextBox10.Text = ""
+        Label4.Text = ""
+        TextBox8.Text = "6"
+
+        GroupBox5.Enabled = False
+        Button1.Text = "GUARDAR"
+        Button1.Enabled = True
+
+    End Sub
+    Private filaActual As Integer = 0
+    Dim resul As Boolean = False
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+            Try
+            If DataGridView1.Rows.Count = 0 Then
+                MsgBox("No hay datos cargados.")
+                Exit Sub
+            End If
+
+            ' Guardar el texto original
+            Dim textoBase As String = TextBox10.Text
+
+            ' Recorre todas las filas
+            For Each fila As DataGridViewRow In DataGridView1.Rows
+                If fila.IsNewRow Then Continue For
+                TextBox12.Text = fila.Cells(0).Value.ToString()
+                TextBox9.Text = Format(CDbl(fila.Cells(1).Value), "0.00")
+                ' Disparar manualmente el KeyPress si quieres simularlo
+                For Each c As Char In TextBox9.Text
+                    TextBox9_KeyPress(TextBox9, New KeyPressEventArgs(c))
+                        Next
+                TextBox9_LostFocus(TextBox9, EventArgs.Empty)
+                If Not String.IsNullOrEmpty(TextBox9.Text) Then
+                    SendKeys.Send("{TAB}")
+                End If
+                Dim detrracion As String = fila.Cells(2).Value.ToString
+                ' Texto base + subtotal actual
+                TextBox10.Text = textoBase & " " & TextBox12.Text
+                Dim td As String = ObtenerDato("select * from contaTipodocumento where tipodocCOD like '" & TextBox2.Text & "'", "nombre")
+                Dim NUM As Integer
+                Dim sql As String = "SELECT ISNULL(MAX(CONVERT(INT,NUMERO)),0)AS NUMERO FROM OPERACIONES_FACTURACION WHERE SERIE LIKE '" & TextBox3.Text & "' and TIPODOCUMENTO LIKE '" & td & "'"
+                'Clipboard.SetText(sql)
+                NUM = CInt(ObtenerDato(sql, "Numero"))
+                NUM += 1
+                TextBox4.Text = Format(NUM, "00000000")
+                TextBox4.Refresh() ' Fuerza a que el control se dibuje inmediatamente
+                Application.DoEvents()
+                Threading.Thread.Sleep(500)
+                ' ajusta el tiempo a lo que necesites
+                'Application.DoEvents()
+                If Validar(TextBox13, "Ingrese valor de la cuota") = False Then Exit Sub
+                If CDbl(TextBox13.Text) <= 0 Then
+                    MsgBox("El valor de la cuota no puede ser menor o igual a 0", MsgBoxStyle.Critical)
+                    Exit Sub
+                End If
+
+                If Validar(TextBox2, "Ingrese el Tipo de Documento") = False Then Exit Sub
+                If Validar(TextBox1, "Ingrese el RUC") = False Then Exit Sub
+                If Validar(TextBox5, "Ingrese la Razón Social") = False Then Exit Sub
+                If Validar(TextBox3, "Ingrese la Serie del Comprobante") = False Then Exit Sub
+                If Validar(TextBox4, "Ingrese el Numero del Comprobante") = False Then Exit Sub
+                If ComboBox1.Text = "CREDITO" Then
+                    If DTP1.Value >= DTP2.Value Then
+                        MsgBox("La Fecha de vencimiento no puede ser menor o igual a la fecha de emision", MsgBoxStyle.Critical)
+                        Exit Sub
+                    End If
+                End If
+                If Label14.Text <> "ORDEN DE SERVICIO" Then
+                    If Len(TextBox3.Text) <> 4 Then MsgBox("Cantidad de Caracteres en Serie Invalido", MsgBoxStyle.Critical, "Aviso") : TextBox4.Focus() : Exit Sub
+                    If TextBox1.Text = "20100055237" Then
+                        Dim x As Integer = Len(TextBox12.Text)
+                        If x <> 10 Then
+                            MsgBox("EL NUMERO DE OS DEBE COTENER 10 NUMEROS", MsgBoxStyle.Critical, "AVISO")
+                            Exit Sub
+                        End If
+
+                        If Validar(TextBox12, "Ingrese el numero de OS") = False Then Exit Sub
+
+
+                    End If
+                Else
+
+                    If TextBox1.Text = "11111111111" Then
+                        MsgBox("INGRESE UN RUC VALIDO", MsgBoxStyle.Critical, "AVISO")
+                        Exit Sub
+                    End If
+
+
+                End If
+
+                If Len(TextBox4.Text) <> 8 Then MsgBox("Cantidad de Caracteres en Numero Invalido", MsgBoxStyle.Critical, "Aviso") : TextBox5.Focus() : Exit Sub
+                If Validar(TextBox10, "Ingrese glosa para continuar") = False Then Exit Sub
+
+                'If Label14.Text = "NOTA DE CRÉDITO" Then
+                '    If Validar(TextBox16, "Ingrese la Serie del Comprobante que modifica") = False Then Exit Sub
+                '    If Validar(TextBox14, "Ingrese el Numero del Comprobante que modifica") = False Then Exit Sub
+                '    If CDbl(TextBox9.Text) >= 0 Then MsgBox("Ingrese un monto de base negativo", MsgBoxStyle.Critical, "Aviso") : Exit Sub
+                '    If Label18.Text = "" Then Label18.Text = "0"
+                '    If CDbl(Label18.Text) = 0 Then
+                '        MsgBox("La factura no tiene saldo suficiente para continuar", MsgBoxStyle.Critical, "Error")
+                '        Exit Sub
+                '    End If
+                '    If CDbl(Label18.Text) < CDbl(Label24.Text) Then
+                '        MsgBox("La factura no tiene saldo suficiente para continuar", MsgBoxStyle.Critical, "Error")
+                '        Exit Sub
+                '    End If
+                'End If
+
+                Dim CONTADOR As Integer = 0
+                For Each DGWR As DataGridViewRow In dg1.Rows
+                    Try
+                        If UCase(DGWR.Cells("DESCRIPCION").Value.ToString) <> "" Then
+                            CONTADOR += 1
+                        End If
+                    Catch ex As Exception
+
+                    End Try
+
+                Next
+                If CONTADOR > 10 Then MsgBox("Solo se puede guardar como máximo 10 datos de exportacion", MsgBoxStyle.Critical, "Aviso") : Exit Sub
+
+                ' If TextBox5.Text = "ALICORP%" Then
+                '        If Validar(TextBox11, "Ingrese Jefe de Turno") = False Then Exit Sub
+                'End If
+
+                If resul = False Then
+                    If MsgBox("Se procederá a generer el Registro de Venta" & vbNewLine & "¿Desea Continuar?", MsgBoxStyle.YesNo, "Aviso") = MsgBoxResult.Yes Then
+                        resul = True
+                    End If
+                End If
+
+
+                If resul = True Then
+
+
+
+                    Dim ruc As String = TextBox1.Text
+                    Dim subtotal As Double = CDbl(TextBox9.Text)
+                    Dim TipoDocumento As String = Label14.Text
+
+                    If ruc = "11111111111" Then
+                        If subtotal <> 0 Then
+                            MsgBox("Monto Base Invalido", MsgBoxStyle.Critical, "Aviso") : Exit Sub
+                        End If
+                    End If
+
+                    ''''''''''''''FACTURA ELECTRONICA OBTENER SERIE Y NUMERO
+
+                    Dim SERIE, NUMERO As String
+                    SERIE = TextBox3.Text
+                    NUMERO = Format(CDbl(TextBox4.Text), "00000000")
+                    ''''''''''''''''''''''''''''''''''''''''''''''
+
+                    'TextBox3.Text
+
+
+
+
+
+                    If Button1.Text = "GUARDAR" Then
+
+
+                        If ValidarSentencia("sELECT * FROM OPERACIONES_FACTURACION  WHERE TIPODOCUMENTO LIKE '" & TipoDocumento & "' AND serie LIKE '" & SERIE & "' AND CONVERT(int,numero) = " & CInt(TextBox4.Text)) = True Then
+                            MsgBox("Numero de Comprobante Actualmente Registrado")
+                            Exit Sub
+                        End If
+                    End If
+
+                    Dim ESTADO As String
+                    If ruc = "11111111111" Then
+                        ESTADO = "ANULADO"
+                    Else
+                        ESTADO = "FACTURADO"
+                    End If
+
+                    If Label14.Text = "ORDEN DE SERVICIO" Then
+                        ESTADO = "PENDIENTE"
+                    End If
+
+                    Dim modfecha As String
+
+                    If GroupBox5.Enabled = True Then
+                        modfecha = "'" & Format(dtp5.Value, "dd/MM/yyyy") & "'"
+                    Else
+                        modfecha = "NULL"
+                    End If
+
+                    Dim codsede = ObtenerDato("Select * from sedes where sede like '" & ComboBox2.Text & "'", "Codigo")
+
+                    Dim mes As Integer = DTP1.Value.Month
+                    Dim año As Integer = DTP1.Value.Year
+
+                    If Label14.Text <> "ORDEN DE SERVICIO" Then
+                        If VerificarPeriodoMensual(mes, año) = True Then
+                            MsgBox("Periodo mensual  cerrado actualmente", MsgBoxStyle.Critical, "Aviso")
+                            Exit Sub
+                        End If
+                        If VerificarPeriodo("VENTAS", mes, año) = True Then
+                            MsgBox("Periodo Cerrado en VENTAS Actualmente", MsgBoxStyle.Critical, "Aviso")
+                            Exit Sub
+                        End If
+                    End If
+
+                    Dim corr As Integer = Nothing
+                    Dim Cod As String = Nothing
+
+
+
+                    '''''''''''''''''''''''''
+                    Dim FECHAPAGO, VALIDADOCOBRANZA As String
+
+                    If ComboBox1.Text = "CONTADO" Then
+                        FECHAPAGO = "'" & Format(DTP1.Value, "dd/MM/yyyy") & "'"
+                        VALIDADOCOBRANZA = "'VALIDADO'"
+                    Else
+                        FECHAPAGO = "'" & Format(DTP2.Value, "dd/MM/yyyy") & "'"
+                        VALIDADOCOBRANZA = "'VALIDADO'"
+                    End If
+
+
+                    ' If TextBox1.Text = "20100055237" Or TextBox1.Text = "20100046831" Or TextBox1.Text = "20555271566" Then 'SI ES ALICORP 'INDUSTRIAS TEAL' y VITAPRO
+                    'FECHAPAGO = "NULL"
+                    'VALIDADOCOBRANZA = "NULL"
+                    'End If
+
+                    Dim ServPeriodoMes As Integer = dtp.Value.Month
+                    Dim ServPeriodoAño As Integer = dtp.Value.Year
+
+
+
+                    '''''''''''''''''''''''''''''''''''
+
+                    If Button1.Text = "GUARDAR" Then
+
+
+                        If Label14.Text = "NOTA DE CRÉDITO" Then
+                            If ValidarSentencia("Select * from operaciones_facturacion where serie LIKE '" & TextBox16.Text & "' and convert(int,numero) = " & CInt(TextBox14.Text) & " and tipodocumento not like 'orden%'") = False Then
+                                MsgBox("Número de Documento que modifica no existe", MsgBoxStyle.Critical, "Aviso")
+                                Exit Sub
+                            ElseIf CDbl(ObtenerDato("Select * from operaciones_facturacion where serie LIKE '" & TextBox16.Text & "' and convert(int,numero) = " & CInt(TextBox14.Text) & " and tipodocumento not like 'orden'", "saldo")) < CDbl(Label24.Text) Then
+                                MsgBox("El numero de documento no tiene saldo suficiente para descontar", MsgBoxStyle.Critical, "Aviso")
+                                Exit Sub
+                            Else
+                                '''''''''''actualizamos saldo de nota de credito
+                                Dim PeriodoAñoFactura As Integer = CInt(ObtenerDato("Select datepart(year,fecha) as año from operaciones_facturacion where serie LIKE '" & TextBox16.Text & "' and convert(int,numero) = " & CInt(TextBox14.Text) & " and tipodocumento not like 'orden%'", "año"))
+                                If PeriodoAñoFactura = año Then
+                                    Dim Saldo As Double = CDbl(ObtenerDato("Select * from operaciones_facturacion where codigo like '" & Label28.Text & "'", "saldo"))
+                                    Dim NUEVOSALDO As Double = Saldo + CDbl(Label24.Text)
+
+
+                                    Dim est As String
+                                    If NUEVOSALDO = 0 Then
+                                        est = "'CANCELADO'"
+                                    Else
+                                        est = "NULL"
+                                    End If
+
+                                    Base(Me, "update operaciones_facturacion set cancelacionestado = " & est & ", saldo = " & NUEVOSALDO & " where codigo like '" & Label28.Text & "'")
+                                Else
+                                    Dim Saldo As Double = CDbl(ObtenerDato("select * from Conta_Diario where TIPO like '%apertura' and SubDiario = 1 and PeriodoAño = " & año & " and doc_codigo like '" & Label28.Text & "'", "saldo"))
+                                    Dim NUEVOSALDO As Double = Saldo + CDbl(Label24.Text)
+
+                                    Dim est As String
+                                    If NUEVOSALDO = 0 Then
+                                        est = "'CANCELADO'"
+                                    Else
+                                        est = "NULL"
+                                    End If
+
+                                    Base(Me, "update Conta_Diario set cancelacionestado = " & est & ", saldo = " & NUEVOSALDO & " where TIPO like '%apertura' and SubDiario = 1 and PeriodoAño = " & año & " and doc_codigo like '" & Label28.Text & "'")
+
+                                End If
+
+
+                            End If
+
+                        End If
+                        Dim ESTADOFISICO As String = "VALIDADO"
+                        If Label14.Text = "ORDEN DE SERVICIO" Then
+                            ESTADOFISICO = "GENERADO"
+                        End If
+                        ''''se grabara el documento
+                        corr = CInt(ObtenerDato("select isnull(MAX(Correlativo),0) as Cor from Operaciones_Facturacion where datepart(month,fecha) = " & mes & " and datepart(year,fecha)= " & año, "Cor"))
+                        corr += 1
+                        Cod = ObtenerDato("INSERT INTO Operaciones_Facturacion ([Fecha],[TipoDocumento],[Serie],[Numero],[RUC],[RS],[SubTotal],[IGV],[Total],[TipoPago],[CodSede],[Sede],[Usuario],[FechaIngreso],[Estado],[EstadoValidado],[EstadoFisico],[FechaPago],modfecha,modtipodoc,modserie,modnumero,glosa,saldo,correlativo,tipomoneda,VALIDADOCOBRANZA,CANCELACIONNCOMP,servicioperiodoaño,servicioperiodomes,NORDENCLIENTE,JEFETURNOCLIENTE,cantidad,tarifa)  values " & _
+                             "('" & Format(DTP1.Value, "dd/MM/yyyy") & "','" & Label14.Text & "','" & SERIE & "','" & NUMERO & "','" & TextBox1.Text & "','" & TextBox5.Text & "','" & CDbl(TextBox9.Text) & "','" & CDbl(Label25.Text) & "','" & CDbl(Label24.Text) & "','" & ComboBox1.Text & "','" & codsede & "','" & ComboBox2.Text & "','" & Usuario & "',GETDATE(),'" & ESTADO & "','VALIDADO','" & ESTADOFISICO & "'," & FECHAPAGO & "," & modfecha & ",'" & TextBox7.Text & "','" & TextBox16.Text & "','" & TextBox14.Text & "','" & TextBox10.Text & "','" & CDbl(Label24.Text) & "','" & corr & "','" & Label15.Text & "'," & VALIDADOCOBRANZA & ",'GENERADO'," & ServPeriodoAño & "," & ServPeriodoMes & ",'" & TextBox12.Text & "','" & TextBox11.Text & "','1.00','" & CDbl(TextBox9.Text) & "')  SELECT SCOPE_IDENTITY() AS Codigo", "Codigo")
+
+                        Label4.Text = CStr(corr)
+
+
+
+                    ElseIf Button1.Text = "ACTUALIZAR" Then
+                        Cod = Label8.Text
+                        corr = CInt(Label4.Text)
+                        Base(Me, "UPDATE Operaciones_Facturacion  SET [Fecha] = '" & Format(DTP1.Value, "dd/MM/yyyy") & "' ,[TipoDocumento] ='" & Label14.Text & "',[Serie] = '" & SERIE & "',[Numero] = '" & NUMERO & "',[RUC] = '" & TextBox1.Text & "',[RS] = '" & TextBox5.Text & "',[SubTotal] = '" & CDbl(TextBox9.Text) & "',[IGV] = '" & CDbl(Label25.Text) & "',[Total] = '" & CDbl(Label24.Text) & "',[TipoPago] = '" & ComboBox1.Text & "',[CodSede] = '" & codsede & "',[Sede] = '" & ComboBox2.Text & "',[Estado] = '" & ESTADO & "',[EstadoValidado] = 'VALIDADO',[EstadoFisico] = 'VALIDADO',[FechaPago] = " & FECHAPAGO & ",modfecha = " & modfecha & ",modtipodoc = '" & TextBox7.Text & "',modserie = '" & TextBox16.Text & "',modnumero = '" & TextBox14.Text & "',glosa = '" & TextBox10.Text & "',tipomoneda = '" & Label15.Text & "',VALIDADOCOBRANZA = " & VALIDADOCOBRANZA & ",servicioperiodoaño = " & ServPeriodoAño & ", servicioperiodomes = " & ServPeriodoMes & " WHERE CODIGO LIKE '" & Cod & "'")
+
+                        'ELIMINAMOS ASIENTO CONTABLE
+                        Base(Me, "DELETE FROM Conta_AsientosContables WHERE TIPO LIKE 'VENTAS' AND TIPO_COD LIKE '" & Cod & "'")
+
+
+                    End If
+
+                    'ASIENTO CONTABLE
+                    ''SUDIARIO 04 VENTAS 
+                    Dim PeriodoMes, PeriodoAño, debe, haber As Double
+                    PeriodoMes = DTP1.Value.Month
+                    PeriodoAño = DTP1.Value.Year
+                    Base(Me, "delete from conta_asientoscontables where subdiario = 4 and correlativo = " & corr & " and periodomes = " & PeriodoMes & " and periodoaño = " & PeriodoAño)
+
+
+                    Dim RS, fecha, glosa, ncuenta, cc, doc_fecha As String
+                    fecha = Format(DTP1.Value, "dd/MM/yyyy")
+                    glosa = TextBox10.Text
+                    doc_fecha = Format(dtp5.Value, "dd/MM/yyyy")
+
+                    If Label14.Text = "NOTA DE CRÉDITO" Then
+                        SERIE = TextBox16.Text
+                        NUMERO = Format(CInt(TextBox14.Text), "00000000")
+                    Else
+                        SERIE = TextBox3.Text
+                        NUMERO = Format(CInt(TextBox4.Text), "00000000")
+                    End If
+
+
+                    ruc = TextBox1.Text
+                    RS = TextBox5.Text
+                    cc = ComboBox2.Text
+
+
+                    Dim st, igv, total As Double
+                    st = CDbl(TextBox9.Text)
+                    igv = CDbl(Label25.Text)
+                    total = CDbl(Label24.Text)
+                    ' OP = CDbl(Label24.Text)
+
+
+                    '70 BASE 70410100
+
+                    If ComboBox2.Text = "ALICORP TRUJILLO TRANSPORTE" Or ComboBox2.Text = "CARGADOR FRONTAL" Or ComboBox2.Text = "DISTRIBUCION TRUJILLO" Or ComboBox2.Text = "TRANSPORTE CARGA" Or ComboBox2.Text = "TRANSPORTE-TRAILER" Or ComboBox2.Text = "SERVICIO DE MOVILIDAD" Then
+                        ncuenta = "70410101"
+                    ElseIf ComboBox2.Text = "CAFETERIA" Then
+                        ncuenta = "70111100"
+                    Else
+                        ncuenta = "70410100"
+                    End If
+                    If Label14.Text = "ORDEN DE SERVICIO" Then
+                        ncuenta = "70410109"
+                    End If
+
+                    If Label14.Text = "NOTA DE CRÉDITO" Then
+                        debe = st * -1
+                        haber = 0
+                        ncuenta = "74110100"
+                    Else
+                        debe = 0
+                        haber = st
+                    End If
+
+                    Dim TIPO As String
+                    If Label14.Text = "ORDEN DE SERVICIO" Then
+                        TIPO = "ORDEN DE SERVICIO"
+                        doc_fecha = fecha
+                    Else
+                        TIPO = "VENTAS"
+                    End If
+                    Base(Me, "INSERT INTO Conta_AsientosContables ([SubDiario],[PeriodoMes],[PeriodoAño],[Correlativo],[Fecha],[CuentaContable],[Glosa],[Debe],[Haber],[Tipo],[Tipo_Cod],[Serie],[Numero],[RS],[RUC],CentroCosto,[Usuario],[FechaGenerada],doc_fecha) values " & _
+                         "('04','" & PeriodoMes & "','" & PeriodoAño & "','" & corr & "','" & fecha & "','" & ncuenta & "','" & glosa & "','" & debe & "','" & haber & "','" & TIPO & "','" & Cod & "','" & SERIE & "','" & NUMERO & "','" & RS & "','" & ruc & "','" & cc & "','" & Usuario & "',GETDATE(),'" & doc_fecha & "')")
+
+
+                    '40 IGV 40111000 
+                    If Label14.Text <> "ORDEN DE SERVICIO" Then
+                        If Label14.Text = "NOTA DE CRÉDITO" Then
+                            debe = igv * -1
+                            haber = 0
+                        Else
+                            debe = 0
+                            haber = igv
+                        End If
+
+                        ncuenta = "40111111"
+
+                        Base(Me, "INSERT INTO Conta_AsientosContables ([SubDiario],[PeriodoMes],[PeriodoAño],[Correlativo],[Fecha],[CuentaContable],[Glosa],[Debe],[Haber],[Tipo],[Tipo_Cod],[Serie],[Numero],[RS],[RUC],CentroCosto,[Usuario],[FechaGenerada],doc_fecha) values " & _
+                             "('04','" & PeriodoMes & "','" & PeriodoAño & "','" & corr & "','" & fecha & "','" & ncuenta & "','" & glosa & "','" & debe & "','" & haber & "','VENTAS','" & Cod & "','" & SERIE & "','" & NUMERO & "','" & RS & "','" & ruc & "','" & cc & "','" & Usuario & "',GETDATE(),'" & doc_fecha & "')")
+
+                    End If
+
+                    If Label14.Text = "NOTA DE CRÉDITO" Then
+                        debe = 0
+                        haber = total * -1
+                    Else
+                        debe = total
+                        haber = 0
+                    End If
+
+                    If ComboBox1.Text = "CONTADO" Then
+                        ncuenta = "12120001"
+                    ElseIf ComboBox1.Text = "CREDITO" Then
+                        ncuenta = "12130001"
+                    End If
+                    If Label14.Text = "ORDEN DE SERVICIO" Then
+                        ncuenta = "12110001"
+                    End If
+
+                    Base(Me, "INSERT INTO Conta_AsientosContables ([SubDiario],[PeriodoMes],[PeriodoAño],[Correlativo],[Fecha],[CuentaContable],[Glosa],[Debe],[Haber],[Tipo],[Tipo_Cod],[Serie],[Numero],[RS],[RUC],CentroCosto,[Usuario],[FechaGenerada],doc_fecha) values " & _
+                         "('04','" & PeriodoMes & "','" & PeriodoAño & "','" & corr & "','" & fecha & "','" & ncuenta & "','" & glosa & "','" & debe & "','" & haber & "','" & TIPO & "','" & Cod & "','" & SERIE & "','" & NUMERO & "','" & RS & "','" & ruc & "','" & cc & "','" & Usuario & "',GETDATE(),'" & doc_fecha & "')")
+
+                    Dim S As String
+                    Dim N As Integer
+                    If Label14.Text = "NOTA DE CRÉDITO" Then
+                        S = TextBox16.Text
+                        N = CInt(TextBox14.Text)
+                    ElseIf Label14.Text = "NOTA DE DÉDITO" Then
+                        S = TextBox16.Text
+                        N = CInt(TextBox14.Text)
+                    End If
+
+
+                    'Button1.Enabled = False
+                    '''''''''''''''''''''''''''''''''''''''
+                    Dim FactElect As Boolean = False
+
+                    ''''''''''GUARDAR FACTURA ELECTRONICA''''''''''''''''''
+                    If SERIE = "F003" And TipoDocumento = "FACTURA" Then
+                        FactElect = True
+                    End If
+
+                    If SERIE = "F026" And TipoDocumento = "FACTURA" Then
+                        FactElect = True
+                    End If
+                    If TextBox3.Text = "FC01" And TipoDocumento = "NOTA DE CRÉDITO" Then
+                        FactElect = True
+                    End If
+
+                    If TextBox3.Text = "BC01" And TipoDocumento = "NOTA DE CRÉDITO" Then
+                        FactElect = True
+                    End If
+
+                    If TextBox3.Text = "B001" And TipoDocumento = "BOLETA DE VENTA" Then
+                        FactElect = True
+                    End If
+
+
+                    ' MsgBox(SERIE)
+                    ' MsgBox(TipoDocumento)
+                    'MsgBox(FactElect)
+                    If FactElect = True Then
+                        Dim nFE As String = "EFACT"
+
+                        If nFE = "EFACT" Then
+                            'efact
+                            If TextBox2.Text = "01" Or TextBox2.Text = "03" Then
+                                ' prueba
+                                ' Dim sftpServer As String = "ose-qa-sftp.efact.pe"
+
+                                ' produccion
+                                Dim sftpServer As String = "prd-ose-gw1.efact.pe"
+                                Dim usuario As String = "20547035381"
+                                Dim rutaClave As String = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "key2_20547035381.ppk")
+
+                                Dim metodoAutenticacion As New PrivateKeyAuthenticationMethod(usuario, New PrivateKeyFile(rutaClave))
+
+                                Dim conexionInfo As New ConnectionInfo(sftpServer, 22, usuario, metodoAutenticacion)
+
+
+
+                                Dim DatosFactura As New Efact_DatosFactura
+                                Dim HORA As String = Format(Date.Now, "HH:mm:ss")
+                                Dim EmisorRUC As String = "20547035381"
+                                Dim SerieNumero As String = SERIE & "-" & NUMERO
+                                Dim FacturaFecha As String = Format(DTP1.Value, "yyyy-MM-dd")
+                                Dim FechaPagoX As String = Format(DTP2.Value, "yyyy-MM-dd")
+                                ' Dim TipoDocumento As String = "01" '01 FACTURA 03 BOLETA
+
+                                DatosFactura.AddData("SerieNumero", SerieNumero)
+                                DatosFactura.AddData("FechaDocumento", FacturaFecha)
+                                DatosFactura.AddData("HoraDocumento", HORA)
+                                DatosFactura.AddData("MontoenLetras", CONVERTIR(total))
+                                DatosFactura.AddData("TextoDetraccion", "Operación sujeta a detracción")
+                                DatosFactura.AddData("nOrdendeCompra", TextBox12.Text)
+                                DatosFactura.AddData("nGuia", "-")
+
+                                DatosFactura.AddData("TipoDocumento", TextBox2.Text)
+                                DatosFactura.AddData("FechaVencimiento", FechaPagoX)
+
+                                DatosFactura.AddData("EmisorRUC", EmisorRUC)
+                                DatosFactura.AddData("EmisorNombreComercial", "INNOVACION Y OPERACIONES LOGISTICAS S.A.")
+                                DatosFactura.AddData("EmisorRS", "INNOVACION Y OPERACIONES LOGISTICAS S.A.")
+                                DatosFactura.AddData("EmisorUbigeo", "240102")
+                                DatosFactura.AddData("EmisorDireccion", "CAL.LOS CÓNDORES NRO. 310")
+                                DatosFactura.AddData("EmisorUrb", "SAN JOSE")
+                                DatosFactura.AddData("EmisorProvincia", "PROV. CONST. DEL CALLAO")
+                                DatosFactura.AddData("EmisorDepartamento", "PROV. CONST. DEL CALLAO")
+                                DatosFactura.AddData("EmisorDistrito", "BELLAVISTA")
+
+                                Dim DIRECCION As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "DIRECCION")
+                                Dim DEPARTAMENTO As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "DEPARTAMENTO")
+                                Dim PROVINCIA As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "PROVINCIA")
+                                Dim DISTRITO As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "DISTRITO")
+                                'Dim correo As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "EMAIL")
+                                Dim correo As String = TextBox15.Text
+
+                                DatosFactura.AddData("RecepetorRUC", ruc)
+                                DatosFactura.AddData("RecepetorTipoDoc", TextBox8.Text) '6 SI ES RUC NACIONAL
+                                DatosFactura.AddData("RecepetorRS", RS)
+                                DatosFactura.AddData("RecepetorDireccion", DIRECCION)
+                                DatosFactura.AddData("RecepetorUbigeo", "240102")
+                                DatosFactura.AddData("RecepetorProvincia", PROVINCIA)
+                                DatosFactura.AddData("RecepetorDepartamento", DEPARTAMENTO)
+                                DatosFactura.AddData("RecepetorDistrito", DISTRITO)
+                                DatosFactura.AddData("ReceptorCorreo", correo)
+
+
+                                DatosFactura.AddData("ItemDescripcion", glosa)
+                                DatosFactura.AddData("ItemValorUnitario", subtotal)
+                                DatosFactura.AddData("ItemPrecioVenta", subtotal)
+                                DatosFactura.AddData("ItemTotalImpuesto", igv)
+                                DatosFactura.AddData("ItemBaseIGV", subtotal)
+                                DatosFactura.AddData("ItemIGV", igv)
+                                DatosFactura.AddData("ItemPorcentajeIGV", "18")
+                                DatosFactura.AddData("ItemValorVenta", total)
+
+                                DatosFactura.AddData("TotalImpuestos", igv)
+                                DatosFactura.AddData("TotalBaseIGV", subtotal)
+                                DatosFactura.AddData("TotalIGV", igv)
+                                DatosFactura.AddData("TotalMonto", total)
+
+                                If detrracion = "SI" Then
+                                    ComboBox3.Text = "12"
+                                Else
+                                    ComboBox3.Text = ""
+                                End If
+
+                                If ComboBox3.Text = "10" Then
+                                    DatosFactura.AddData("DetraccionCodigo", "021")
+                                    DatosFactura.AddData("DetraccionNCuenta", "00-031-037360")
+                                    DatosFactura.AddData("DetraccionMonto", Math.Round(total * 0.1, 2))
+                                    DatosFactura.AddData("DetraccionMontoSinDetraccion", Math.Round(total - (total * 0.1), 2))
+                                    DatosFactura.AddData("DetraccionPorcentaje", "10")
+                                ElseIf ComboBox3.Text = "12" Then
+                                    DatosFactura.AddData("DetraccionCodigo", "022")
+                                    DatosFactura.AddData("DetraccionNCuenta", "00-031-037360")
+                                    DatosFactura.AddData("DetraccionMonto", Math.Round(total * 0.12, 2))
+                                    DatosFactura.AddData("DetraccionMontoSinDetraccion", Math.Round(total - (total * 0.12), 2))
+                                    DatosFactura.AddData("DetraccionPorcentaje", "12")
+                                ElseIf ComboBox3.Text = "12 - Otros" Then
+                                    DatosFactura.AddData("DetraccionCodigo", "012")
+                                    DatosFactura.AddData("DetraccionNCuenta", "00-031-037360")
+                                    DatosFactura.AddData("DetraccionMonto", Math.Round(total * 0.12, 2))
+                                    DatosFactura.AddData("DetraccionMontoSinDetraccion", Math.Round(total - (total * 0.12), 2))
+                                    DatosFactura.AddData("DetraccionPorcentaje", "12")
+                                End If
+
+
+                                Dim TipoPago As String = ComboBox1.Text
+                                If TipoPago = "CREDITO" Then
+                                    TipoPago = "Credito"
+                                End If
+                                If TipoPago = "CONTADO" Then
+                                    TipoPago = "Contado"
+                                End If
+                                DatosFactura.AddData("FormaPago", TipoPago)
+
+                                DatosFactura.AddData("CuotaNumero", "Cuota001")
+
+                                If total >= 700 Then '''''''''''' detraccion
+                                    If ComboBox3.Text = "10" Then
+                                        DatosFactura.AddData("CuotaMonto", Math.Round(total - (total * 0.1), 2))
+                                    Else
+                                        DatosFactura.AddData("CuotaMonto", Math.Round(total - (total * 0.12), 2))
+                                    End If
+                                Else
+                                    DatosFactura.AddData("CuotaMonto", total)
+
+                                End If
+                                DatosFactura.AddData("CuotaFecha", FechaPagoX)
+
+
+
+
+
+
+                                Dim ArchivoJSONFactura As JObject
+                                ArchivoJSONFactura = GenerarJsonFacturaBoleta(DatosFactura)
+
+                                Dim NombreArchivo As String = EmisorRUC & "-" & TextBox2.Text & "-" & SerieNumero & ".json"
+                                Dim rutaArchivo As String = System.IO.Path.GetDirectoryName(Application.ExecutablePath) & "\json\" & NombreArchivo
+
+
+                                Dim rutaCarpeta As String = System.IO.Path.GetDirectoryName(Application.ExecutablePath) & "\json\"
+                                If Not Directory.Exists(rutaCarpeta) Then
+                                    Directory.CreateDirectory(rutaCarpeta)
+                                End If
+
+
+                                If File.Exists(rutaArchivo) Then
+                                    File.Delete(rutaArchivo)
+                                End If
+                                File.WriteAllText(rutaArchivo, ArchivoJSONFactura.ToString)
+                                'MsgBox("Archivo Generado")
+
+                                Dim rutaRemota As String = "/In/" & NombreArchivo
+                                ' Dim ArchivoEncontrado As Boolean
+                                Using sftpCliente As New SftpClient(conexionInfo)
+                                    sftpCliente.Connect()
+                                    sftpCliente.UploadFile(File.OpenRead(rutaArchivo), rutaRemota)
+
+
+                                    Dim rutaRemotaOUT As String = "/Out/" & NombreArchivo
+                                    'Do While Not ArchivoEncontrado
+                                    '    If sftpCliente.Exists(rutaRemotaOUT) Then
+                                    '        ArchivoEncontrado = True
+                                    '    Else
+                                    '        Threading.Thread.Sleep(500)
+                                    '    End If
+                                    'Loop
+                                    'Using streamReader As New StreamReader(sftpCliente.OpenRead(rutaRemotaOUT))
+                                    '    Dim contenidoArchivo As String = streamReader.ReadToEnd()
+                                    '    Dim archivoJson As JObject = JObject.Parse(contenidoArchivo)
+
+                                    '    MsgBox(archivoJson("Message").ToString())
+                                    'End Using
+                                    sftpCliente.Disconnect()
+                                    'MsgBox("conectado")
+                                End Using
+
+                            End If
+                            If TextBox2.Text = "07" Then
+
+
+
+                                'prueba
+                                'Dim sftpServer As String = "ose-qa-sftp.efact.pe"
+                                ''''' produccion 
+                                Dim sftpServer As String = "prd-ose-gw1.efact.pe"
+
+                                Dim usuario As String = "20547035381"
+                                Dim rutaClave As String = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "key2_20547035381.ppk")
+
+                                Dim metodoAutenticacion As New PrivateKeyAuthenticationMethod(usuario, New PrivateKeyFile(rutaClave))
+
+                                Dim conexionInfo As New ConnectionInfo(sftpServer, 22, usuario, metodoAutenticacion)
+
+                                Dim DatosFactura As New Efact_DatosFactura
+
+                                Dim EmisorRUC As String = "20547035381"
+                                Dim SerieNumeroX As String = TextBox3.Text & "-" & TextBox4.Text
+                                Dim FacturaFecha As String = Format(DTP1.Value, "yyyy-MM-dd")
+                                ' Dim FechaPago As String = Format(Date.Now.AddDays(30), "yyyy-MM-dd")
+                                Dim TipoDocumentox As String = "07" '01 NOTA DE CREDITO
+                                ' Dim TOTAL As String = "354.00"
+
+                                DatosFactura.AddData("SerieNumero", SerieNumeroX)
+                                DatosFactura.AddData("FechaDocumento", FacturaFecha)
+                                Dim HORA As String = Format(Date.Now, "HH:mm:ss")
+                                DatosFactura.AddData("HoraDocumento", HORA)
+                                DatosFactura.AddData("MontoenLetras", CONVERTIR(CDbl(total)))
+                                DatosFactura.AddData("MotivoNotaCredito", "Anulación de la operación")
+                                DatosFactura.AddData("CodigoMotivoNotaCredito", "01") '01-12
+                                DatosFactura.AddData("SerieNumeroDocumentoModifica", SERIE & "-" & NUMERO)
+                                DatosFactura.AddData("TipoDocumentoModifica", "01")
+
+                                DatosFactura.AddData("EmisorRUC", EmisorRUC)
+                                DatosFactura.AddData("EmisorNombreComercial", "INNOVACION Y OPERACIONES LOGISTICAS S.A.")
+                                DatosFactura.AddData("EmisorRS", "INNOVACION Y OPERACIONES LOGISTICAS S.A.")
+                                DatosFactura.AddData("EmisorUbigeo", "240102")
+                                DatosFactura.AddData("EmisorDireccion", "CAL.LOS CÓNDORES NRO. 310")
+                                DatosFactura.AddData("EmisorUrb", "SAN JOSE")
+                                DatosFactura.AddData("EmisorProvincia", "PROV. CONST. DEL CALLAO")
+                                DatosFactura.AddData("EmisorDepartamento", "PROV. CONST. DEL CALLAO")
+                                DatosFactura.AddData("EmisorDistrito", "BELLAVISTA")
+
+
+                                Dim DIRECCION As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "DIRECCION")
+                                Dim DEPARTAMENTO As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "DEPARTAMENTO")
+                                Dim PROVINCIA As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "PROVINCIA")
+                                Dim DISTRITO As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "DISTRITO")
+                                Dim correo As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "EMAIL")
+
+                                DatosFactura.AddData("RecepetorRUC", ruc)
+                                DatosFactura.AddData("RecepetorTipoDoc", "6")
+                                DatosFactura.AddData("RecepetorRS", RS)
+                                DatosFactura.AddData("RecepetorDireccion", DIRECCION)
+                                DatosFactura.AddData("RecepetorUbigeo", "240102")
+                                DatosFactura.AddData("RecepetorProvincia", PROVINCIA)
+                                DatosFactura.AddData("RecepetorDepartamento", DEPARTAMENTO)
+                                DatosFactura.AddData("RecepetorDistrito", DISTRITO)
+                                DatosFactura.AddData("ReceptorCorreo", correo)
+
+                                DatosFactura.AddData("Descripcion", TextBox10.Text)
+
+                                DatosFactura.AddData("TotalBaseIGV", subtotal * -1)
+                                DatosFactura.AddData("TotalIGV", igv * -1)
+                                DatosFactura.AddData("TotalMonto", total * -1)
+                                DatosFactura.AddData("IGVPorcentaje", "18.00")
+
+
+
+                                Dim ArchivoJSONFactura As JObject
+                                ArchivoJSONFactura = GenerarJsonNotadeCredito(DatosFactura)
+
+                                Dim NombreArchivo As String = EmisorRUC & "-" & "07" & "-" & SerieNumeroX & ".json"
+                                Dim rutaArchivo As String = System.IO.Path.GetDirectoryName(Application.ExecutablePath) & "\json\" & NombreArchivo
+
+
+                                Dim rutaCarpeta As String = System.IO.Path.GetDirectoryName(Application.ExecutablePath) & "\json\"
+                                If Not Directory.Exists(rutaCarpeta) Then
+                                    Directory.CreateDirectory(rutaCarpeta)
+                                End If
+
+
+                                If File.Exists(rutaArchivo) Then
+                                    File.Delete(rutaArchivo)
+                                End If
+                                File.WriteAllText(rutaArchivo, ArchivoJSONFactura.ToString)
+                                'MsgBox("Archivo Generado")
+
+                                Dim rutaRemota As String = "/In/" & NombreArchivo
+                                'Dim ArchivoEncontrado As Boolean
+                                Using sftpCliente As New SftpClient(conexionInfo)
+                                    sftpCliente.Connect()
+                                    sftpCliente.UploadFile(File.OpenRead(rutaArchivo), rutaRemota)
+
+
+                                    Dim rutaRemotaOUT As String = "/Out/" & NombreArchivo
+                                    'Do While Not ArchivoEncontrado
+                                    '    If sftpCliente.Exists(rutaRemotaOUT) Then
+                                    '        ArchivoEncontrado = True
+                                    '    Else
+                                    '        Threading.Thread.Sleep(500)
+                                    '    End If
+                                    'Loop
+                                    'Using streamReader As New StreamReader(sftpCliente.OpenRead(rutaRemotaOUT))
+                                    '    Dim contenidoArchivo As String = streamReader.ReadToEnd()
+                                    '    Dim archivoJson As JObject = JObject.Parse(contenidoArchivo)
+
+                                    '    MsgBox(archivoJson("Message").ToString())
+                                    'End Using
+                                    sftpCliente.Disconnect()
+                                End Using
+
+
+
+
+                            End If
+
+                            'FIN EFACT
+                        Else
+
+                            '''''BIZLINKS'''''
+                            If ObtenerDato("SELECT NOMBRE FROM TABLAVARIABLES WHERE TIPO LIKE 'FACTURA ELECTRONICA'", "Nombre") = "1" Then
+
+                                Dim EMPRESARUC As String = ObtenerDato("SELECT * FROM EMPRESAS", "RUC")
+                                Dim EMPRESARS As String = ObtenerDato("SELECT * FROM EMPRESAS", "RS")
+                                Dim EMPRESADIRECCION As String = ObtenerDato("SELECT * FROM EMPRESAS", "DIRECCION")
+                                Dim EMPRESADEPARTAMENTO As String = ObtenerDato("SELECT * FROM EMPRESAS", "DEPARTAMENTO")
+                                Dim EMPRESAPROVINCIA As String = ObtenerDato("SELECT * FROM EMPRESAS", "PROVINCIA")
+                                Dim EMPRESADISTRITO As String = ObtenerDato("SELECT * FROM EMPRESAS", "DISTRITO")
+                                Dim EMPRESACORREO As String = ObtenerDato("SELECT * FROM EMPRESAS", "EMAIL")
+
+
+                                Dim fechaFact As String = Format(CDate(fecha), "yyyy-MM-dd")
+                                Dim HORA As String = Format(Date.Now, "HH:mm:ss")
+
+                                Dim SerieFE As String = SERIE
+                                Dim NumeroFE As String = NUMERO
+
+                                Dim NumeroFactElectronica As String = TextBox3.Text & "-" & TextBox4.Text
+
+                                Dim correo As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "email")
+                                If correo = "" Then correo = "-"
+
+                                Dim UMFE As String = "ZZ"
+                                Dim TIPODOC As String = TextBox2.Text
+
+                                Dim tc As Double = subtotal  'tc= tarifa cliente, en este caso solo es subtotal
+
+                                Dim tcIGV As Double
+
+                                If CheckBox1.Checked = True Then ' SIN SERVICIO
+                                    tc = subtotal
+                                End If
+
+                                tcIGV = tc * PorcIGV
+
+                                Dim C As String = "1"
+
+                                Dim TL2 As String = ObtenerDato("SELECT * FROM EMPRESAS", "BN")
+
+                                If cc = "PROTISA CAÑETE" Or cc = "PROTISA BSF" Or cc = "PROTISA CAÑETE IMPO/EXPO" Then
+                                    TL2 = "Código de Detracción: 021-Movimiento de Carga   Tasa: 10 porc.   Cta. BN: 00031037360"
+                                End If
+
+                                If Label14.Text = "NOTA DE CRÉDITO" Then
+                                    subtotal *= -1
+                                    igv *= -1
+                                    total *= -1
+                                    tc *= -1
+                                    tcIGV *= -1
+                                End If
+
+                                Dim tipodocA As Integer = CInt(TextBox8.Text)
+
+                                BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER(correoEmisor,correoAdquiriente,numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,razonSocialEmisor,nombreComercialEmisor,serieNumero,fechaEmision,ubigeoEmisor,direccionEmisor,urbanizacion,provinciaEmisor,departamentoEmisor,distritoEmisor,paisEmisor,numeroDocumentoAdquiriente,tipoDocumentoAdquiriente,razonSocialAdquiriente,tipoMoneda,totalValorVentaNetoOpGravadas,totalIgv,totalImpuestos,totalVenta,codigoLeyenda_1,textoLeyenda_1,codigoAuxiliar40_1,textoAuxiliar40_1,tipoOperacion,horaEmision,codigoLocalAnexoEmisor,codigoLeyenda_2,textoLeyenda_2,totalValorVenta,totalPrecioVenta) " & _
+                                                    "VALUES('" & EMPRESACORREO & "','" & correo & "','" & EMPRESARUC & "','6','" & TIPODOC & "','" & EMPRESARS & "','-','" & NumeroFactElectronica & "','" & fechaFact & "','150121','" & EMPRESADIRECCION & "','-','" & EMPRESAPROVINCIA & "','" & EMPRESADEPARTAMENTO & "','" & EMPRESADISTRITO & "','PE','" & ruc & "','" & tipodocA & "','" & RS & "','PEN','" & subtotal & "','" & igv & "','" & igv & "','" & total & "','1000','SON: " & CONVERTIR(total) & "','9011','18%','0101','" & HORA & "','0000','2006','" & TL2 & "','" & subtotal & "','" & total & "')")
+
+                                BaseFE(Me, "INSERT INTO SPE_EINVOICEDETAIL(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,numeroOrdenItem,codigoProducto,codigoProductoSUNAT,descripcion,cantidad,unidadMedida,importeTotalSinImpuesto,importeUnitarioSinImpuesto,importeUnitarioConImpuesto,codigoImporteUnitarioConImpues,montoBaseIgv,tasaIGV,importeIgv,importeTotalImpuestos,codigoRazonExoneracion) " & _
+                                      "VALUES('" & EMPRESARUC & "','6','" & TIPODOC & "','" & NumeroFactElectronica & "','1','4610225','84000000','" & glosa & "','" & C & "','" & UMFE & "','" & subtotal & "','" & tc & "','" & tcIGV & "','01','" & subtotal & "','18','" & igv & "','" & igv & "','10')")
+
+                                'CLIENTE'
+                                Dim DIRECCION As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "DIRECCION")
+                                Dim DEPARTAMENTO As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "DEPARTAMENTO")
+                                Dim PROVINCIA As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "PROVINCIA")
+                                Dim DISTRITO As String = ObtenerDato("select * from clientes where ruc like '" & ruc & "'", "DISTRITO")
+
+
+                                BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','direccionAdquiriente','" & DIRECCION & "')")
+                                BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','ubigeoAdquiriente','-')")
+                                BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','urbanizacionAdquiriente','-')")
+                                BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','provinciaAdquiriente','" & PROVINCIA & "')")
+                                BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','departamentoAdquiriente','" & DEPARTAMENTO & "')")
+                                BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','distritoAdquiriente','" & DISTRITO & "')")
+                                BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','paisAdquiriente','PE')")
+
+                                If TextBox12.Text <> "" Then
+                                    BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','ordenCompra','" & TextBox12.Text & "')")
+                                End If
+
+                                If ComboBox1.Text = "CREDITO" Then
+                                    FECHAPAGO = Format(DTP2.Value, "yyyy-MM-dd")
+                                    BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','formaPagoNegociable','1')")
+                                    BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','montoPagoCuota1','" & CDbl(TextBox13.Text) & "')")
+                                    BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','fechaPagoCuota1','" & FECHAPAGO & "')")
+
+
+                                Else
+                                    FECHAPAGO = Format(CDate(DTP1.Value), "yyyy-MM-dd")
+                                    BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','formaPagoNegociable','0')")
+
+                                End If
+
+                                BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','fechaVencimiento','" & FECHAPAGO & "')")
+                                BaseFE(Me, "INSERT INTO SPE_EINVOICEHEADER_ADD(numeroDocumentoEmisor,tipoDocumentoEmisor,tipoDocumento,serieNumero,Clave,Valor) VALUES('20547035381','6','" & TIPODOC & "','" & NumeroFactElectronica & "','montoNetoPendiente','" & CDbl(TextBox13.Text) & "')")
+
+                                '''''''''''''si se coloca codigo de detracion y monto
+                                If ruc = "20266352337" Then
+                                    BaseFE(Me, "UPDATE SPE_EINVOICEHEADER SET  codigoDetraccion = '021',totalDetraccion = '" & CInt(total * 0.1) & "'  WHERE SERIENUMERO = '" & NumeroFactElectronica & "' AND TIPODOCUMENTO LIKE '" & TIPODOC & "'")
+                                End If
+
+                                If Label14.Text = "NOTA DE CRÉDITO" Then
+                                    Dim SERIENUMEROAFECTADO As String = TextBox16.Text & "-" & TextBox14.Text
+                                    BaseFE(Me, "UPDATE SPE_EINVOICEHEADER SET  codigoSerieNumeroAfectado = '01',tipoDocumentoReferenciaPrincip = '01', numeroDocumentoReferenciaPrinc = '" & SERIENUMEROAFECTADO & "', MOTIVODOCUMENTO = '" & glosa & "', codigoLeyenda_2 = null ,textoLeyenda_2 = null  WHERE SERIENUMERO = '" & NumeroFactElectronica & "' AND TIPODOCUMENTO LIKE '" & TIPODOC & "'")
+                                Else
+                                    '''''''''''''''DATOS EXPORTACION
+                                    Dim CODI, D As String
+                                    Dim CONT As Integer = 1
+                                    For Each DGWR As DataGridViewRow In dg1.Rows
+                                        CODI = DGWR.Cells("CODIGO").Value.ToString
+                                        Try
+                                            D = UCase(DGWR.Cells("DESCRIPCION").Value.ToString)
+                                            If D <> "" Then
+                                                BaseFE(Me, "UPDATE SPE_EINVOICEDETAIL SET  codigoAuxiliar100_" & CONT & " = '" & CODI & "', textoAuxiliar100_" & CONT & " = '" & D & "'  WHERE SERIENUMERO = '" & NumeroFactElectronica & "'")
+                                                CONT += 1
+                                            End If
+
+                                        Catch ex As Exception
+
+                                        End Try
+
+                                    Next
+
+                                End If
+                                BaseFE(Me, "UPDATE SPE_EINVOICEHEADER SET  bl_estadoRegistro = 'A'  WHERE SERIENUMERO = '" & NumeroFactElectronica & "' AND TIPODOCUMENTO LIKE '" & TIPODOC & "'")
+
+                            End If
+                        End If
+                    End If '''' FIN BIZLINKS
+
+                    GroupBox1.Enabled = False
+                    'TextBox1.Enabled= False
+
+                End If
+
+            Next
+
+            MsgBox("Fin de los datos.")
+
+        Catch ex As Exception
+            MsgBox("Error: " & ex.Message)
+        End Try
+
+
+       
+    End Sub
+
+    Private Sub TextBox1_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox1.LostFocus
+        If ValidarSentencia("Select * from Clientes where ruc like '" & TextBox1.Text & "'") = True Then
+            TextBox5.Text = ObtenerDato("Select * from cLIENTES WHERE RUC LIKE '" & TextBox1.Text & "'", "RS")
+            TextBox15.Text = ObtenerDato("Select * from cLIENTES WHERE RUC LIKE '" & TextBox1.Text & "'", "email")
+
+            If ValidarSentencia("Select * from ClientesCredito where ruc like '" & TextBox1.Text & "'") = False Then
+                ComboBox1.Text = "CONTADO"
+            Else
+                Dim SERIEFAC As String = ObtenerDato("Select * from ClientesCredito where ruc like '" & TextBox1.Text & "'", "SERIE")
+                Dim dias As Integer = CInt(ObtenerDato("Select isnull(dias,0) as dias from ClientesCredito where ruc like '" & TextBox1.Text & "'", "dias"))
+
+                If SERIEFAC = "0" Then
+                    ComboBox1.Text = "CREDITO"
+                    DTP2.Value = DTP2.Value.AddDays(dias)
+                Else
+                    If TextBox3.Text = SERIEFAC Then
+                        ComboBox1.Text = "CREDITO"
+                        DTP2.Value = DTP2.Value.AddDays(dias)
+
+                    Else
+                        ComboBox1.Text = "CONTADO"
+
+                    End If
+
+
+                End If
+
+            End If
+            If Label14.Text = "ORDEN DE SERVICIO" Then
+                ComboBox1.Text = "CREDITO"
+            End If
+        Else
+            TextBox1.Text = ""
+            TextBox1.Focus()
+        End If
+
+    End Sub
+
+    Private Sub TextBox4_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox4.LostFocus
+        If TextBox4.Text = "" Then TextBox4.Text = "1"
+        TextBox4.Text = Format(CInt(TextBox4.Text), "00000000")
+    End Sub
+
+    Private Sub TextBox7_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox7.LostFocus
+        If TextBox7.Text = "" Then TextBox7.Text = "01"
+        TextBox7.Text = Format(CInt(TextBox7.Text), "00")
+        If TextBox7.Text = "01" Or TextBox7.Text = "03" Then
+            Label29.Text = ObtenerDato("Select * from ContaTipoDocumento where TipoDocCod like '" & TextBox7.Text & "'", "Nombre")
+        Else
+            MsgBox("Ingrese 01 o 03 para continuar", MsgBoxStyle.Critical, "Aviso")
+            TextBox7.Text = ""
+            TextBox7.Focus()
+        End If
+    End Sub
+
+    Private Sub TextBox16_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox16.KeyPress
+        '(e.KeyChar, e)
+    End Sub
+
+    Private Sub TextBox16_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox16.LostFocus
+        If TextBox16.Text = "" Then TextBox16.Text = "F001"
+        'TextBox16.Text = Format(CInt(TextBox16.Text), "0000")
+    End Sub
+
+
+    Private Sub TextBox14_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox14.KeyPress
+        SoloNumeros(e.KeyChar, e)
+    End Sub
+
+    Private Sub TextBox14_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox14.LostFocus
+        Dim año As Integer = dtp5.Value.Year
+        If TextBox14.Text = "" Then TextBox14.Text = "1"
+        TextBox14.Text = Format(CInt(TextBox14.Text), "00000000")
+        If ValidarSentencia("Select * from operaciones_facturacion where SALDO > 0 AND DATEPART (YEAR,FECHA) = " & año & " AND  serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "") = True Then
+            Label18.Text = ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "SALDO")
+            TextBox1.Text = ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "RUC")
+            TextBox5.Text = ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "RS")
+            ComboBox1.Text = ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "TIPOPAGO")
+            ComboBox2.Text = ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "SEDE")
+            dtp5.Value = CDate(ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "FECHA"))
+            Label28.Text = ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "codigo")
+
+        Else
+            If ValidarSentencia("Select * from CONTA_DIARIO where SALDO > 0 AND PERIODOAÑO = " & año & " AND DOC_serie like '" & TextBox16.Text & "' and DOC_numero = " & TextBox14.Text & "") = True Then
+                Label18.Text = ObtenerDato("Select * from CONTA_DIARIO where PERIODOAÑO = " & año & " AND DOC_serie like '" & TextBox16.Text & "' and DOC_numero = " & TextBox14.Text & "", "SALDO")
+                TextBox1.Text = ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "RUC")
+                TextBox5.Text = ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "RS")
+                ComboBox1.Text = ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "TIPOPAGO")
+                ComboBox2.Text = ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "SEDE")
+                dtp5.Value = CDate(ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "FECHA"))
+                Label28.Text = ObtenerDato("Select * from operaciones_facturacion where serie like '" & TextBox16.Text & "' and numero = " & TextBox14.Text & "", "codigo")
+
+            Else
+                '   MsgBox("Ingrese una factura con saldo", MsgBoxStyle.Critical)
+                ' LIMPIAR()
+                'TextBox2.Focus()
+            End If
+        End If
+    End Sub
+
+    Public Sub EditarVentas(ByVal cod As String)
+        Dim dt As New DataTable
+        dt = Filtrar("Select * from operaciones_facturacion where codigo like '" & cod & "'")
+        Dim dr As DataRow = dt.Rows(0)
+
+        TextBox1.Text = dr("ruc").ToString
+        TextBox5.Text = dr("rs").ToString
+
+        Label14.Text = dr("TipoDocumento").ToString
+        TextBox2.Text = ObtenerDato("Select * from ContaTipoDocumento where nombre like '" & Label14.Text & "'", "TipoDocCod")
+
+        TextBox3.Text = dr("Serie").ToString
+        TextBox4.Text = dr("Numero").ToString
+        DTP1.Value = CDate(dr("Fecha").ToString)
+        ComboBox1.Text = dr("TipoPago").ToString
+        'DTP2.Value = CDate(dr("FechaPago").ToString)
+
+        TextBox9.Text = dr("Subtotal").ToString
+        ObtenerTotal()
+
+        TextBox10.Text = dr("Glosa").ToString
+        ComboBox2.Text = dr("Sede").ToString
+
+        If dr("ModFecha").ToString <> "" Then
+            dtp5.Value = CDate(dr("ModFecha").ToString)
+        End If
+
+        TextBox7.Text = dr("ModTipoDoc").ToString
+        Label29.Text = ObtenerDato("Select * from ContaTipoDocumento where TipoDocCod like '" & TextBox7.Text & "'", "nombre")
+
+
+        TextBox16.Text = dr("ModSerie").ToString
+        TextBox14.Text = dr("ModNumero").ToString
+        Label4.Text = dr("Correlativo").ToString
+        Label8.Text = dr("Codigo").ToString
+
+        If Label14.Text = "NOTA DE CRÉDITO" Or Label14.Text = "NOTA DE DÉBITO" Then
+            GroupBox5.Enabled = True
+        Else
+            GroupBox5.Enabled = False
+            TextBox7.Text = ""
+            TextBox14.Text = ""
+            TextBox16.Text = ""
+        End If
+
+
+        Button1.Text = "ACTUALIZAR"
+        Button1.Enabled = True
+
+
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        LIMPIAR()
+        GroupBox1.Enabled = True
+        TextBox2.Enabled = True
+        TextBox2.Focus()
+        TextBox13.Text = "0.00"
+
+    End Sub
+
+    Private Sub CheckBox1_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox1.CheckedChanged
+        If CheckBox1.Checked = True Then
+            Label25.Text = "0.00"
+            Label24.Text = TextBox9.Text
+            GroupBox3.Text = "Op. No Gravada"
+
+        Else
+            ObtenerTotal()
+            GroupBox3.Text = "Op. Gravada"
+        End If
+    End Sub
+
+    Private Sub TextBox19_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox19.KeyPress
+        SoloNumerosMoneda(e.KeyChar, e)
+    End Sub
+
+    Private Sub TextBox19_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox19.LostFocus
+        ConvertirTBMoneda(TextBox9)
+
+        Dim f As String = Format(DTP1.Value, "dd/MM/yyyy")
+        Dim tc As Double = CDbl(ObtenerDato("SElect isnull(monto,0) as monto from tipocambio where fecha = '" & f & "'", "monto"))
+        If tc <> 0 Then
+            TextBox9.Text = ConvertirMonedaTexto(CDbl(TextBox19.Text) * tc)
+        Else
+            MsgBox("Ingrese el tipo de cambio del dia en el sistema", MsgBoxStyle.Critical, "Aviso")
+        End If
+
+
+
+
+        If CheckBox1.Checked = True Then
+            Label25.Text = "0.00"
+            Label24.Text = TextBox9.Text
+        Else
+            If Label14.Text = "NOTA DE CRÉDITO" Then
+                TextBox9.Text = CStr(CDbl(TextBox9.Text) * (-1))
+            End If
+            ConvertirTBMoneda(TextBox9)
+            ObtenerTotal()
+        End If
+    End Sub
+
+    Private Sub TextBox6_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox6.LostFocus
+
+        If ValidarSentencia("Select * from TABLAVARIABLES where CODNOMBRE like '" & TextBox6.Text & "'") = True Then
+            Label15.Text = ObtenerDato("Select * from TABLAVARIABLES where CODNOMBRE like '" & TextBox6.Text & "'", "Nombre")
+        Else
+            Label15.Text = ""
+            TextBox6.Text = ""
+        End If
+    End Sub
+
+    Private Sub TextBox8_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox8.KeyPress
+        SoloNumeros(e.KeyChar, e)
+    End Sub
+
+
+
+    Private Sub TextBox8_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox8.LostFocus
+        If TextBox8.Text = "6" Or TextBox8.Text = "4" Or TextBox8.Text = "1" Then
+        Else
+            MsgBox("Numero de documento adquiriente invalido, use 6 o 4 o 1", MsgBoxStyle.Critical, "Aviso")
+            TextBox8.Text = ""
+            TextBox8.Focus()
+        End If
+    End Sub
+
+
+    Private Sub DTP1_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DTP1.ValueChanged
+        dtp.Value = DTP1.Value
+    End Sub
+
+
+
+
+    Private Sub TextBox5_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles TextBox5.LostFocus
+        If ValidarSentencia("Select * from Clientes where rs like '" & TextBox5.Text & "'") = True Then
+            TextBox1.Text = ObtenerDato("Select * from cLIENTES WHERE rs LIKE '" & TextBox5.Text & "'", "ruc")
+
+            If ValidarSentencia("Select * from ClientesCredito where ruc like '" & TextBox1.Text & "'") = False Then
+                ComboBox1.Text = "CONTADO"
+            Else
+                Dim SERIEFAC As String = ObtenerDato("Select * from ClientesCredito where ruc like '" & TextBox1.Text & "'", "SERIE")
+                Dim dias As Integer = CInt(ObtenerDato("Select isnull(dias,0) as dias from ClientesCredito where ruc like '" & TextBox1.Text & "'", "dias"))
+
+                If SERIEFAC = "0" Then
+                    ComboBox1.Text = "CREDITO"
+                    DTP2.Value = DTP2.Value.AddDays(dias)
+                Else
+                    If TextBox3.Text = SERIEFAC Then
+                        ComboBox1.Text = "CREDITO"
+                        DTP2.Value = DTP2.Value.AddDays(dias)
+
+                    Else
+                        ComboBox1.Text = "CONTADO"
+                    End If
+                End If
+            End If
+            If Label14.Text = "ORDEN DE SERVICIO" Then
+                ComboBox1.Text = "CREDITO"
+            End If
+        Else
+
+            TextBox5.Text = ""
+            TextBox5.Focus()
+        End If
+
+    End Sub
+
+
+    Private Sub TextBox2_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox2.TextChanged
+
+    End Sub
+
+    Private Sub TextBox4_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox4.TextChanged
+
+    End Sub
+
+    Private Sub TextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox1.TextChanged
+
+    End Sub
+
+    Private Sub TextBox14_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TextBox14.TextChanged
+
+    End Sub
+
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        Dim subtotal As Double
+        Dim os As String
+        Dim condicion As String
+        Dim ExcApp As Excel.Application = Nothing
+        Dim wBook As Excel.Workbook = Nothing
+        Dim wSheet As Excel.Worksheet = Nothing
+
+        Try
+            ' Limpiar el DataGridView antes de cargar nuevos datos
+            DataGridView1.Rows.Clear()
+
+            ' Crear instancia de Excel
+            ExcApp = New Excel.Application
+            ExcApp.Visible = False
+            ExcApp.DisplayAlerts = False
+
+            ' Abrir el archivo
+            wBook = ExcApp.Workbooks.Open(Label38.Text)
+            wSheet = CType(wBook.Worksheets(1), Excel.Worksheet)
+
+            ' Forzar cálculo de toda la hoja
+            wSheet.Calculate()
+
+            ' Detectar última fila usada
+            Dim ultimaFila As Integer = wSheet.UsedRange.Rows.Count
+
+            ' Convertir toda la columna H a valores fijos
+            With wSheet.Range("H1:H" & ultimaFila)
+                .Value = .Value
+            End With
+
+            ' Recorrer desde la fila 2 (saltando encabezados)
+            For fila As Integer = 2 To ultimaFila
+                My.Application.DoEvents()
+
+                ' Leer columna A (OS)
+                If wSheet.Range("A" & fila).Value2 IsNot Nothing Then
+                    os = CStr(wSheet.Range("A" & fila).Value2).Trim()
+                Else
+                    os = ""
+                End If
+
+                ' Leer columna D (Subtotal)
+                If IsNumeric(wSheet.Range("D" & fila).Value2) Then
+                    subtotal = CDbl(wSheet.Range("D" & fila).Value2)
+                Else
+                    subtotal = 0
+                End If
+
+                ' Leer columna H (Condición)
+                If wSheet.Range("H" & fila).Value2 IsNot Nothing Then
+                    condicion = CStr(wSheet.Range("H" & fila).Value2).Trim()
+                Else
+                    condicion = ""
+                End If
+
+                ' Ignorar filas totalmente vacías
+                If os <> "" Or subtotal <> 0 Or condicion <> "" Then
+                    DataGridView1.Rows.Add(os, subtotal, condicion)
+                End If
+            Next
+
+            ' Cerrar libro sin guardar
+            wBook.Close(SaveChanges:=False)
+
+            ' Liberar objetos de Excel
+            NAR(wSheet)
+            NAR(wBook)
+            ExcApp.Quit()
+            NAR(ExcApp)
+
+            MsgBox("Datos cargados al DataGridView")
+        Catch ex As Exception
+            MsgBox("Error: " & ex.Message)
+        Finally
+            ' Asegurar liberación de memoria
+            wSheet = Nothing
+            wBook = Nothing
+            ExcApp = Nothing
+            GC.Collect()
+            GC.WaitForPendingFinalizers()
+        End Try
+    End Sub
+
+    ' Función para liberar objetos COM
+    Private Sub NAR(ByVal o As Object)
+        Try
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(o)
+        Catch
+        Finally
+            o = Nothing
+        End Try
+    End Sub
+
+    Private Sub Panel1_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Panel1.Paint
+
+    End Sub
+End Class

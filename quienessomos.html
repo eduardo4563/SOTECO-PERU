@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiénes Somos | SOTECO PERÚ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --background-color: #f4f4f4;
+      --card-bg: #ffffff;
+      --text-color: #1f2937;
+      --primary: #2c3e50;
+      --accent: #e67e22;
+      --shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--background-color);
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 80px 20px 40px;
+      background-color: var(--card-bg);
+      box-shadow: var(--shadow);
+    }
+
+    header h1 {
+      font-size: 3rem;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #6b7280;
+      margin-top: 10px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 40px 20px 80px;
+      display: grid;
+      gap: 40px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 35px;
+      box-shadow: var(--shadow);
+      transition: transform 0.4s ease, opacity 0.6s ease;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card h2 {
+      font-size: 1.8rem;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card p,
+    .card ul {
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .card ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .card ul li {
+      margin-bottom: 10px;
+      padding-left: 28px;
+      position: relative;
+    }
+
+    .card ul li::before {
+      content: "✔";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .card {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Quiénes Somos</h1>
+    <p>Conoce nuestra misión, visión y valores fundamentales</p>
+  </header>
+
+  <section class="container">
+    <div class="card fade-in">
+      <h2>💡 Misión</h2>
+      <p>Impulsamos la transformación digital llevando la tecnología al siguiente nivel. Con más de una década de experiencia, ofrecemos soluciones innovadoras, seguras y eficientes para ayudar a las empresas a crecer en un mundo digital en constante evolución.</p>
+    </div>
+
+    <div class="card fade-in">
+      <h2>🌟 Visión</h2>
+      <p>Ser la empresa líder en tecnología y desarrollo de soluciones digitales, reconocida por nuestra innovación, calidad y compromiso con el éxito de nuestros clientes.</p>
+    </div>
+
+    <div class="card fade-in">
+      <h2>🎯 Valores</h2>
+      <ul>
+        <li><strong>Innovación:</strong> Siempre a la vanguardia tecnológica.</li>
+        <li><strong>Compromiso:</strong> Crecemos con nuestros clientes.</li>
+        <li><strong>Seguridad:</strong> Protegemos lo que más importa.</li>
+        <li><strong>Calidad:</strong> Soluciones confiables y eficientes.</li>
+        <li><strong>Experiencia:</strong> Más de una década impulsando el futuro.</li>
+      </ul>
+    </div>
+
+    <div class="card fade-in">
+      <h2>🚀 Propuesta de Valor</h2>
+      <p>Más de una década de experiencia en el sector tecnológico, llevando la innovación al siguiente nivel con soluciones digitales seguras, escalables y a la medida de cada cliente.</p>
+    </div>
+  </section>
+
+  <script>
+    const cards = document.querySelectorAll('.fade-in');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.2
+    });
+
+    cards.forEach(card => observer.observe(card));
+  </script>
+</body>
+</html>
