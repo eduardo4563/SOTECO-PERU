@@ -5,13 +5,40 @@
       box-sizing: border-box;
       font-family: "Arial", sans-serif;
     }
-
+    
 
 
     .fondo {
-      
+      position: relative;
       width: 100%;
-      height: 580px;
+      height: 80vh;
+      /* ocupa toda la pantalla */
+      overflow: hidden;
+    }
+
+    .video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      /* se queda detrás del contenido */
+      overflow: hidden;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* ajusta el video al contenedor sin deformarse */
+    }
+
+    .esencia2 {
+      background: #f9f9f9;
+      padding: 50px;
+      text-align: center;
+
     }
 
     .carrusel-container {
@@ -74,16 +101,18 @@
 
     .subcontenedor_uno {
       width: 100%;
-      height: 290px;
+      height: auto
     }
 
     .categorias {
+
       margin-top: -30px;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 50px;
       flex-wrap: wrap;
+
     }
 
     .titulo1 {
@@ -128,12 +157,15 @@
 
     #beneficios {
       padding: 50px 20px;
-      background-color: white
+
     }
-    #beneficioss{
-      
+
+    #beneficioss {
+
       background-color: #f9f9f9;
+      margin-top: 15px;
     }
+
     .beneficios {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -300,7 +332,8 @@
 
     .testimonials-section {
       max-width: 900px;
-      margin: 0 auto; /* Esto lo centra horizontalmente */
+      margin: 0 auto;
+      /* Esto lo centra horizontalmente */
       text-align: center;
     }
 
@@ -308,7 +341,7 @@
       color: #333;
       margin-bottom: 20px;
       padding: 15px;
-      
+
     }
 
 
@@ -355,11 +388,13 @@
       margin-top: 20px;
 
     }
-    p{
+
+    p {
       font-size: 17px;
     }
+
     .carousel-buttons button {
-      background-color: #007BFF;
+      background-color: #0077b6;
       border: none;
       color: white;
       padding: 10px 15px;
@@ -374,26 +409,29 @@
 
 
     body {
-      background-color: #ffffff;
+      
       color: #000;
 
     }
 
     /* Oscurece contenedores claros */
     body.dark-mode .contenedor-claro,
-    body.dark-mode .fondo,
     body.dark-mode .subcontenedor_uno,
     body.dark-mode .segundocontenedor,
-    body.dark-mode .conoten
-    {
-    background-color: #2a2a2a !important;
+    body.dark-mode .conoten {
+      background-color: #2a2a2a !important;
       color: #f1f1f1 !important;
     }
 
-    
+    body.dark-mode .fondo {
+      background: transparent !important;
+      /* no tapes el video */
+    }
+
+
     /* Oscurece elementos clave */
     body.dark-mode .navbar,
-    body.dark-mode footer{
+    body.dark-mode footer {
       background-color: #1c1c1c !important;
       color: #f1f1f1 !important;
     }
@@ -405,11 +443,15 @@
     body.dark-mode .seccion-ofertas,
     body.dark-mode .testimonials-section,
     body.dark-mode .oscuro,
-    body.dark-mode .testimonial {
-        background-color: #2a2a2a !important;
+    body.dark-mode .testimonial,
+    body.dark-mode .card-novedad,
+    body.dark-mode .blog-tecnologia,
+    body.dark-mode .blog-card{
+      background-color: #2a2a2a !important;
       color: #f1f1f1 !important;
-      border-color: #333 !important;
     }
+
+
 
     /* Textos e íconos */
     body.dark-mode h1,
@@ -434,7 +476,9 @@
     }
 
     .whatsapp-float {
-      display: none; /* oculto al cargar */
+       text-decoration: none; /* elimina la rayita */ 
+      display: none;
+      /* oculto al cargar */
       position: fixed;
       bottom: 25px;
       right: 25px;
@@ -484,8 +528,13 @@
     }
 
     @keyframes girar {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
 
 
@@ -500,7 +549,8 @@
 
     .esencia {
       background: #f9f9f9;
-      padding: 80px 20px;
+      padding: 90px 40px;
+      height: 350px;
       text-align: center;
 
     }
@@ -511,7 +561,7 @@
     }
 
     .esencia h2 {
-    
+
       color: #2c3e50;
       margin-bottom: 20px;
       font-weight: 700;
@@ -547,269 +597,369 @@
     }
 
     /* =================== NOVEDADES MODERNAS =================== */
-.novedades-modernas {
-  padding: 50px 20px;
-  background: white;
-  color: #fff;
-  text-align: center;
-}
+    .novedades-modernas {
+      padding: 50px 20px;
 
-.titulo-novedades {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 50px;
-  color: black;
-  position: relative;
-}
+      color: #fff;
+      text-align: center;
+    }
+
+    .titulo-novedades {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 50px;
+      color: black;
+      position: relative;
+    }
 
 
-/* GRID */
-.grid-novedades {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-  max-width: 1200px;
-  margin: auto;
-}
+    /* GRID */
+    .grid-novedades {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
 
-/* CARD */
-.card-novedad {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
-}
+    /* CARD */
+    .card-novedad {
+      background: rgba(255, 255, 255, 0.9);
+      /* más legible */
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(6px);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
 
-.card-novedad:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 24px rgba(0, 229, 255, 0.3);
-}
+    .card-novedad:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 24px rgba(0, 229, 255, 0.3);
+    }
 
-.card-novedad img {
-  width: 100%;
-  height: 200px;
+    /* Efecto zoom en la imagen */
+    .card-novedad:hover img {
+      transform: scale(1.05);
+    }
+
+    .card-novedad img {
+       width: 100%;
+  height: auto;  /* en lugar de 200px */
+  max-height: 200px; /* opcional, para que no se pase en pantallas grandes */
   object-fit: cover;
-  display: block;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
+    }
 
-.contenido-novedad {
-  padding: 20px;
-}
+    .contenido-novedad {
+      padding: 20px;
+    }
 
-.contenido-novedad h3 {
-  font-size: 1rem;
+ .contenido-novedad h3 {
+  font-size: 1.1rem;
   color: black;
-  margin-bottom: 10px;
+  margin-bottom: 14px; /* más separación debajo del título */
+  line-height: 1.4; /* mejora el espaciado del título */
 }
 
-.contenido-novedad p {
-  font-size: 0.95rem;
+    .contenido-novedad p {
+       font-size: 0.95rem;
   color: black;
-  line-height: 1.4;
+  line-height: 1.65; /* más aire entre líneas */
+  margin-bottom: 12px; /* separa párrafos entre sí */
+
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .titulo-novedades {
+        font-size: 2rem;
+      }
+
+      .card-novedad img {
+        height: 180px;
+      }
+    }
+
+    .blog-tecnologia {
+      background-color: #f9f9f9;
+      padding: 60px 20px;
+
+      text-align: center;
+    }
+
+    .titulo-blog {
+      font-size: 1.5rem;
+      color: #1e293b;
+      margin-bottom: 40px;
+    }
+
+    .blog-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .blog-card {
+      background: #ffffff;
+      padding: 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      text-align: left;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .blog-card h3 {
+      font-size: 1rem;
+      color: #0f172a;
+      margin-bottom: 10px;
+    }
+
+    .blog-card p {
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .btn-leer {
+      color: #0ea5e9;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s ease;
+    }
+
+    .btn-leer:hover {
+      color: #0284c7;
+    }
+
+    .blog-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+
+    /* 🎨 Colores llamativos por categoría */
+    .icon-azul {
+      color: #3b82f6;
+      /* azul fuerte */
+    }
+
+    .icon-rojo {
+      color: #ef4444;
+      /* rojo vivo */
+    }
+
+    .icon-verde {
+      color: #10b981;
+      /* verde esmeralda */
+    }
+
+    .icon-amarillo {
+      color: #facc15;
+      /* amarillo vibrante */
+    }
+
+    /* Overlay elegante */
+    .overlay-newsletter {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(6px);
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 999;
+      display: none;
+    }
+
+    /* Popup elegante */
+    .popup-newsletter {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.95);
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 35px 30px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      z-index: 1000;
+      display: none;
+      font-family: "Segoe UI", sans-serif;
+      text-align: center;
+      animation: slideFadeIn 0.5s ease-out forwards;
+    }
+
+    @keyframes slideFadeIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -60%) scale(0.95);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    .popup-newsletter h3 {
+      font-size: 1.6rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .popup-newsletter p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .popup-newsletter input[type="email"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.05);
+      margin-bottom: 15px;
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    .popup-newsletter input[type="email"]:focus {
+      border-color: #ff4b2b;
+    }
+
+    .popup-newsletter button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 5px 15px rgba(255, 75, 43, 0.3);
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+
+    .popup-newsletter button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 20px rgba(255, 75, 43, 0.4);
+    }
+
+    .cerrar-popup {
+      position: absolute;
+      top: 12px;
+      right: 15px;
+      font-size: 22px;
+      color: #999;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .cerrar-popup:hover {
+      color: #333;
+    }
+    /* ================== RESPONSIVE ================== */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 1024px) {
+  .fondo {
+    height: 70vh;
+  }
+
+  .menu nav ul {
+    gap: 15px;
+  }
+
+  /* ❌ quita esto: .card-novedad { width: 45%; } */
+  .contenedor-productos {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-/* RESPONSIVE */
+/* Celulares grandes */
 @media (max-width: 768px) {
+  .fondo {
+    height: 60vh;
+  }
+
+  .menu {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .menu nav ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
   .titulo-novedades {
-    font-size: 2rem;
+    font-size: 1.2rem;
+  }
+
+  /* ❌ quita esto también: .card-novedad { width: 100%; } */
+  .contenedor-productos {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .grid-novedades {
+    grid-template-columns: repeat(2, 1fr); /* ya controla columnas */
+    gap: 20px;
   }
 
   .card-novedad img {
-    height: 180px;
-  }
-}
-.blog-tecnologia {
-  padding: 60px 20px;
-  background-color: #f9f9f9;
-  text-align: center;
-}
-
-.titulo-blog {
-  font-size: 1.5rem;
-  color: #1e293b;
-  margin-bottom: 40px;
-}
-
-.blog-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.blog-card {
-  background: #ffffff;
-  padding: 30px 20px;
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  text-align: left;
-}
-
-.blog-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-}
-
-.blog-card h3 {
-  font-size: 1rem;
-  color: #0f172a;
-  margin-bottom: 10px;
-}
-
-.blog-card p {
-  color: #475569;
-  font-size: 15px;
-  line-height: 1.5;
-  margin-bottom: 20px;
-}
-
-.btn-leer {
-  color: #0ea5e9;
-  font-weight: bold;
-  text-decoration: none;
-  font-size: 1rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: color 0.3s ease;
-}
-
-.btn-leer:hover {
-  color: #0284c7;
-}
-
-.blog-icon {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
-}
-
-/* 🎨 Colores llamativos por categoría */
-.icon-azul {
-  color: #3b82f6; /* azul fuerte */
-}
-
-.icon-rojo {
-  color: #ef4444; /* rojo vivo */
-}
-
-.icon-verde {
-  color: #10b981; /* verde esmeralda */
-}
-
-.icon-amarillo {
-  color: #facc15; /* amarillo vibrante */
-}
-/* Overlay elegante */
-.overlay-newsletter {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(6px);
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 999;
-  display: none;
-}
-
-/* Popup elegante */
-.popup-newsletter {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.95);
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  padding: 35px 30px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-  z-index: 1000;
-  display: none;
-  font-family: "Segoe UI", sans-serif;
-  text-align: center;
-  animation: slideFadeIn 0.5s ease-out forwards;
-}
-
-@keyframes slideFadeIn {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -60%) scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    max-height: 160px;
   }
 }
 
-.popup-newsletter h3 {
-  font-size: 1.6rem;
-  color: #333;
-  margin-bottom: 10px;
+/* Celulares pequeños */
+@media (max-width: 480px) {
+  .fondo {
+    height: 50vh;
+  }
+
+  .titulo-novedades {
+    font-size: 1rem;
+  }
+
+  .menu nav ul {
+    font-size: 0.9rem;
+  }
+
+  /* ❌ evita forzar width aquí */
+  .grid-novedades {
+    grid-template-columns: 1fr; /* 1 sola columna */
+  }
+
+  .card-novedad img {
+    max-height: 140px;
+  }
+  .categoria{
+    height: auto;
+    margin-top: -15px;
+  }
+
 }
-
-.popup-newsletter p {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 20px;
-}
-
-.popup-newsletter input[type="email"] {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  font-size: 15px;
-  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.05);
-  margin-bottom: 15px;
-  outline: none;
-  transition: border 0.3s;
-}
-
-.popup-newsletter input[type="email"]:focus {
-  border-color: #ff4b2b;
-}
-
-.popup-newsletter button {
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #ff416c, #ff4b2b);
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 16px;
-  box-shadow: 0 5px 15px rgba(255, 75, 43, 0.3);
-  transition: transform 0.2s, box-shadow 0.3s;
-}
-
-.popup-newsletter button:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 20px rgba(255, 75, 43, 0.4);
-}
-
-.cerrar-popup {
-  position: absolute;
-  top: 12px;
-  right: 15px;
-  font-size: 22px;
-  color: #999;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.cerrar-popup:hover {
-  color: #333;
-}
-
-
-

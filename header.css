@@ -5,13 +5,16 @@
   align-items: center;
   padding: 15px 30px;
   background: rgba(31, 41, 55, 0.9);
-  backdrop-filter: blur(10px);
+ 
   position: fixed;
-  width: 100%;
+
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 1000;
   transition: 0.3s;
 }
+
 
 html, body {
   overflow-x: hidden;
@@ -41,6 +44,7 @@ html, body {
   list-style: none;
   display: flex;
   gap: 20px;
+  align-items: center;
 }
 
 .nav-links li {
@@ -59,44 +63,115 @@ html, body {
 }
 
 .nav-links a:hover {
-  color: #ffffff;
+  color: #63AEDA;
 }
 
+/* Botón hamburguesa */
 .menu-toggle {
   display: none;
   flex-direction: column;
   cursor: pointer;
   gap: 5px;
 }
-.m{
-  margin-top: 15px;
-}
+
 .menu-toggle span {
   width: 30px;
-  height: 4px;
+  height: 3px;
   background: #63AEDA;
   transition: 0.3s;
   border-radius: 5px;
 }
 
+/* === INTERRUPTOR DE MODO OSCURO PRO === */
+.modo-oscuro-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 25px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1); /* Fondo sutil */
+  transition: background 0.3s ease;
+}
+
+.modo-oscuro-toggle:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+#iconoModo {
+  font-size: 18px;
+  color: #f9fafb;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+#iconoModo:hover {
+  transform: rotate(20deg);
+  color: #63AEDA;
+}
+
+/* Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #6b7280;
+  transition: 0.4s;
+  border-radius: 24px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #63AEDA;
+}
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* RESPONSIVE */
+/* RESPONSIVE */
 @media (max-width: 1024px) {
   .nav-links {
     display: none;
     flex-direction: column;
-    background: rgba(31, 41, 55, 0.9);
+    background: rgba(31, 41, 55, 0.95);
     position: absolute;
-    top: 60px;
+    top: 55px;
     left: 0;
     width: 100%;
     text-align: center;
     padding: 15px 0;
+    gap: 15px;
   }
   .nav-links.show {
     display: flex;
   }
+
   .menu-toggle {
     display: flex;
   }
+
+  /* Animación X */
   .menu-toggle.active span:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
   }
@@ -106,63 +181,21 @@ html, body {
   .menu-toggle.active span:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
   }
-}
-.modo-oscuro-toggle {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-left: 20px;
+
+  /* ---- AQUÍ VA LA MAGIA ---- */
+  /* Ocultar el switch de la barra superior */
+  .modo-oscuro-toggle {
+    display: none;
+  }
+
+  /* Mostrarlo dentro del menú */
+  .nav-links .modo-oscuro-toggle {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    background: transparent;
+  }
 }
 
-/* Switch visual */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 42px;
-  height: 22px;
-}
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-/* Colores de íconos */
-#iconoModo.fa-sun {
-  color: white; /* amarillo */
-  transition: color 0.3s ease;
-}
 
-#iconoModo.fa-moon {
-  color: #b0c4de; /* azul claro como luna */
-  transition: color 0.3s ease;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
-  border-radius: 22px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: 0.4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-  transform: translateX(20px);
-}

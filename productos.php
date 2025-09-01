@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Productos Tecnológicos</title>
-  <link rel="stylesheet" href="productos.css?44444">
+  <link rel="stylesheet" href="productos.css?85555">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -27,6 +27,9 @@
   </a>
 
   <main class="tienda">
+    <button id="btnToggleFiltros" class="btn-filtros">
+  <i class="fas fa-filter"></i> Filtros
+</button>
     <aside class="contenedor-claro filtros">
   <h2>Filtros</h2>
 
@@ -188,36 +191,40 @@ while ($producto = $resultado->fetch_assoc()):
 
       let currentProduct = {};
 
-      document.querySelectorAll(".boton-detalle").forEach(btn => {
-        btn.addEventListener("click", function () {
-          const data = {
-            titulo: this.dataset.titulo,
-            precio: this.dataset.precio,
-            imagen: this.dataset.imagen,
-            descripcion: this.dataset.descripcion,
-            categoria: this.dataset.categoria,
-            codigo: this.dataset.codigo,
-            marca: this.dataset.marca,
-            unidad: this.dataset.unidad,
-            stock: this.dataset.stock
-          };
+      // Delegación de eventos: escucha clicks en todo el contenedor
+document.getElementById("lista-productos").addEventListener("click", function (e) {
+  if (e.target.closest(".boton-detalle")) {
+    const btn = e.target.closest(".boton-detalle");
 
-          currentProduct = data;
+    const data = {
+      titulo: btn.dataset.titulo,
+      precio: btn.dataset.precio,
+      imagen: btn.dataset.imagen,
+      descripcion: btn.dataset.descripcion,
+      categoria: btn.dataset.categoria,
+      codigo: btn.dataset.codigo,
+      marca: btn.dataset.marca,
+      unidad: btn.dataset.unidad,
+      stock: btn.dataset.stock
+    };
 
-          titulo.textContent = data.titulo;
-          precio.textContent = data.precio;
-          imagen.src = data.imagen;
-          descripcion.textContent = data.descripcion;
-          categoria.textContent = data.categoria;
-          codigo.textContent = data.codigo;
-          marca.textContent = data.marca;
-          unidad.textContent = data.unidad;
-          stock.textContent = data.stock;
-          cantidadInput.value = 1;
+    currentProduct = data;
 
-          modal.style.display = "block";
-        });
-      });
+    titulo.textContent = data.titulo;
+    precio.textContent = data.precio;
+    imagen.src = data.imagen;
+    descripcion.textContent = data.descripcion;
+    categoria.textContent = data.categoria;
+    codigo.textContent = data.codigo;
+    marca.textContent = data.marca;
+    unidad.textContent = data.unidad;
+    stock.textContent = data.stock;
+    cantidadInput.value = 1;
+
+    modal.style.display = "block";
+  }
+});
+
 
       cerrar.onclick = () => modal.style.display = "none";
       window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };

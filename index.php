@@ -9,10 +9,12 @@
   <meta property="og:title" content="SOTECO PERÚ - Tecnología al alcance de tu mano">
   <meta property="og:image" content="img/og-imagen.jpg">
   <meta property="og:description" content="Descubre nuestras ofertas y servicios tecnológicos.">
-  <link rel="stylesheet" href="cssIndex.css?8555">
+  <link rel="stylesheet" href="cssIndex.css?885222">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -27,38 +29,25 @@
   </a>
   <!-- Navbar -->
   <?php include 'header.php'; ?>
-  <div class="fondo">
-    <div class="carrusel-container">
-      <div class="carrusel">
-        <div class="slide">
-          <img src="img/computadorslaptos.webp" alt="Imagen 1">
-        </div>
-        <div class="slide">
-          <img
-            src="img/DALL·E 2025-03-07 15.22.23 - A sleek and modern logo for 'SOTECO PERU', a company specializing in hardware, software development, and cybersecurity. The logo should have a minimal.webp"
-            alt="Imagen 2">
-        </div>
-        <div class="slide">
-          <img src="img/image.webp" alt="Imagen 3">
-        </div>
-      </div>
-      <div class="indicators">
-        <span class="dot" onclick="currentSlide(0)"></span>
-        <span class="dot" onclick="currentSlide(1)"></span>
-        <span class="dot" onclick="currentSlide(2)"></span>
-      </div>
-    </div>
+ <div class="fondo">
+  <div class="video-container">
+    <video autoplay muted loop playsinline>
+      <source src="img/1107907_1080p_4k_3840x2160.mp4" type="video/mp4">
+      Tu navegador no soporta la reproducción de videos.
+    </video>
   </div>
+</div>
+
   <section class="contenedor-claro esencia">
     <div class="esencia-container">
-      <h2>🌟 Nuestra Esencia</h2>
+      <h2>Nuestra Esencia</h2>
       <p>Impulsamos la transformación digital con <span>innovación</span>, <span>calidad</span> y
         <span>compromiso</span>.
       </p>
       <a href="quienessomos.html" target="_blank" class="btn-conocenos">Conócenos</a>
     </div>
   </section>
-  <div data-aos="fade-up" class="contenedor-claro">
+  <div class="contenedor-claro">
     <!-- SECCIÓN ¿Por qué elegirnos? -->
     <section id="beneficios" data-aos="fade-up">
       <h2 style="text-align:center;">¿Por qué elegirnos?</h2>
@@ -93,9 +82,9 @@
         </div>
       </div>
     </section>
-    <div class="contenedor-claro" data-aos="fade-up">
+    <div class="contenedor-claro esencia2" style="display:none;" data-aos="fade-up">
       <section class="seccion-ofertas">
-        <h2 style="text-align: center;">🔥 Productos en Oferta</h2>
+        <h2 style="text-align: center;">Productos en Oferta</h2>
         <div class="contenedor-carrusel">
           <button class="boton-carrusel izquierda" onclick="cambiarSlide(-1)">❮</button>
           <div class="vista-galeria">
@@ -196,30 +185,30 @@
 
 
     <section class="novedades-modernas" data-aos="fade-up">
-      <h2 class="titulo-novedades">🆕 Novedades Tecnológicas</h2>
+      <h2 class="titulo-novedades">Novedades Tecnológicas</h2>
       <div class="grid-novedades">
 
         <div class="card-novedad">
-          <img src="img/teclado-nuevo.jpg" alt="Teclado Mecánico RGB">
+          <img src="img/Gemini_Generated_Image_emqrkaemqrkaemqr.png" alt="Teclado Mecánico RGB">
           <div class="contenido-novedad">
-            <h3>Teclado Mecánico RGB</h3>
-            <p>Switches silenciosos y retroiluminación personalizada. ¡Lo último en gaming!</p>
+            <h3>PCs con Inteligencia Artificial:Potencia que Piensa Contigo</h3>
+            <p>La era de la Inteligencia Artificial ha llegado a los ordenadores personales. Presentamos los nuevos PCs con IA de HP, diseñados para adaptarse a tus necesidades, optimizar el rendimiento y ofrecerte una experiencia de usuario más intuitiva y fluida. ¡Prepárate para un futuro donde tu PC te asiste de forma inteligente!</p>
           </div>
         </div>
 
         <div class="card-novedad">
-          <img src="img/laptop-gamer-nueva.jpg" alt="Laptop Gamer Nitro 2025">
+          <img src="img/Gemini_Generated_Image_emqrkaemqrkaemqr (1).png" alt="Laptop Gamer Nitro 2025">
           <div class="contenido-novedad">
-            <h3>Laptop Gamer Nitro 2025</h3>
-            <p>RTX 4060, pantalla 165Hz y refrigeración avanzada. ¡Ya en tienda!</p>
+            <h3>Soluciones para Empresas: Crecimiento y Eficiencia Digital</h3>
+            <p>Sabemos que la tecnología es clave para el éxito de tu negocio. Por eso, te traemos soluciones que simplifican la digitalización. Con Huawei eKit, ahora las pequeñas y medianas empresas pueden acceder a soluciones de red y seguridad robustas pero sencillas de implementar. Además, el Micro Data Center Plug&Power de ELISE es la respuesta ideal para negocios que necesitan una infraestructura de datos compacta, segura y fácil de instalar.</p>
           </div>
         </div>
 
         <div class="card-novedad">
-          <img src="img/webcam-fullhd.jpg" alt="Webcam Full HD">
+          <img src="img/Gemini_Generated_Image_9xl4oa9xl4oa9xl4.png" alt="Webcam Full HD">
           <div class="contenido-novedad">
-            <h3>Webcam Full HD</h3>
-            <p>Video en 1080p ideal para reuniones, clases y streaming.</p>
+            <h3>Laptops y Componentes de Alto Rendimiento para Gamers</h3>
+            <p>Para los amantes de los videojuegos, tenemos lo último en hardware. Explora las nuevas laptops Lenovo Legion, equipadas con la tecnología más avanzada para garantizar una experiencia de juego inigualable. Si prefieres armar tu propio equipo, contamos con las tarjetas de video más potentes del mercado, como la NVIDIA RTX 5060, que te permitirá jugar con gráficos impresionantes y sin interrupciones.</p>
           </div>
         </div>
 
@@ -230,7 +219,7 @@
 
     <!-- Blog o Noticias -->
     <section class="blog-tecnologia" data-aos="fade-up">
-      <h2 class="titulo-blog"><i class="fas fa-newspaper"></i> Noticias Tecnológicas</h2>
+      <h2 class="titulo-blog">Noticias Tecnológicas</h2>
       <div class="blog-container">
         <div class="blog-card">
           <div class="blog-icon icon-azul">
@@ -253,7 +242,7 @@
 
     <div class="oscuro" data-aos="fade-up">
       <section class="testimonials-section">
-        <h1>🏆 Clientes satisfechos</h1>
+        <h1>Clientes satisfechos</h1>
         <div class="carousel">
           <div class="carousel-track">
             <div class="testimonial">

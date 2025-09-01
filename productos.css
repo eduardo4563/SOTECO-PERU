@@ -415,3 +415,278 @@ body.dark-mode .footer-icons {
   clear: both;
 }
 
+/* ================= RESPONSIVE ================= */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 992px) {
+  .tienda {
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px;
+  }
+
+  .filtros {
+    width: 100%;
+    order: 1;
+  }
+
+  .productos {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    order: 2;
+  }
+
+  .modal-contenido {
+    width: 90%;
+    margin: 8% auto;
+    padding: 20px;
+  }
+
+  .detalle-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .detalle-imagen img {
+    max-width: 280px;
+  }
+}
+
+/* Celulares grandes */
+@media (max-width: 768px) {
+  .filtros {
+    padding: 15px;
+  }
+
+  .productos {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 18px;
+  }
+
+  .producto img {
+    height: 150px;
+  }
+
+  .contenido h3 {
+    font-size: 15px;
+  }
+
+  .modal-contenido {
+    width: 95%;
+    margin: 10% auto;
+    padding: 15px;
+  }
+
+  .modal-precio {
+    font-size: 22px;
+  }
+
+  .boton {
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+
+  .boton.grande {
+    font-size: 14px;
+    padding: 12px 20px;
+  }
+}
+
+/* Celulares pequeños */
+@media (max-width: 480px) {
+  .tienda {
+    padding: 0 10px;
+  }
+
+  .productos {
+    grid-template-columns: 1fr;
+  }
+
+  .producto img {
+    height: 140px;
+  }
+
+  .contenido {
+    padding: 12px;
+  }
+
+  .contenido h3 {
+    font-size: 14px;
+  }
+
+  .precio {
+    font-size: 15px;
+  }
+
+  .modal-contenido {
+    width: 95%;
+    margin: 15% auto;
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .modal-precio {
+    font-size: 20px;
+  }
+
+  .detalle-datos li {
+    font-size: 14px;
+  }
+
+  input#modalCantidad {
+    width: 80px;
+    font-size: 14px;
+  }
+
+  .boton.grande {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+
+  .share i {
+    font-size: 18px;
+  }
+}
+
+
+
+/* Botón de filtros en móviles */
+.btn-filtros {
+  display: none;
+  background: #0077b6;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.btn-filtros i {
+  margin-right: 8px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* Base: siempre flexible */
+.tienda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0 20px;
+}
+
+/* Filtros y productos en pantallas grandes */
+.filtros {
+  flex: 0 0 250px;
+  max-width: 250px;
+}
+.productos {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* Pantallas medianas (Tablets) */
+@media (max-width: 992px) {
+  .tienda {
+    flex-direction: column;
+    padding: 0 15px;
+  }
+
+  .filtros {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .productos {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .modal-contenido {
+    width: 95%;
+    margin: 6% auto;
+    padding: 20px;
+  }
+}
+
+/* Celulares grandes (phablets) */
+@media (max-width: 768px) {
+  .productos {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+
+  .producto img {
+    height: 150px;
+  }
+
+  .contenido h3 {
+    font-size: 15px;
+  }
+
+  .boton {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+}
+
+/* Celulares pequeños */
+@media (max-width: 480px) {
+  .productos {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .producto img {
+    height: 130px;
+  }
+
+  .contenido {
+    padding: 12px;
+  }
+
+  .contenido h3 {
+    font-size: 14px;
+  }
+
+  .precio {
+    font-size: 14px;
+  }
+
+  .boton {
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+
+  .modal-contenido {
+    width: 95%;
+    margin: 15% auto;
+    padding: 12px;
+    border-radius: 12px;
+  }
+}
+
+/* Extra pequeños (pantallas <360px) */
+@media (max-width: 360px) {
+  .productos {
+    grid-template-columns: 1fr;
+  }
+
+  .producto img {
+    height: 110px;
+  }
+
+  .contenido h3 {
+    font-size: 13px;
+  }
+
+  .boton {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+}
+
