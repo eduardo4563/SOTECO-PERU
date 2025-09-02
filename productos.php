@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Productos Tecnológicos</title>
-  <link rel="stylesheet" href="productos.css?85555">
+  <link rel="stylesheet" href="productos.css?44141">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -117,54 +117,63 @@ while ($producto = $resultado->fetch_assoc()):
  </div>
 
   <!-- Modal Detalle -->
-  <div id="modalDetalle" class="modal">
-    <div class="modal-contenido">
-      <span class="cerrar">&times;</span>
-      <div class="detalle-grid">
-        <div class="detalle-imagen">
-          <img id="modalImagen" src="" alt="Producto">
+  <!-- Modal Detalle -->
+<div id="modalDetalle" class="modal">
+  <div class="modal-contenido animate">
+    <span class="cerrar">&times;</span>
+    <div class="detalle-grid">
+      <!-- Imagen -->
+      <div class="detalle-imagen">
+        <img id="modalImagen" src="" alt="Producto">
+      </div>
+
+      <!-- Info -->
+      <div class="detalle-info">
+        <h2 id="modalTitulo">Título del Producto</h2>
+        <p class="modal-precio" id="modalPrecio">S/. 0.00</p>
+
+        <div class="chips">
+          <span class="chip categoria"><i class="fas fa-tag"></i> <span id="modalCategoria"></span></span>
+          <span class="chip marca"><i class="fas fa-industry"></i> <span id="modalMarca"></span></span>
+          <span class="chip stock"><i class="fas fa-box"></i> Stock: <span id="modalStock"></span></span>
         </div>
-        <div class="detalle-info">
-          <h2 id="modalTitulo">Título del Producto</h2>
-          <p class="modal-precio" id="modalPrecio">S/. 0.00</p>
-          <ul class="detalle-datos">
-            <li><strong>Categoría:</strong> <span id="modalCategoria"></span></li>
-            <li><strong>Código:</strong> <span id="modalCodigo"></span></li>
-            <li><strong>Marca:</strong> <span id="modalMarca"></span></li>
-            <li><strong>Unidad:</strong> <span id="modalUnidad"></span></li>
-            <li><strong>Stock disponible:</strong> <span id="modalStock"></span></li>
-          </ul>
 
-          <label for="modalCantidad">Cantidad</label>
-          <input type="number" value="1" min="1" id="modalCantidad">
+        <ul class="detalle-datos">
+          <li><strong>Código:</strong> <span id="modalCodigo"></span></li>
+          <li><strong>Unidad:</strong> <span id="modalUnidad"></span></li>
+        </ul>
 
-          <button id="btnContacto" class="boton grande">
-            <i class="fab fa-whatsapp"></i> Contactar al vendedor
-          </button>
+        <label for="modalCantidad">Cantidad</label>
+        <input type="number" value="1" min="1" id="modalCantidad">
 
-          <hr>
+        <button id="btnContacto" class="boton grande">
+          <i class="fab fa-whatsapp"></i> Contactar al vendedor
+        </button>
 
-          <div class="tabs">
-            <details open>
-              <summary>Descripción</summary>
-              <p id="modalDescripcion">Descripción del producto aquí...</p>
-            </details>
-            <details>
-              <summary>Información Adicional</summary>
-              <p>Envío gratuito. Garantía de 1 año.</p>
-            </details>
-          </div>
+        <div class="tabs">
+          <details open>
+            <summary>Descripción</summary>
+            <p id="modalDescripcion">Descripción del producto aquí...</p>
+          </details>
+          <details>
+            <summary>Información Adicional</summary>
+            <p>Envío gratuito. Garantía de 1 año.</p>
+          </details>
+        </div>
 
-          <div class="share">
-            <p>Compartir:</p>
-            <i class="fab fa-facebook-f"></i>
-            <i class="fab fa-twitter"></i>
-            <i class="fab fa-whatsapp"></i>
+        <div class="share">
+          <p>Compartir:</p>
+          <div class="share-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
 
   <br><br>
   <?php include 'footer.php'; ?>
@@ -336,5 +345,6 @@ if (html.trim() === "") {
 </script>
 
   <script src="ws.js"></script>
+
 </body>
 </html>
