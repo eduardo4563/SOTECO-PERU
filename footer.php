@@ -49,12 +49,12 @@
             </a>
           </li>
           <li>
-            <a href="tel:+51987654321">
+            <a href="tel:+51997165701">
               <i class="fas fa-phone footer-icons"></i>+51 997 165 701
             </a>
           </li>
           <li>
-            <a href="https://wa.me/51987654321" target="_blank" >
+            <a href="https://wa.me/941797953" target="_blank" >
               <i class="fab fa-whatsapp footer-icons"></i>WhatsApp: +51 941 797 953
             </a>
           </li>
