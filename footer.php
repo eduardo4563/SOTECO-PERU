@@ -45,17 +45,17 @@
         <ul>
           <li>
             <a href="mailto:soporte@sotecoperu.com">
-              <i class="fas fa-envelope footer-icons"></i>soporte@sotecoperu.com
+              <i class="fas fa-envelope footer-icons"></i>contacto@sotecoperu.com
             </a>
           </li>
           <li>
             <a href="tel:+51987654321">
-              <i class="fas fa-phone footer-icons"></i>+51 987 654 321
+              <i class="fas fa-phone footer-icons"></i>+51 997 165 701
             </a>
           </li>
           <li>
             <a href="https://wa.me/51987654321" target="_blank" >
-              <i class="fab fa-whatsapp footer-icons"></i>WhatsApp: +51 987 654 321
+              <i class="fab fa-whatsapp footer-icons"></i>WhatsApp: +51 941 797 953
             </a>
           </li>
         </ul>

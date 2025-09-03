@@ -694,3 +694,116 @@ body.dark-mode .footer-icons {
   }
 }
 
+/* Tablets */
+@media (max-width: 992px) {
+  .modal-contenido {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .detalle-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .detalle-imagen img {
+    max-width: 350px;
+    margin: 0 auto;
+  }
+
+  .detalle-info h2 {
+    font-size: 22px;
+  }
+
+  .modal-precio {
+    font-size: 22px;
+  }
+}
+
+/* Celulares grandes */
+@media (max-width: 768px) {
+  .modal-contenido {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .detalle-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .detalle-imagen img {
+    max-width: 280px;
+  }
+
+  .detalle-info h2 {
+    font-size: 20px;
+  }
+
+  .modal-precio {
+    font-size: 20px;
+  }
+
+  #modalCantidad {
+    width: 80px;
+    font-size: 14px;
+  }
+
+  .boton.grande {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+}
+
+/* Celulares pequeños */
+@media (max-width: 480px) {
+  .modal-contenido {
+    width: 95%;
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .detalle-info h2 {
+    font-size: 18px;
+  }
+
+  .modal-precio {
+    font-size: 18px;
+  }
+
+  .chips {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .chip {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+
+  .detalle-datos li {
+    font-size: 14px;
+  }
+
+  .share-icons a {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+}
+
+/* Extra pequeños (menos de 360px) */
+@media (max-width: 360px) {
+  .detalle-info h2 {
+    font-size: 16px;
+  }
+
+  .modal-precio {
+    font-size: 16px;
+  }
+
+  .boton.grande {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+}

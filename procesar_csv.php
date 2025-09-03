@@ -3,12 +3,22 @@ require 'conexion.php';
 
 // Obtener tipo de cambio USD a PEN
 $url = "https://open.er-api.com/v6/latest/USD";
-$json = @file_get_contents($url); // usar @ para evitar warning en error
+$json = @file_get_contents($url);
 $data = json_decode($json, true);
 
 $tipo_cambio = 3.8; // valor por defecto
 if ($data && $data["result"] === "success") {
-    $tipo_cambio = round($data["rates"]["PEN"], 2); // redondeado
+    $tipo_cambio = round($data["rates"]["PEN"], 2);
+}
+
+// Función para generar código de sistema aleatorio
+function generarCodigoSistema($longitud = 8) {
+    $caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $codigo = '';
+    for ($i = 0; $i < $longitud; $i++) {
+        $codigo .= $caracteres[rand(0, strlen($caracteres) - 1)];
+    }
+    return $codigo;
 }
 
 // Validar archivo HTML cargado
@@ -23,12 +33,12 @@ if (isset($_FILES['archivo_html']) && $_FILES['archivo_html']['error'] === UPLOA
 
     $filas = $xpath->query('//table//tr[td]');
     $productos_cargados = 0;
-    $categoria_actual = ''; // Aquí almacenamos la categoría
+    $categoria_actual = '';
 
-    // Preparar la consulta segura con 9 columnas y 9 valores
+    // Preparar la consulta (agregamos codigosistema)
     $stmt = $conexion->prepare("INSERT INTO productos 
-        (codigo, categoria, descripcion, marca, unidad, stock, precio_costo, precio_venta, preciooriginal) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        (codigo, codigosistema, categoria, descripcion, marca, unidad, stock, precio_costo, precio_venta, preciooriginal) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     if (!$stmt) {
         die("❌ Error en prepare: " . $conexion->error);
     }
@@ -36,7 +46,7 @@ if (isset($_FILES['archivo_html']) && $_FILES['archivo_html']['error'] === UPLOA
     foreach ($filas as $fila) {
         $columnas = $fila->getElementsByTagName('td');
 
-        // Buscar encabezado de categoría
+        // Categoría
         if ($columnas->length > 1) {
             $bgcolor = $fila->getAttribute('bgcolor');
             if (strtoupper($bgcolor) === '#AFC2CF') {
@@ -49,12 +59,15 @@ if (isset($_FILES['archivo_html']) && $_FILES['archivo_html']['error'] === UPLOA
 
         if ($columnas->length < 9) continue;
 
-        // Código
+        // Código original
         $codigo_raw = trim($columnas->item(0)->nodeValue);
         $codigo_lineas = explode("\n", $codigo_raw);
         $codigo = trim($codigo_lineas[0]);
         $codigo = preg_replace('/[^A-Z0-9\-]/i', '', $codigo);
         if ($codigo == '' || stripos($codigo, 'CODIGO') !== false) continue;
+
+        // Generar código de sistema
+        $codigosistema = generarCodigoSistema(10);
 
         // Descripción
         $descripcion_raw = trim($columnas->item(1)->nodeValue);
@@ -87,9 +100,21 @@ if (isset($_FILES['archivo_html']) && $_FILES['archivo_html']['error'] === UPLOA
         $precio_venta = round($precio_costo * (1 + (2.3 / (log($precio_costo + 1) + 2.5))), 2);
 
         $unidad = 'UND';
-        echo($codigo);
-        // 9 parámetros → "sssssiddd"
-        $stmt->bind_param("sssssiddd", $codigo, $categoria_actual, $descripcion, $marca, $unidad, $stock, $precio_costo, $precio_venta, $precio_dolares);
+
+        // Vincular parámetros
+        $stmt->bind_param(
+            "ssssssiddd",
+            $codigo,
+            $codigosistema,
+            $categoria_actual,
+            $descripcion,
+            $marca,
+            $unidad,
+            $stock,
+            $precio_costo,
+            $precio_venta,
+            $precio_dolares
+        );
         $stmt->execute();
 
         $productos_cargados++;
