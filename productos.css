@@ -146,27 +146,33 @@ body {
 
 /* Modal */
 .modal {
-  display: none;
+  display: none; /* Oculto por defecto */
   position: fixed;
   inset: 0;
   background-color: rgba(0,0,0,0.65);
   z-index: 1000;
 
+  /* Flexbox lo activas después con JS cuando se abre */
   justify-content: center;
   align-items: center;
   padding: 20px;
+  overflow-y: auto;
 }
 
-.modal-contenido {
-  background: #fff;
-  max-width: 1000px;
-  width: 95%;
-  border-radius: 20px;
-  padding: 30px;
-  position: relative;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-  animation: fadeSlideUp 0.4s ease;
-}
+
+ .modal-contenido {
+      background: #fff;
+      max-width: 800px;
+      width: 95%;
+      border-radius: 20px;
+      padding: 30px;
+      position: relative;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+      animation: fadeSlideUp 0.4s ease;
+
+      max-height: 90vh;           /* Límite de alto */
+      overflow-y: auto;           /* Scroll interno */
+    }
 
 /* Cerrar */
 .cerrar {
@@ -183,15 +189,22 @@ body {
 /* Grid */
 .detalle-grid {
   display: grid;
-  grid-template-columns: 1fr 1.3fr;
+  grid-template-columns: 1fr 1fr; /* mitad imagen, mitad info */
   gap: 30px;
   align-items: start;
 }
+.detalle-imagen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* ocupa toda la columna */
+}
 .detalle-imagen img {
   width: 100%;
-  border-radius: 16px;
+height: auto;      /* mantiene proporción */
+  max-height: 500px; /* evita que se estire demasiado */
   object-fit: contain;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+
 }
 
 /* Info */
@@ -285,24 +298,18 @@ body {
 }
 .modal img {
   width: 100%;
-  max-width: 480px;   /* tamaño máximo centrado */
+
   height: auto;
   display: block;
   margin: 0 auto;
 
-  border-radius: 14px; /* bordes suaves */
+
   background: #fff;    /* fondo neutro */
   padding: 0;          /* sin marcos gruesos */
   
-  object-fit: contain; /* mantiene proporción de la imagen */
-  box-shadow: 0 6px 20px rgba(0,0,0,0.25); /* sombra ligera */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+ 
 }
 
-.modal img:hover {
-  transform: scale(1.04); /* efecto zoom suave */
-  box-shadow: 0 10px 28px rgba(0,0,0,0.35);
-}
 
 
 /* Botón flotante WhatsApp */
