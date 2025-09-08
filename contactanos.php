@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contáctanos</title>
-  <link rel="stylesheet" href="cont.css?844" />
+  <link rel="stylesheet" href="cont.css?85222" />
 </head>
 <body>
   <!-- Loader -->

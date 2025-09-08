@@ -1,4 +1,4 @@
-<?php
+  <?php
 require 'conexion.php';
 
 $categoria = $_POST['categoria'] ?? '';

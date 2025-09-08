@@ -9,7 +9,7 @@
   <meta property="og:title" content="SOTECO PERÚ - Tecnología al alcance de tu mano">
   <meta property="og:image" content="img/og-imagen.jpg">
   <meta property="og:description" content="Descubre nuestras ofertas y servicios tecnológicos.">
-  <link rel="stylesheet" href="cssIndex.css?8515002">
+  <link rel="stylesheet" href="cssIndex.css?8444">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
@@ -81,7 +81,7 @@
       </div>
     </div>
 
-    <a href="servicios.php" class="btn-conocenos">Ver todos los servicios</a>
+    <a href="servicios.php" class="btn-conocenos2">Ver todos los servicios</a>
   </section>
   <section id="beneficios" data-aos="fade-up">
     <h2>¿Por qué elegirnos?</h2>
@@ -105,14 +105,14 @@
           <img src="img/insignia.png" alt="Soporte técnico">
         </div>
         <h3>Soporte técnico calificado</h3>
-        <p>Contamos con técnicos expertos siempre listos para ayudarte.</p>
+        <p>Contamos con profesionales expertos siempre listos para ayudarte.</p>
       </div>
       <div class="beneficio-card">
         <div class="icono">
           <img src="img/proteccion-de-envio.png" alt="Entregas rápidas">
         </div>
         <h3>Entregas rápidas y seguras</h3>
-        <p>Tu pedido llegará a tiempo y en perfecto estado, garantizado.</p>
+        <p>Tu equipamiento llegará a tiempo y en perfecto estado, garantizado.</p>
       </div>
     </div>
   </section>
@@ -204,15 +204,21 @@
     <h2 class="titulo1">Categorías</h2>
     <div class="categorias">
       <!-- Categoría 1 -->
-      <div class="categoria">
-        <div class="imagen categorias1"></div>
-        <label class="descripcion">Hardware (Ventas de equipos y mantenimiento)</label>
-      </div>
+      <a href="productos.php" style="text-decoration: none;color: white;">
+        <div class="categoria">
+          <div class="imagen categorias1"></div>
+          <label class="descripcion">Hardware (Ventas de equipos y mantenimiento)</label>
+        </div>
+      </a>
+
       <!-- Categoría 2 -->
-      <div class="categoria">
+       <a href="servicios.php" style="text-decoration: none;color: white;">
+         <div class="categoria">
         <div class="imagen categorias2"></div>
         <label class="descripcion">Software (Instalación y configuración)</label>
       </div>
+      </a>
+     
     </div>
   </div>
   <section class="novedades-modernas" data-aos="fade-up">
@@ -264,7 +270,7 @@
         </div>
         <h3>Top 5 laptops 2025</h3>
         <p>Conoce los mejores modelos del año según su rendimiento y precio.</p>
-        <a href="top-laptops-2025.html" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
+        <a href="top-laptops-2025.php" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
       </div>
       <div class="blog-card">
         <div class="blog-icon icon-rojo">
@@ -272,12 +278,12 @@
         </div>
         <h3>¿PC gamer o empresarial?</h3>
         <p>Guía rápida para elegir tu próxima computadora según tu uso.</p>
-        <a href="pc-empresarial.html" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
+        <a href="pc_novedades.php" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
       </div>
     </div>
   </section>
   <section class="testimonials-section">
-    <h1>Clientes satisfechos</h1>
+    <h2>Clientes satisfechos</h2>
     <div class="carousel">
       <div class="carousel-track">
         <div class="testimonial">

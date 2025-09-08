@@ -1,182 +1,82 @@
-/* Reset básico */
-    * {
+/* ==== Estilos Globales ==== */
+* {
+   
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
+    }    
+body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #111827;
+      color: #f8fafc;
     }
 
-
-
-    .servicios-section {
-      padding: 80px 20px;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .servicios-section h2 {
+    h2 {
+      margin-top: 30px;
       text-align: center;
-      font-size: 1.7em;
-      margin-bottom: 40px;
-      color: #1a1a1a;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: #00f5a0;
+  
+    }
+
+    /* ==== Sección Servicios ==== */
+    .servicios-section {
+      padding: 4rem 2rem;
+      position: relative;
+      z-index: 1;
     }
 
     .servicios-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .servicio-card {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .servicio-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+      transform: translateY(-10px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      border-color: rgba(0, 212, 255, 0.4);
     }
 
     .servicio-icon {
-      font-size: 2.5em;
-      margin-bottom: 15px;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #00f5a0;
+      
     }
 
-    /* Colores personalizados por servicio */
-    .icon-software { color: #0077ff; }
-    .icon-soporte { color: #00b894; }
-    .icon-redes { color: #e17055; }
-    .icon-consultoria { color: #6c5ce7; }
-    .icon-ciberseguridad { color: #d63031; }
-    .icon-equipos { color: #fdcb6e; }
-
     .servicio-card h3 {
-      font-size: 1.3em;
-      margin-bottom: 10px;
-      color: #0057b8;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      color: #e2e8f0;
     }
 
     .servicio-card p {
-      font-size: 1em;
-      color: #444;
+      font-size: 0.95rem;
+      color: #94a3b8;
+      line-height: 1.6;
     }
 
-    @media (max-width: 600px) {
-      .servicios-section h2 {
-        font-size: 2em;
+    /* ==== Responsive ==== */
+    @media (max-width: 768px) {
+      .servicio-card {
+        padding: 1.5rem;
+      }
+      h2 {
+        font-size: 2rem;
       }
     }
-    
-/* Contenedor para ambos botones flotantes */
-.floating-buttons {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  display: flex;
-  gap: 15px;
-  z-index: 999;
-}
-
-.whatsapp-float {
-  display: none; /* oculto al cargar */
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  z-index: 9999;
-  width: 55px;
-  height: 55px;
-  background-color: #25d366;
-  color: white;
-  border-radius: 50%;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-}
-
-.whatsapp-float:hover {
-  transform: scale(1.1);
-  background-color: #20c154;
-}
-
-#loader {
-  position: fixed;
-  inset: 0;
-  background-color: white;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-}
-
-.spinner {
-  width: 60px;
-  height: 60px;
-  border: 6px solid #ccc;
-  border-top: 6px solid #1d3557;
-  border-radius: 50%;
-  animation: girar 1s linear infinite;
-  margin-bottom: 20px;
-}
-
-.loader-text {
-  font-size: 18px;
-  color: #1d3557;
-}
-
-@keyframes girar {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-/* Oscurece contenedores claros */
-body.dark-mode .contenedor-claro,
-body.dark-mode .fondo,
-body.dark-mode .subcontenedor_uno,
-body.dark-mode .segundocontenedor,
-body.dark-mode .conoten,
-body.dark-mode
- {
-  background-color: #2a2a2a !important;
-  color: #f1f1f1 !important;
-}
-
- 
-/* Oscurece elementos clave */
-body.dark-mode .navbar,
-body.dark-mode footer,
-body.dark-mode .sub{
-   background-color: #1c1c1c !important;
-  color: #f1f1f1 !important;
-}
-
-body.dark-mode #beneficios,
-body.dark-mode #beneficioss,
-body.dark-mode .beneficio-card,
-body.dark-mode .tarjeta-producto,
-body.dark-mode .seccion-ofertas,
-body.dark-mode .testimonials-section,
-body.dark-mode .oscuro,
-body.dark-mode .testimonial {
-     background-color: #2a2a2a !important;
-  color: #f1f1f1 !important;
-  border-color: #333 !important;
-}
-
-/* Textos e íconos */
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode p,
-body.dark-mode span,
-body.dark-mode label,
-body.dark-mode a,
-body.dark-mode .footer-icons {
-  color: #f1f1f1 !important;
-}
-

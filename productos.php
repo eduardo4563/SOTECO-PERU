@@ -1,353 +1,248 @@
+<?php
+require 'conexion.php';
+
+// Obtener productos de la BD
+$sql = "SELECT * FROM productos WHERE stock >= 5 ORDER BY id DESC";
+$res = $conexion->query($sql);
+
+$baseImg = "https://imagenes.deltron.com.pe/images/productos/on-line/items/large/";
+$data = [];
+
+while ($p = $res->fetch_assoc()) {
+    $codigo = strtolower($p['codigo']);
+    $folder1 = substr($codigo, 0, 2);
+    $folder2 = substr($codigo, 2, 2);
+    $imgUrl = $baseImg . "{$folder1}/{$folder2}/{$codigo}.jpg";
+
+    $data[] = [
+        "id" => $p['id'],
+        "titulo" => $p['descripcion'],
+        "categoria" => strtolower($p['categoria']),
+        "rating" => 4.5,
+        "img" => $imgUrl ?: "https://via.placeholder.com/300x200?text=Sin+Imagen",
+        "marca" => $p['marca'],
+        "codigo" => $p['codigo'],
+        "codigosistema" => $p['codigosistema'],
+        "unidad" => $p['unidad'],
+        "stock" => $p['stock']
+    ];
+}
+$productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
+?>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Productos Tecnológicos</title>
-  <link rel="stylesheet" href="productos.css?85182">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOTECO PERÚ — Tienda Virtual</title>
+  <meta name="description" content="Tienda virtual de SOTECO PERÚ: hardware, software y ciberseguridad." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="productos.css?6200">
 </head>
-
 <body>
-  <?php include 'header.php'; ?>
-  <br><br><br><br><br>
-
-  <div id="loader">
-    <div class="spinner"></div>
-    <p class="loader-text">Cargando SOTECO PERÚ...</p>
+  <!-- Loader -->
+  <div class="loader" id="loader">
+    <div style="display:grid; place-items:center; gap:12px">
+      <div class="spinner"></div>
+      <div>Cargando la tienda…</div>
+    </div>
   </div>
 
-  <!-- Botón flotante WhatsApp -->
-  <a href="https://wa.me/51941797953?text=Hola%20SOTECO%20PERÚ,%20necesito%20más%20información%20sobre%20sus%20servicios."
-    class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-  </a>
+  <!-- Header -->
+  <?php include 'header.php'; ?>
 
-  <main class="tienda">
-    <button id="btnToggleFiltros" class="btn-filtros">
-      <i class="fas fa-filter"></i> Filtros
-    </button>
-    <aside class="contenedor-claro filtros">
-      <h2>Filtros</h2>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="bg" aria-hidden="true"></div>
+    <div class="wrap content">
+      <br><br>
+      <p>Arma tu setup, equipa tu empresa y protege tus activos digitales. En SOTECO PERÚ unimos rendimiento y diseño para que tu tecnología se vea y funcione de 10.</p>
+    
+      <div class="kpis">
+        <div class="kpi"><h4>+500</h4><small class="muted">Productos</small></div>
+        <div class="kpi"><h4>24/7</h4><small>Soporte</small></div>
+        <div class="kpi"><h4>48h</h4><small>Entregas Lima</small></div>
+        <div class="kpi"><h4>Garantía</h4><small>Oficial</small></div>
+      </div>
 
-      <label for="filtroCategoria">Categoría</label>
-      <select id="filtroCategoria">
-        <option value="">Todas</option>
-        <!-- Las categorías deben cargarse dinámicamente desde PHP -->
-        <?php
-          require 'conexion.php';
-          $categorias = $conexion->query("SELECT DISTINCT categoria FROM productos WHERE stock >= 5");
-          while ($cat = $categorias->fetch_assoc()) {
-            echo '<option value="' . htmlspecialchars($cat['categoria']) . '">' . htmlspecialchars($cat['categoria']) . '</option>';
-          }
-        ?>
-      </select>
-
-      <label for="filtroOrden">Ordenar por</label>
-      <select id="filtroOrden">
-        <option value="reciente">Más recientes</option>
-        <option value="menor">Precio: menor a mayor</option>
-        <option value="mayor">Precio: mayor a menor</option>
-      </select>
-    </aside>
-
-    <section class="contenedor-claro productos" id="lista-productos">
-      <?php
-      require 'conexion.php';
-
-      $limite = 10;
-      $offset = 0;
-      $baseImg = "https://imagenes.deltron.com.pe/images/productos/on-line/items/large/";
-      $query = "SELECT * FROM productos WHERE stock >= 5 ORDER BY id DESC LIMIT $limite OFFSET $offset";
-      $resultado = $conexion->query($query);
-
-      while ($producto = $resultado->fetch_assoc()):
-        $precio_venta = round($producto['precio_venta'], 2);
-        $codigo = strtoupper($producto['codigo']);
-        $codigoMin = strtolower($codigo); 
-        $codigosistema=strtoupper($producto['codigosistema']); 
-        $folder1 = substr($codigoMin, 0, 2);
-        $folder2 = substr($codigoMin, 2, 2);
-        $imgUrl = $baseImg . "{$folder1}/{$folder2}/{$codigoMin}.jpg";
-
-        $fecha_creacion = new DateTime($producto['fecha_creacion']);
-        $ahora = new DateTime();
-        $intervalo = $fecha_creacion->diff($ahora);
-        $esNuevo = $intervalo->days < 2;
-      ?>
-        <div class="contenedor-claro producto">
-          <?php if ($esNuevo): ?>
-            <div class="etiqueta nuevo">NUEVO</div>
-          <?php endif; ?>
-
-          <img src="<?= $imgUrl ?>" alt="<?= htmlspecialchars($producto['descripcion']) ?>">
-          <div class="contenido">
-            <h3><?= htmlspecialchars($producto['descripcion']) ?></h3>
-            <p class="marca">Marca: <?= htmlspecialchars($producto['marca']) ?></p>
-            <p class="precio">S/. <?= number_format($precio_venta, 2) ?></p>
-            <button class="boton boton-detalle"
-              data-titulo="<?= htmlspecialchars($producto['descripcion']) ?>"
-              data-precio="S/. <?= number_format($precio_venta, 2) ?>"
-              data-imagen="<?= $imgUrl ?>"
-              data-descripcion="<?= htmlspecialchars($producto['descripcion']) ?>"
-              data-marca="<?= htmlspecialchars($producto['marca']) ?>"
-              data-codigo="<?= htmlspecialchars($producto['codigo']) ?>"
-              data-codigosistema="<?= htmlspecialchars($producto['codigosistema']) ?>"
-              data-categoria="<?= htmlspecialchars($producto['categoria']) ?>"
-              data-unidad="<?= htmlspecialchars($producto['unidad']) ?>"
-              data-stock="<?= htmlspecialchars($producto['stock']) ?>">
-              
-              <i class="fas fa-info-circle"></i> Ver detalles
-            </button>
-          </div>
+      <!-- Filtros / Buscador -->
+      <div class="toolbar">
+        <div class="filters">
+          <button class="chip active" data-filter="all">Todo</button>
+          <button class="chip" data-filter="laptop">Laptops</button>
+          <button class="chip" data-filter="pc">PCs</button>
+          <button class="chip" data-filter="periferico">Periféricos</button>
+          <button class="chip" data-filter="software">Software</button>
         </div>
-      <?php endwhile; ?>
-    </section>
+        <div style="display:flex; gap:10px; align-items:center">
+          <input type="search" id="q" placeholder="Buscar producto…" autocomplete="off" />
+          <select id="sort">
+            <option value="popular">Ordenar: Populares</option>
+            <option value="precio-asc">Precio: menor a mayor</option>
+            <option value="precio-desc">Precio: mayor a menor</option>
+            <option value="nuevo">Novedades</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catálogo -->
+  <main id="catalogo" class="wrap" style="padding:24px 20px 0">
+    <div class="grid" id="grid"></div>
+
+    <!-- Paginación simple -->
+    <div style="display:flex; justify-content:center; gap:10px; margin:16px 0 0">
+      <button class="btn-ghost" id="btnMas">Cargar más</button>
+    </div>
   </main>
 
-  <!-- Botón para cargar más -->
-  <div id="contenedorBoton" class="contenedor-boton">
-    <button id="btnCargarMas" class="boton">Cargar más productos</button>
+  <?php include 'footer.php'; ?>
+
+  <!-- Modal Detalle Producto -->
+  <div class="modal" id="modal">
+    <div class="m-overlay" id="modalOverlay" aria-hidden="true"></div>
+    <div class="m-card" role="dialog" aria-label="Detalle de producto">
+      <div class="m-body">
+        <div class="m-media" id="mMedia"></div>
+        <div class="m-info">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px">
+            <h3 id="mTitle">Producto</h3>
+            <button class="icon-btn" id="mClose" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="price">
+            <span class="old" id="mOld"></span>
+            <span class="curr" id="mCurr"></span>
+          </div>
+          <div class="stars" id="mStars" aria-hidden="true">★★★★★</div>
+          <p id="mDesc" style="margin:10px 0 14px; color:#cbd5e1"></p>
+
+          <!-- Cantidad -->
+         <!-- Cantidad + Cotización -->
+<div class="cotizar-box">
+  <label for="mCantidad">Cantidad:</label>
+  <div class="cotizar-actions">
+    <input type="number" id="mCantidad" value="1" min="1">
+    <button class="btn-primary" id="mCotizar">
+      <i class="fa-solid fa-comment-dots"></i> Cotizar
+    </button>
   </div>
+</div>
 
-  <!-- Modal Detalle -->
-  <div id="modalDetalle" class="modal">
-    <div class="modal-contenido animate">
-      <span class="cerrar">&times;</span>
-      <div class="detalle-grid">
-        <!-- Imagen -->
-        <div class="detalle-imagen">
-          <img id="modalImagen" src="" alt="Producto">
-        </div>
-
-        <!-- Info -->
-        <div class="detalle-info">
-          <h2 id="modalTitulo">Título del Producto</h2>
-          <p class="modal-precio" id="modalPrecio">S/. 0.00</p>
-
-          <div class="chips">
-            <span class="chip categoria"><i class="fas fa-tag"></i> <span id="modalCategoria"></span></span>
-            <span class="chip marca"><i class="fas fa-industry"></i> <span id="modalMarca"></span></span>
-            <span class="chip stock"><i class="fas fa-box"></i> Stock: <span id="modalStock"></span></span>
-          </div>
-
-          <ul class="detalle-datos">
-            <li><strong>Código:</strong> <span id="modalCodigosistema"></span></li>
-            <li><strong>Unidad:</strong> <span id="modalUnidad"></span></li>
-          </ul>
-
-          <label for="modalCantidad">Cantidad</label>
-          <input type="number" value="1" min="1" id="modalCantidad">
-
-          <button id="btnContacto" class="boton grande">
-            <i class="fab fa-whatsapp"></i> Contactar al vendedor
-          </button>
-
-          <div class="tabs">
-            <details open>
-              <summary>Descripción</summary>
-              <p id="modalDescripcion">Descripción del producto aquí...</p>
-            </details>
-            <details>
-              <summary>Información Adicional</summary>
-              <p>Envío gratuito. Garantía de 1 año.</p>
-            </details>
-          </div>
-
-          <div class="share">
-            <p>Compartir:</p>
-            <div class="share-icons">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <a href="#"><i class="fab fa-twitter"></i></a>
-              <a href="#"><i class="fab fa-whatsapp"></i></a>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <br><br>
-  <?php include 'footer.php'; ?>
-  <script src="oscuro.js"></script>
-
-  <!-- Script Modal -->
+  <!-- Script: datos de productos desde PHP -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const modal = document.getElementById("modalDetalle");
-      const cerrar = document.querySelector(".cerrar");
-
-      const titulo = document.getElementById("modalTitulo");
-      const precio = document.getElementById("modalPrecio");
-      const imagen = document.getElementById("modalImagen");
-      const descripcion = document.getElementById("modalDescripcion");
-      const cantidadInput = document.getElementById("modalCantidad");
-      const btnContacto = document.getElementById("btnContacto");
-
-      const categoria = document.getElementById("modalCategoria");
-      const codigosistema = document.getElementById("modalCodigosistema");
-      const marca = document.getElementById("modalMarca");
-      const unidad = document.getElementById("modalUnidad");
-      const stock = document.getElementById("modalStock");
-
-      let currentProduct = {};
-
-      // Delegación de eventos: escucha clicks en todo el contenedor
-      document.getElementById("lista-productos").addEventListener("click", function (e) {
-        if (e.target.closest(".boton-detalle")) {
-          const btn = e.target.closest(".boton-detalle");
-
-          const data = {
-            titulo: btn.dataset.titulo,
-            precio: btn.dataset.precio,
-            imagen: btn.dataset.imagen,
-            descripcion: btn.dataset.descripcion,
-            categoria: btn.dataset.categoria,
-            codigosistema: btn.dataset.codigosistema,
-            marca: btn.dataset.marca,
-            unidad: btn.dataset.unidad,
-            stock: btn.dataset.stock
-          };
-
-          currentProduct = data;
-
-          titulo.textContent = data.titulo;
-          precio.textContent = data.precio;
-          imagen.src = data.imagen;
-          descripcion.textContent = data.descripcion;
-          categoria.textContent = data.categoria;
-          codigosistema.textContent = data.codigosistema;
-          marca.textContent = data.marca;
-          unidad.textContent = data.unidad;
-          stock.textContent = data.stock;
-          cantidadInput.value = 1;
-
-          modal.style.display = "flex";
-        }
-      });
-
-      cerrar.onclick = () => modal.style.display = "none";
-      window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
-
-      btnContacto.addEventListener("click", function () {
-        const cantidad = parseInt(cantidadInput.value);
-        const stockDisponible = parseInt(currentProduct.stock);
-
-        if (cantidad > stockDisponible) {
-          Swal.fire({
-            icon: 'error',
-            title: '¡Stock insuficiente!',
-            text: `Solo hay ${stockDisponible} unidades disponibles.`,
-            confirmButtonText: 'Entendido',
-            confirmButtonColor: '#d33',
-            backdrop: `rgba(0,0,0,0.6)`
-          });
-          return;
-        }
-
-        const mensaje = `Hola, estoy interesado en el producto *${currentProduct.titulo}* (${currentProduct.precio}) y deseo adquirir *${cantidad}* unidades.\n\nCódigo Sistema: ${currentProduct.codigosistema}\nCategoría: ${currentProduct.categoria}`;
-        const telefono = "51941797953";
-        const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
-        window.open(url, "_blank");
-      });
-    });
+    const productos = <?php echo $productosJSON; ?>;
   </script>
 
+  <!-- Script principal -->
   <script>
-    let offset = 10;
+    let filtro = 'all';
+    let pagina = 1;
+    const porPagina = 8;
+    let query = '';
+    let orden = 'popular';
+    const carrito = [];
+    let seleccionado = null;
 
-    document.getElementById("btnCargarMas").addEventListener("click", function () {
-      const btn = this;
-      btn.disabled = true;
-      btn.textContent = "Cargando...";
+    const el = sel => document.querySelector(sel);
+    const els = sel => document.querySelectorAll(sel);
 
-      fetch("cargar_mas.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: "offset=" + offset
-      })
-      .then(res => res.text())
-      .then(html => {
-        const contenedor = document.getElementById("lista-productos");
-        contenedor.insertAdjacentHTML("beforeend", html);
-        offset += 10;
-        btn.disabled = false;
-        btn.textContent = "Cargar más productos";
-      })
-      .catch(err => {
-        console.error("Error al cargar más:", err);
-        btn.textContent = "Error";
-      });
-    });
-  </script>
-
-  <script>
-    const filtroCategoria = document.getElementById("filtroCategoria");
-    const filtroOrden = document.getElementById("filtroOrden");
-    const contenedor = document.getElementById("lista-productos");
-    const btnCargarMas = document.getElementById("btnCargarMas");
-
-    function cargarProductosFiltrados(offset = 0, append = false) {
-      const categoria = filtroCategoria.value;
-      const orden = filtroOrden.value;
-
-      const params = new URLSearchParams();
-      params.append("categoria", categoria);
-      params.append("orden", orden);
-      params.append("offset", offset);
-
-      fetch("filtrar_productos.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: params.toString()
-      })
-      .then(res => res.text())
-      .then(html => {
-        if (append) {
-          contenedor.insertAdjacentHTML("beforeend", html);
-        } else {
-          contenedor.innerHTML = html;
-        }
-
-        const categoriaSeleccionada = filtroCategoria.value;
-        if (html.trim() === "") {
-          btnCargarMas.style.display = "none";
-        } else {
-          if (categoriaSeleccionada === "") {
-            btnCargarMas.style.display = "block";
-            btnCargarMas.disabled = false;
-            btnCargarMas.textContent = "Cargar más productos";
-          } else {
-            btnCargarMas.style.display = "none";
-          }
-        }
-      })
-      .catch(err => console.error("Error al filtrar:", err));
+    function filtrarOrdenar(list){
+      let r = list.filter(p => (filtro==='all'||p.categoria===filtro) && p.titulo.toLowerCase().includes(query));
+      if(orden==='precio-asc') r.sort((a,b)=>a.precio-b.precio);
+      if(orden==='precio-desc') r.sort((a,b)=>b.precio-a.precio);
+      if(orden==='nuevo') r = r.reverse();
+      return r;
     }
 
-    filtroCategoria.addEventListener("change", () => {
-      offset = 0;
-      cargarProductosFiltrados(offset, false);
-    });
+    function templateCard(p){
+      return `<article class="card" data-id="${p.id}">
+        <span class="badge">${p.categoria}</span>
+        <div class="media" style="background-image:url('${p.img}'); background-size:cover; background-position:center"></div>
+        <div class="body">
+          <h3 style="font-size:1rem; font-weight:700">${p.titulo}</h3>
+          <div class="stars" aria-hidden="true">${'★'.repeat(Math.round(p.rating))}${'☆'.repeat(5-Math.round(p.rating))}</div>
+          <div class="cta">
+            <button class="btn-ghost" data-ver="${p.id}">Ver detalle</button>
+          </div>
+        </div>
+      </article>`;
+    }
 
-    filtroOrden.addEventListener("change", () => {
-      offset = 0;
-      cargarProductosFiltrados(offset, false);
-    });
+    function renderGrid(reset=false){
+      const cont = el('#grid');
+      if(reset) cont.innerHTML = '';
+      const data = filtrarOrdenar(productos);
+      const desde = (pagina-1)*porPagina;
+      const items = data.slice(desde, desde+porPagina);
+      cont.insertAdjacentHTML('beforeend', items.map(templateCard).join(''));
+      el('#btnMas').style.display = (desde+porPagina)>=data.length ? 'none' : 'inline-block';
+    }
 
-    btnCargarMas.addEventListener("click", function () {
-      this.disabled = true;
-      this.textContent = "Cargando...";
-      offset += 10;
-      cargarProductosFiltrados(offset, true);
+    // Abrir modal
+    function openModal(id){
+      const p = productos.find(x=>x.id==id);
+      if(!p) return;
+      seleccionado = p;
+      el('#mMedia').style = `aspect-ratio:4/3; background:#0b1224; background-image:url('${p.img}'); background-size:cover; background-position:center`;
+      el('#mTitle').textContent = p.titulo;
+      el('#mDesc').textContent = 'Especificaciones de referencia. Producto original de SOTECO PERÚ.';
+      el('#mCantidad').value = 1;
+      el('#modal').classList.add('show');
+    }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      setTimeout(()=>{ el('#loader').style.opacity=.0; setTimeout(()=>el('#loader').remove(), 350) }, 650);
+      renderGrid(true);
+
+      els('.chip').forEach(c=> c.addEventListener('click', e=>{
+        els('.chip').forEach(x=>x.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        filtro = e.currentTarget.dataset.filter; pagina = 1; renderGrid(true);
+      }));
+
+      el('#q').addEventListener('input', e=>{ query = e.target.value.trim().toLowerCase(); pagina = 1; renderGrid(true); });
+      el('#sort').addEventListener('change', e=>{ orden = e.target.value; pagina=1; renderGrid(true); });
+      el('#btnMas').addEventListener('click', ()=>{ pagina++; renderGrid(); window.scrollBy({top:220, behavior:'smooth'}) });
+
+      el('#grid').addEventListener('click', e=>{
+        const ver = e.target.closest('[data-ver]');
+        if(ver) openModal(ver.dataset.ver);
+      });
+
+      el('#mClose').addEventListener('click', ()=> el('#modal').classList.remove('show'));
+      el('#modalOverlay').addEventListener('click', ()=> el('#modal').classList.remove('show'));
+
+      // Contactar por WhatsApp
+  el('#mCotizar').addEventListener('click', ()=>{
+  if(!seleccionado) return;
+  const cantidad = parseInt(el('#mCantidad').value) || 1;
+
+  const mensaje = `👋 ¡Hola SOTECO PERÚ!  
+Me interesa solicitar una *cotización* de un producto:
+
+🔹 *Producto:* ${seleccionado.titulo}  
+🔖 *Código:* ${seleccionado.codigo}  
+🏷️ *Marca:* ${seleccionado.marca}  
+📦 *Cantidad solicitada:* ${cantidad}
+
+Por favor, ¿podrían enviarme la información de precios y disponibilidad?  
+Gracias 🙏`;
+
+  const telefono = "51987654321"; // <-- tu número con código de país
+  const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, "_blank");
+});
+
     });
   </script>
-
-  <script src="ws.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </body>
 </html>

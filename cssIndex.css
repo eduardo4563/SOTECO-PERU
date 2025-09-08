@@ -9,7 +9,7 @@
     body {
       background: #0f172a;
       color: #f8fafc;
-      line-height: 1.6;
+      line-height: 1.6; 
     }
 
     h1,
@@ -194,65 +194,89 @@
 
 
 
+    /* === Sección ¿Qué ofrecemos? === */
+.ofrecemos {
+  text-align: center;
+  padding: 80px 20px;
+  border-top: 1px solid rgba(0, 255, 200, 0.1);
+}
 
-    .ofrecemos {
-      padding: 60px 20px;
-      text-align: center;
-
-      border-top: 1px solid rgba(0, 255, 200, 0.1);
-    }
-
-    .ofrecemos h2 {
-      font-size: 2rem;
-      margin-bottom: 15px;
+.ofrecemos h2 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+font-weight: bold;
       color: #00f5a0;
-      text-shadow: 0 0 12px rgba(0, 255, 200, 0.3);
+}
+
+.ofrecemos p {
+  font-size: 1.1rem;
+  color: #d1d5db;
+  margin-bottom: 45px;
+}
+.ofrecemos-grid {
+  display: flex;
+  flex-direction: column;   /* listado vertical */
+  align-items: center;      /* centramos las cards */
+  max-width: 900px;         /* controlamos el ancho total */
+  margin: 0 auto;           /* centramos en la pantalla */
+  gap: 20px;                /* espacio entre cards */
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 200, 0.2);
+  border-radius: 12px;
+  padding: 20px 25px;
+  width: 100%;              /* que ocupen todo el ancho del contenedor */
+  max-width: 800px;         /* límite para que no se extiendan demasiado */
+  display: flex;            /* ícono a la izquierda, texto a la derecha */
+  align-items: center;
+  gap: 18px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 255, 200, 0.2);
+  border-color: rgba(0, 255, 200, 0.5);
+}
+
+.card .icono {
+  font-size: 2rem;
+  color: #00ffc8;
+  flex-shrink: 0; /* el icono no se deforma */
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  color: #00ffc8;
+  margin-bottom: 5px;
+}
+
+.card p {
+  font-size: 1rem;
+  color: #d1d5db;
+  margin: 0;
+  line-height: 1.5;
+}
+
+  .btn-conocenos2 {
+      display: inline-block;
+      padding: 12px 25px;
+      margin-top: 20px;
+      background: linear-gradient(90deg, #00f5a0, #0061ff);
+      color: #fff;
+      font-weight: 600;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 0 12px rgba(0, 255, 200, 0.3);
+      transition: all 0.3s ease;
     }
 
-    .ofrecemos p {
-      font-size: 1.1rem;
-      margin-bottom: 40px;
-      color: #e2e8f0;
-    }
-
-    .ofrecemos-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-    }
-
-    .ofrecemos-card {
-      background: #1e293b;
-      border-radius: 15px;
-      padding: 25px;
-      box-shadow: 0 6px 20px rgba(0, 255, 200, 0.05);
-      transition: 0.3s;
-    }
-
-    .ofrecemos-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 255, 200, 0.15);
-    }
-
-    .ofrecemos-card i {
-      font-size: 2rem;
-      color: #00f5a0;
-      margin-bottom: 15px;
-    }
-
-      .icono{
-        font-size: 2rem;
-        margin-bottom: 15px;
-      }
-    .ofrecemos-card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 10px;
-      color: #e2e8f0;
-    }
-
-    .ofrecemos-card p {
-      font-size: 0.95rem;
-      color: #cbd5e1;
+    .btn-conocenos2:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 22px rgba(0, 255, 200, 0.5);
     }
 
 
@@ -567,10 +591,10 @@
     }
 
     /* Título */
-    .testimonials-section h1 {
+    .testimonials-section h2 {
       font-size: 2rem;
       margin-bottom: 50px;
-      text-transform: uppercase;
+
       letter-spacing: 2px;
       font-weight: bold;
       color: #00f5a0;
@@ -872,9 +896,9 @@
     .blog-tecnologia .titulo-blog {
       font-size: 2rem;
       margin-bottom: 40px;
-      color: #00ffc8;
+      color: #00f5a0;
       /* resalta como tu header */
-      text-transform: uppercase;
+    
       letter-spacing: 2px;
     }
 
@@ -1155,3 +1179,6 @@
       }
 
     }
+
+
+    
