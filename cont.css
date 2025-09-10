@@ -193,3 +193,79 @@ button:hover {
     font-size: 1rem;
   }
 }
+/* ==== HERO CONTACTO estilo SERVICIOS ==== */
+.hero-contacto {
+ background: radial-gradient(1200px 600px at 50% -10%, rgba(0,245,160,.25), transparent),
+              radial-gradient(1200px 600px at 80% 10%, rgba(0,97,255,.20), transparent);
+  color: #fff;
+  text-align: center;
+  padding: 100px 20px 80px;
+  position: relative;
+  overflow: hidden;
+
+}
+
+.hero-contacto h1 {
+  font-size: 2rem;
+    font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  background: linear-gradient(90deg,#00f5a0,#00d9f5,#0061ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-contacto p {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+  color: #e0e0e0;
+}
+
+.hero-kpis {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero-kpis .kpi {
+  flex: 1;
+  min-width: 220px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 25px 15px;
+  text-align: center;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.hero-kpis .kpi h4 {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #00f5a0;
+  margin-bottom: 5px;
+}
+
+.hero-kpis .kpi small {
+  font-size: 0.95rem;
+  color: #9ca3af;
+}
+
+.hero-kpis .kpi:hover {
+  transform: translateY(-8px);
+  background: rgba(0, 245, 160, 0.08);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-contacto h1 {
+    font-size: 2.2rem;
+  }
+  .hero-kpis {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
