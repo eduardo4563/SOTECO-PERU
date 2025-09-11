@@ -40,7 +40,7 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="productos.css?6200">
+  <link rel="stylesheet" href="productos.css?5200">
 </head>
 <body>
   <!-- Loader -->
@@ -58,7 +58,8 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
   <section class="hero">
     <div class="bg" aria-hidden="true"></div>
     <div class="wrap content">
-      <br><br>
+
+      <h1 class="h1">Productos que potencian tu negocio</h1>
       <p>Arma tu setup, equipa tu empresa y protege tus activos digitales. En SOTECO PERÚ unimos rendimiento y diseño para que tu tecnología se vea y funcione de 10.</p>
     
       <div class="kpis">

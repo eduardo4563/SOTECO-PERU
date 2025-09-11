@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Servicios | SOTECO PERÚ</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="servicios.css?5555">
+  <link rel="stylesheet" href="servicios.css">
 </head>
 <body>
 
@@ -15,26 +15,40 @@
   <section class="hero">
     <div class="bg" aria-hidden="true"></div>
     <div class="wrap content">
-      <h1>Nuestros Servicios Tecnológicos</h1>
+      <h1 class="h1">Nuestros Servicios Tecnológicos</h1>
       <p>
         En <b>SOTECO PERÚ</b> ofrecemos soluciones innovadoras en desarrollo de software, soporte, infraestructura y ciberseguridad.  
         Nuestro objetivo es impulsar tu empresa con tecnología confiable, eficiente y segura.
       </p>
 
       <!-- KPIs -->
-     <div class="kpis">
-  <div class="kpi"><h4 id="exp">+0</h4><small>Experiencia</small></div>
-  <div class="kpi"><h4 id="soporte">0/7</h4><small>Soporte</small></div>
-  <div class="kpi"><h4 id="empresas">+0</h4><small>Empresas Atendidas</small></div>
-  <div class="kpi"><h4 id="seguridad">0%</h4><small>Seguridad</small></div>
-</div>
-
+      <div class="kpis">
+        <div class="kpi">
+          <i class="fas fa-briefcase"></i>
+          <h4 id="exp">+0</h4>
+          <small>Experiencia</small>
+        </div>
+        <div class="kpi">
+          <i class="fas fa-headset"></i>
+          <h4 id="soporte">0/7</h4>
+          <small>Soporte</small>
+        </div>
+        <div class="kpi">
+          <i class="fas fa-building"></i>
+          <h4 id="empresas">+0</h4>
+          <small>Empresas Atendidas</small>
+        </div>
+        <div class="kpi">
+          <i class="fas fa-shield-alt"></i>
+          <h4 id="seguridad">0%</h4>
+          <small>Seguridad</small>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Sección Servicios -->
   <section class="servicios-section" id="servicios">
-    
     <div class="servicios-grid">
       
       <div class="servicio-card">
@@ -77,8 +91,20 @@
   </section>
 
 <?php include 'footer.php'; ?>
+
+<!-- Botón flotante WhatsApp -->
+<a href="https://wa.me/51941797953" class="btn-whatsapp" target="_blank">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/scrollreveal"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+<script src="servicios.js"></script>
+
 </body>
 <script>
+  // Animación de números en KPIs
 function animateValue(id, start, end, duration, prefix = "", suffix = "") {
   const obj = document.getElementById(id);
   let startTimestamp = null;
@@ -92,13 +118,31 @@ function animateValue(id, start, end, duration, prefix = "", suffix = "") {
   window.requestAnimationFrame(step);
 }
 
-// Ejecutar cuando cargue la página
 window.onload = () => {
-  animateValue("exp", 0, 10, 2000, "+", " Años");      // +10 Años
-  animateValue("soporte", 0, 24, 2000, "", "/7");      // 24/7
-  animateValue("empresas", 0, 300, 2500, "+", "");     // +300
-  animateValue("seguridad", 0, 100, 2000, "", "%");    // Seguridad 100%
-};
-</script>
+  animateValue("exp", 0, 10, 2000, "+", " Años");
+  animateValue("soporte", 0, 24, 2000, "", "/7");
+  animateValue("empresas", 0, 300, 2500, "+", "");
+  animateValue("seguridad", 0, 100, 2000, "", "%");
 
+  // ScrollReveal
+  ScrollReveal().reveal('.servicio-card', {
+    delay: 200,
+    duration: 800,
+    distance: '50px',
+    origin: 'bottom',
+    interval: 200,
+    easing: 'ease-out',
+    reset: false
+  });
+
+  // Tilt Effect
+  VanillaTilt.init(document.querySelectorAll(".servicio-card"), {
+    max: 15,
+    speed: 300,
+    glare: true,
+    "max-glare": 0.3
+  });
+};
+
+</script>
 </html>
