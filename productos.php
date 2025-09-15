@@ -40,15 +40,13 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="productos.css?5200">
+  <link rel="stylesheet" href="productos.css?622">
 </head>
 <body>
   <!-- Loader -->
-  <div class="loader" id="loader">
-    <div style="display:grid; place-items:center; gap:12px">
-      <div class="spinner"></div>
-      <div>Cargando la tienda…</div>
-    </div>
+   <div id="loader">
+    <div class="spinner"></div>
+    <p class="loader-text">Cargando SOTECO PERÚ...</p>
   </div>
 
   <!-- Header -->
@@ -231,7 +229,7 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
 Me interesa solicitar una *cotización* de un producto:
 
 🔹 *Producto:* ${seleccionado.titulo}  
-🔖 *Código:* ${seleccionado.codigo}  
+🔖 *Código:* ${seleccionado.codigosistema}  
 🏷️ *Marca:* ${seleccionado.marca}  
 📦 *Cantidad solicitada:* ${cantidad}
 

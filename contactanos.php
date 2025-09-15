@@ -5,9 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contáctanos</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="cont.css" />
+  <link rel="stylesheet" href="cont.css?400" />
 </head>
 <body>
+  <div id="loader">
+    <div class="spinner"></div>
+    <p class="loader-text">Cargando SOTECO PERÚ...</p>
+  </div>
   <?php include 'header.php'; ?>
 
   <!-- Hero -->
@@ -57,4 +61,13 @@
 
   <?php include 'footer.php'; ?>
 </body>
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    document.querySelector('#loader').style.opacity = 0;
+    setTimeout(() => document.querySelector('#loader').remove(), 350);
+  }, 650);
+  renderGrid(true);
+});
+</script>
 </html>

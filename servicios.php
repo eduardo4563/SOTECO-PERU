@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Servicios | SOTECO PERÚ</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="servicios.css">
+  <link rel="stylesheet" href="servicios.css?55">
 </head>
 <body>
-
+<div id="loader">
+    <div class="spinner"></div>
+    <p class="loader-text">Cargando SOTECO PERÚ...</p>
+  </div>
 <?php include 'header.php'; ?>
 
   <!-- Hero Servicios -->
@@ -104,6 +107,15 @@
 
 </body>
 <script>
+ document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    document.querySelector('#loader').style.opacity = 0;
+    setTimeout(() => document.querySelector('#loader').remove(), 350);
+  }, 650);
+  renderGrid(true);
+});
+
+
   // Animación de números en KPIs
 function animateValue(id, start, end, duration, prefix = "", suffix = "") {
   const obj = document.getElementById(id);

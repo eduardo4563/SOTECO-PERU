@@ -4,16 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SOTECO PERÚ - Inicio</title>
-  <meta name="description" content="Compra tecnología en SOTECO PERÚ: laptops, teclados, mantenimiento y más.">
-  <meta property="og:title" content="SOTECO PERÚ - Tecnología al alcance de tu mano">
-  <meta property="og:image" content="img/og-imagen.jpg">
+  <meta name="description" content="Compra tecnología en SOTECO PERÚ S.A.C.: laptops, teclados, mantenimiento y más.">
+  <meta name="keywords" content="Servicios tecnológicos, desarrollo web, soporte técnico, ciberseguridad, nube, innovación, Perú">
+  <meta name="author" content="SOTECO PERÚ S.A.C.">
+    <title>SOTECO PERÚ S.A.C. - Inicio</title>
+  <meta property="og:title" content="SOTECO PERÚ S.A.C. - Tecnología al alcance de tu mano">
+  <meta property="og:image" content="img/image_no_bg (1).png">
   <meta property="og:description" content="Descubre nuestras ofertas y servicios tecnológicos.">
-  <link rel="stylesheet" href="cssIndex.css?8444">
+  <link rel="stylesheet" href="cssIndex.css?555">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="img/image_no_bg-_1_.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@500;700&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
 
 </head>
 
@@ -38,10 +40,10 @@
       </video>
     </div>
     <div class="esencia-overlay">
-      <h1>Bienvenido a <span>SOTECO PERÚ</span></h1>
+      <h1>Bienvenido a <span>SOTECO PERÚ S.A.C.</span></h1>
       <p>Soluciones tecnológicas con 15 años de experiencia y calidad garantizada.</p>
-      <a href="quienessomos.html" target="_blank" class="btn-cotizaahora">Cotiza ahora</a>
-      <a href="quienessomos.html" target="_blank" class="btn-presupuesto">Pide tu presupuesto GRATIS</a>
+      <a href="https://wa.me/51941797953?text=Hola%20SOTECO%20PERÚ,%20quiero%20cotizar%20un%20producto." target="_blank" class="btn-cotizaahora">Cotiza ahora</a>
+      <a  href="https://wa.me/51941797953?text=Hola%20SOTECO%20PERÚ,%20quiero%20un%20presupuesto%20gratis%20para%20mi%20empresa." target="_blank" class="btn-presupuesto">Pide tu presupuesto GRATIS</a>
     </div>
   </div>
 
@@ -204,7 +206,7 @@
     <h2 class="titulo1">Categorías</h2>
     <div class="categorias">
       <!-- Categoría 1 -->
-      <a href="productos.php" style="text-decoration: none;color: white;">
+      <a href="productos.php" style="text-decoration: none;color: #e2e8f0;">
         <div class="categoria">
           <div class="imagen categorias1"></div>
           <label class="descripcion">Hardware (Ventas de equipos y mantenimiento)</label>
@@ -212,7 +214,7 @@
       </a>
 
       <!-- Categoría 2 -->
-       <a href="servicios.php" style="text-decoration: none;color: white;">
+       <a href="servicios.php" style="text-decoration: none;color: #e2e8f0;">
          <div class="categoria">
         <div class="imagen categorias2"></div>
         <label class="descripcion">Software (Instalación y configuración)</label>

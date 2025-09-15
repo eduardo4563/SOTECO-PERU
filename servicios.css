@@ -1,30 +1,40 @@
+/* Importar fuentes elegantes y modernas */
+@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@500;700&family=Manrope:wght@400;600&display=swap');
+
 /* ==== Global ==== */
 * {
-  margin: 0;
+ margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Manrope", sans-serif; /* Fuente para párrafos */
 }
 body {
   margin: 0;
   font-family: "Segoe UI", Arial, sans-serif;
   background: #111827;
-  color: #f8fafc;
-}
 
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Clash Display", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+     color: #e2e8f0;
+}
 /* ==== Hero ==== */
 .hero {
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid rgba(0,245,160,.1);
 }
-.hero .bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
+
+/* ===== Hero ===== */
+.hero{position:relative; overflow:hidden; border-bottom:1px solid rgba(0,245,160,.1)}
+.hero .bg{
+  position:absolute; inset:0; z-index:0; pointer-events:none;
   background: radial-gradient(1200px 600px at 50% -10%, rgba(0,245,160,.25), transparent),
               radial-gradient(1200px 600px at 80% 10%, rgba(0,97,255,.20), transparent);
 }
+.hero .content{position:relative; z-index:1; padding:84px 0 60px}
 .hero .content {
   position: relative;
   z-index: 1;
@@ -32,11 +42,11 @@ body {
   text-align: center;
 }
 .h1{
-   font-size: 2rem;
+       font-size: 2rem;
   margin-top: 45px;
   font-weight: 800;
   margin-bottom: 16px;
-  background: linear-gradient(90deg,#00f5a0,#00d9f5,#0061ff);
+  background: #00ffbf;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -161,4 +171,67 @@ body {
   .kpis {
     grid-template-columns: repeat(2, 1fr);
   }
+   .hero{
+   padding: 25px;
+   margin-top: -55px;
+  }
+}
+
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0f172a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+/* Ocultar con fade-out */
+#loader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+} 
+
+/* Spinner elegante */
+.spinner {
+  width: 80px;
+  height: 80px;
+  border: 6px solid rgba(0, 255, 200, 0.2);
+  border-top: 6px solid #00ffc8;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite, glow 2s ease-in-out infinite alternate;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.4);
+}
+
+/* Animación de rotación */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Efecto de brillo intermitente */
+@keyframes glow {
+  from { box-shadow: 0 0 10px rgba(0, 255, 200, 0.4); }
+  to { box-shadow: 0 0 30px rgba(0, 255, 200, 0.9); }
+}
+/* Texto elegante */
+.loader-text {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  font-family: 'Clash Display', sans-serif;
+  background: linear-gradient(90deg, #00ffc8, #007bff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeIn 1.5s ease-in-out infinite alternate;
+  letter-spacing: 1px;
+}
+/* Animación del texto */
+@keyframes fadeIn {
+  from { opacity: 0.5; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(-3px); }
 }

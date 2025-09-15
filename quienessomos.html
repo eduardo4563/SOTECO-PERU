@@ -1,169 +1,196 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quiénes Somos | SOTECO PERÚ</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --background-color: #f4f4f4;
-      --card-bg: #ffffff;
-      --text-color: #1f2937;
-      --primary: #2c3e50;
-      --accent: #e67e22;
-      --shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quiénes Somos | SOTECO PERÚ</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@500;700&family=Manrope:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg-dark: #0f172a;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --border-glass: rgba(0, 255, 200, 0.2);
+  --text-light: #e2e8f0;
+  --accent: #00f5a0;
+  --shadow-glow: 0 8px 25px rgba(0, 255, 200, 0.2);
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+* { margin:0; padding:0; box-sizing:border-box; font-family:"Manrope",sans-serif; }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--background-color);
-      color: var(--text-color);
-      min-height: 100vh;
-    }
+body { background: var(--bg-dark); color: var(--text-light); line-height:1.6; }
 
-    header {
-      text-align: center;
-      padding: 80px 20px 40px;
-      background-color: var(--card-bg);
-      box-shadow: var(--shadow);
-    }
+h1,h2 {
+  font-family:"Clash Display",sans-serif; font-weight:700; letter-spacing:0.5px;
+  color:var(--accent); text-shadow:0 0 12px rgba(0,255,200,0.25);
+}
 
-    header h1 {
-      font-size: 3rem;
-      color: var(--primary);
-      font-weight: 700;
-    }
+header { text-align:center; padding:90px 20px 50px; }
+header h1 {
+  font-size:2.8rem;
+  background: linear-gradient(90deg,#00f5a0,#00d9f5,#0061ff);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+}
+header p { font-size:1.2rem; margin-top:12px; color:#cbd5e1; }
 
-    header p {
-      font-size: 1.1rem;
-      color: #6b7280;
-      margin-top: 10px;
-    }
+.container {
+  max-width:1100px; margin:auto; padding:50px 20px 100px; display:grid; gap:40px;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 40px 20px 80px;
-      display: grid;
-      gap: 40px;
-    }
+.card {
+  background: var(--card-bg); border:1px solid var(--border-glass); border-radius:16px;
+  padding:35px; backdrop-filter:blur(12px); box-shadow: var(--shadow-glow);
+  transition: transform 0.4s ease, opacity 0.6s ease; opacity:0; transform:translateY(40px);
+}
 
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 35px;
-      box-shadow: var(--shadow);
-      transition: transform 0.4s ease, opacity 0.6s ease;
-      opacity: 0;
-      transform: translateY(40px);
-    }
+.card.visible { opacity:1; transform:translateY(0); }
 
-    .card.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+.card h2 { font-size:1.8rem; margin-bottom:20px; display:flex; align-items:center; gap:10px; }
 
-    .card h2 {
-      font-size: 1.8rem;
-      color: var(--accent);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+.card p, .card ul { font-size:1.05rem; color:#cbd5e1; line-height:1.7; }
 
-    .card p,
-    .card ul {
-      font-size: 1.05rem;
-      line-height: 1.7;
-    }
+.card ul { list-style:none; padding-left:0; }
+.card ul li { margin-bottom:10px; padding-left:28px; position:relative; }
+.card ul li::before { content:"✔"; position:absolute; left:0; color:var(--accent); font-weight:bold; }
 
-    .card ul {
-      list-style: none;
-      padding-left: 0;
-    }
+/* ===== Acordeón Ultra Suave ===== */
+.extra-text {
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  transition: max-height 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease;
+  margin-top:10px;
+}
 
-    .card ul li {
-      margin-bottom: 10px;
-      padding-left: 28px;
-      position: relative;
-    }
+.extra-text.show {
+  opacity:1;
+}
 
-    .card ul li::before {
-      content: "✔";
-      position: absolute;
-      left: 0;
-      color: var(--accent);
-      font-weight: bold;
-    }
+.btn-toggle {
+  margin-top:15px; padding:8px 14px; background:var(--accent); border:none; border-radius:8px;
+  color: var(--bg-dark); font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:6px;
+  transition: background 0.3s;
+}
+.btn-toggle:hover { background:#00d9f5; }
 
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 2rem;
-      }
+.btn-toggle .icon {
+  display:inline-block; transition: transform 0.4s ease;
+}
+.btn-toggle.open .icon { transform: rotate(180deg); }
 
-      .card {
-        padding: 25px;
-      }
-    }
-  </style>
+@media (max-width:768px) {
+  header h1 { font-size:2rem; }
+  .card { padding:25px; }
+}
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>Quiénes Somos</h1>
-    <p>Conoce nuestra misión, visión y valores fundamentales</p>
-  </header>
+<header>
+  <h1>Quiénes Somos</h1>
+  <p>Conoce nuestra misión, visión y valores fundamentales</p>
+</header>
 
-  <section class="container">
-    <div class="card fade-in">
-      <h2>💡 Misión</h2>
-      <p>Impulsamos la transformación digital llevando la tecnología al siguiente nivel. Con más de una década de experiencia, ofrecemos soluciones innovadoras, seguras y eficientes para ayudar a las empresas a crecer en un mundo digital en constante evolución.</p>
+<section class="container">
+  <!-- Misión -->
+  <div class="card fade-in">
+    <h2>💡 Misión</h2>
+    <p>Impulsamos la transformación digital llevando la tecnología al siguiente nivel...</p>
+    <div class="extra-text">
+      Contamos con un equipo especializado que garantiza soluciones personalizadas para cada cliente, siempre alineadas a sus objetivos de negocio.
     </div>
+    <button class="btn-toggle">Ver más <span class="icon">▼</span></button>
+  </div>
 
-    <div class="card fade-in">
-      <h2>🌟 Visión</h2>
-      <p>Ser la empresa líder en tecnología y desarrollo de soluciones digitales, reconocida por nuestra innovación, calidad y compromiso con el éxito de nuestros clientes.</p>
+  <!-- Visión -->
+  <div class="card fade-in">
+    <h2>🌟 Visión</h2>
+    <p>Ser la empresa líder en tecnología y desarrollo de soluciones digitales...</p>
+    <div class="extra-text">
+      Queremos transformar industrias mediante innovación constante, manteniendo la excelencia y generando impacto positivo en nuestros clientes.
     </div>
+    <button class="btn-toggle">Ver más <span class="icon">▼</span></button>
+  </div>
 
-    <div class="card fade-in">
-      <h2>🎯 Valores</h2>
-      <ul>
-        <li><strong>Innovación:</strong> Siempre a la vanguardia tecnológica.</li>
-        <li><strong>Compromiso:</strong> Crecemos con nuestros clientes.</li>
-        <li><strong>Seguridad:</strong> Protegemos lo que más importa.</li>
-        <li><strong>Calidad:</strong> Soluciones confiables y eficientes.</li>
-        <li><strong>Experiencia:</strong> Más de una década impulsando el futuro.</li>
-      </ul>
+  <!-- Valores -->
+  <div class="card fade-in">
+    <h2>🎯 Valores</h2>
+    <ul>
+      <li><strong>Innovación:</strong> Siempre a la vanguardia tecnológica.</li>
+      <li><strong>Compromiso:</strong> Crecemos con nuestros clientes.</li>
+      <li><strong>Seguridad:</strong> Protegemos lo que más importa.</li>
+      <li><strong>Calidad:</strong> Soluciones confiables y eficientes.</li>
+      <li><strong>Experiencia:</strong> Más de una década impulsando el futuro.</li>
+    </ul>
+    <div class="extra-text">
+      Nuestros valores se aplican en cada proyecto, asegurando transparencia, ética profesional y un impacto positivo en la sociedad.
     </div>
+    <button class="btn-toggle">Ver más <span class="icon">▼</span></button>
+  </div>
 
-    <div class="card fade-in">
-      <h2>🚀 Propuesta de Valor</h2>
-      <p>Más de una década de experiencia en el sector tecnológico, llevando la innovación al siguiente nivel con soluciones digitales seguras, escalables y a la medida de cada cliente.</p>
+  <!-- Propuesta de Valor -->
+  <div class="card fade-in">
+    <h2>🚀 Propuesta de Valor</h2>
+    <p>Más de una década de experiencia en el sector tecnológico...</p>
+    <div class="extra-text">
+      Ofrecemos soluciones digitales seguras, escalables y adaptadas a las necesidades específicas de cada cliente, maximizando resultados.
     </div>
-  </section>
+    <button class="btn-toggle">Ver más <span class="icon">▼</span></button>
+  </div>
+</section>
 
-  <script>
-    const cards = document.querySelectorAll('.fade-in');
+<script>
+// Fade-in al scroll
+const cards = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold:0.2 });
+cards.forEach(card => observer.observe(card));
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, {
-      threshold: 0.2
+// Acordeón ultra suave con scroll centrado
+const toggles = document.querySelectorAll('.btn-toggle');
+toggles.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const extra = btn.previousElementSibling;
+    const icon = btn.querySelector('.icon');
+
+    // Cerrar otras tarjetas
+    toggles.forEach(otherBtn => {
+      const otherExtra = otherBtn.previousElementSibling;
+      const otherIcon = otherBtn.querySelector('.icon');
+      if(otherExtra !== extra){
+        otherExtra.style.maxHeight = null;
+        otherExtra.style.opacity = 0;
+        otherBtn.classList.remove('open');
+        otherBtn.textContent = "Ver más ";
+        otherBtn.appendChild(otherIcon);
+      }
     });
 
-    cards.forEach(card => observer.observe(card));
-  </script>
+    // Abrir o cerrar la actual
+    if(extra.style.maxHeight && extra.style.maxHeight !== "0px"){
+      // Cerrar
+      extra.style.maxHeight = null;
+      extra.style.opacity = 0;
+      btn.classList.remove('open');
+      btn.textContent = "Ver más ";
+      btn.appendChild(icon);
+    } else {
+      // Abrir
+      extra.style.maxHeight = extra.scrollHeight + "px";
+      extra.style.opacity = 1;
+      btn.classList.add('open');
+      btn.textContent = "Ver menos ";
+      btn.appendChild(icon);
+
+      // Scroll centrado suavemente
+      const card = btn.closest('.card');
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+});
+</script>
+
 </body>
 </html>

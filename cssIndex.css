@@ -1,24 +1,26 @@
-    /* Estilos Globales */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Arial", sans-serif;
-    }
+/* Importar fuentes elegantes y modernas */
+@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@500;700&family=Manrope:wght@400;600&display=swap');
+
+/* Estilos Globales */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Manrope", sans-serif; /* Fuente para párrafos */
+}
 
     body {
       background: #0f172a;
       color: #f8fafc;
       line-height: 1.6; 
     }
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Clash Display", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+     color: #e2e8f0;
+}
 
-    h1,
-    h2,
-    h3,
-    h4 {
-      font-weight: bold;
-      color: #e2e8f0;
-    }
 
     /* === Portada con video === */
     .fondo {
@@ -66,7 +68,7 @@
 
     .sobre-nosotros p {
       font-size: 1.15rem;
-      color: #e2e8f0;
+      color:#e2e8f0;
       margin-bottom: 30px;
       line-height: 1.7;
       max-width: 800px;
@@ -176,21 +178,6 @@
       box-shadow: 0 0 25px rgba(0, 255, 200, 0.7);
     }
 
-    /* === Responsive === */
-    @media (max-width: 768px) {
-      .esencia-overlay h1 {
-        font-size: 2rem;
-      }
-
-      .esencia-overlay p {
-        font-size: 1rem;
-      }
-
-      .btn-conocenos {
-        padding: 10px 20px;
-        font-size: 0.95rem;
-      }
-    }
 
 
 
@@ -221,6 +208,7 @@ font-weight: bold;
   margin: 0 auto;           /* centramos en la pantalla */
   gap: 20px;                /* espacio entre cards */
 }
+
 
 .card {
   background: rgba(255, 255, 255, 0.05);
@@ -280,15 +268,7 @@ font-weight: bold;
     }
 
 
-    @media (max-width: 480px) {
-      .esencia-overlay h1 {
-        font-size: 1.6rem;
-      }
-
-      .esencia-overlay p {
-        font-size: 0.9rem;
-      }
-    }
+  
 
     .carrusel-container {
       position: relative;
@@ -448,7 +428,7 @@ font-weight: bold;
       margin-bottom: 15px;
     }
 
-    dddd .beneficio-card h3 {
+ .beneficio-card h3 {
       margin: 10px 0 8px;
       color: #00f5a0;
     }
@@ -561,23 +541,7 @@ font-weight: bold;
       right: 10px;
     }
 
-    @media (max-width: 1024px) {
-      .tarjeta-producto {
-        flex: 0 0 33.33%;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .tarjeta-producto {
-        flex: 0 0 50%;
-      }
-    }
-
-    @media (max-width: 500px) {
-      .tarjeta-producto {
-        flex: 0 0 100%;
-      }
-    }
+   
 
 
     /* === Sección Testimonios === */
@@ -720,52 +684,67 @@ font-weight: bold;
       background-color: #20c154;
     }
 
-    #loader {
-      position: fixed;
-      inset: 0;
-      background-color: white;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
 
-    }
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0f172a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
 
-    .spinner {
-      width: 60px;
-      height: 60px;
-      border: 6px solid #ccc;
-      border-top: 6px solid #1d3557;
-      border-radius: 50%;
-      animation: girar 1s linear infinite;
-      margin-bottom: 20px;
-    }
+/* Ocultar con fade-out */
+#loader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
 
-    .loader-text {
+/* Spinner elegante */
+.spinner {
+  width: 80px;
+  height: 80px;
+  border: 6px solid rgba(0, 255, 200, 0.2);
+  border-top: 6px solid #00ffc8;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite, glow 2s ease-in-out infinite alternate;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.4);
+}
 
-      color: #1d3557;
-    }
+/* Animación de rotación */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
-    @keyframes girar {
-      0% {
-        transform: rotate(0deg);
-      }
+/* Efecto de brillo intermitente */
+@keyframes glow {
+  from { box-shadow: 0 0 10px rgba(0, 255, 200, 0.4); }
+  to { box-shadow: 0 0 30px rgba(0, 255, 200, 0.9); }
+}
 
-      100% {
-        transform: rotate(360deg);
-      }
-    }
+/* Texto elegante */
+.loader-text {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  font-family: 'Clash Display', sans-serif;
+  background: linear-gradient(90deg, #00ffc8, #007bff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeIn 1.5s ease-in-out infinite alternate;
+  letter-spacing: 1px;
+}
 
-
-
-
-
-
-
-
-
-
+/* Animación del texto */
+@keyframes fadeIn {
+  from { opacity: 0.5; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(-3px); }
+}
 
     .esencia {
       background: #f9f9f9;
@@ -870,17 +849,6 @@ font-weight: bold;
 
     /* ==== Sección Noticias Tecnológicas ==== */
 
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      .titulo-novedades {
-        font-size: 2rem;
-      }
-
-      .card-novedad img {
-        height: 180px;
-      }
-    }
 
 
     /* === Noticias Tecnológicas === */
@@ -1093,6 +1061,9 @@ font-weight: bold;
 
     /* Tablets y pantallas medianas */
     @media (max-width: 1024px) {
+       .esencia-overlay h1{
+      margin-top: 55px;
+    }
       .fondo {
         height: 70vh;
       }
@@ -1105,10 +1076,50 @@ font-weight: bold;
       .contenedor-productos {
         grid-template-columns: repeat(2, 1fr);
       }
+         .tarjeta-producto {
+        flex: 0 0 33.33%;
+      }
+      .esencia-overlay h1 {
+    font-size: 2.5rem;
+  }
+
+  .ofrecemos-grid,
+  .beneficios,
+  .grid-novedades,
+  .blog-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
     }
 
+
+ @media (max-width: 500px) {
+      .tarjeta-producto {
+        flex: 0 0 100%;
+      }
+    }
     /* Celulares grandes */
     @media (max-width: 768px) {
+       .titulo-novedades {
+        font-size: 2rem;
+      }
+
+      .card-novedad img {
+        height: 180px;
+      }
+     .esencia-overlay h1 {
+    font-size: 1.8rem;
+  }
+
+      .esencia-overlay p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+      .btn-conocenos {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+      }
       .fondo {
         height: 60vh;
       }
@@ -1125,7 +1136,7 @@ font-weight: bold;
       }
 
       .titulo-novedades {
-        font-size: 1.2rem;
+        font-size: 1.8rem;
       }
 
       /* ❌ quita esto también: .card-novedad { width: 100%; } */
@@ -1147,16 +1158,86 @@ font-weight: bold;
       .card-novedad img {
         max-height: 160px;
       }
+   
+  
+  .btn-cotizaahora,
+  .btn-presupuesto {
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+  }
+     .tarjeta-producto {
+        flex: 0 0 50%;
+      }
+        .ofrecemos-grid,
+  .beneficios,
+  .grid-novedades,
+  .blog-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+   /* Carrusel */
+  .contenedor-carrusel {
+    flex-direction: column;
+  }
+  .vista-galeria {
+    width: 100%;
+  }
+  .tarjeta-producto img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Categorías */
+  .categorias {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .categoria {
+    width: 100%;
+  }
+
+  /* Testimonios */
+  .carousel-track {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .testimonial {
+    width: 100%;
+    text-align: center;
+  }
     }
 
     /* Celulares pequeños */
     @media (max-width: 480px) {
+       body {
+    font-size: 14px;
+  }
+   h1, h2 {
+    font-size: 1.4rem;
+  }
+   .esencia-overlay h1 {
+    font-size: 1.6rem;
+  }
+  
+  .btn-cotizaahora,
+  .btn-presupuesto,
+  .btn-conocenos,
+  .btn-conocenos2 {
+    font-size: 0.9rem;
+    padding: 10px 16px;
+  }
+
+  .blog-card, .card-novedad {
+    padding: 15px;
+  }
       .fondo {
         height: 50vh;
       }
 
       .titulo-novedades {
-        font-size: 1rem;
+        font-size: 1.8rem;
       }
 
       .menu nav ul {
@@ -1178,7 +1259,59 @@ font-weight: bold;
         margin-top: -15px;
       }
 
+
+      .esencia-overlay p {
+        font-size: 0.9rem;
+      }
     }
+  
+    .esencia-overlay h1, 
+.esencia-overlay p, 
+.esencia-overlay a {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 1s ease forwards;
+}
+.esencia-overlay p { animation-delay: 0.3s; }
+.esencia-overlay a { animation-delay: 0.6s; }
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Ejemplo de jerarquía tipográfica */
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2.2rem;
+}
+
+h3 {
+  font-size: 1.6rem;
+}
+
+/* Párrafos */
+p {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #e2e8f0;
+}
+
+/* Botones */
+button, .btn-cotizaahora {
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+}
 
 
-    
+  @media (max-width: 360px) {
+    .esencia-overlay h1{
+      margin-top: 25px;
+    }
+  }
