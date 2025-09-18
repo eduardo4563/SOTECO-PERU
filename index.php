@@ -53,7 +53,7 @@
       <h2>¿Quiénes Somos?</h2>
       <p>En SOTECO PERÚ impulsamos la transformación digital con innovación, calidad y compromiso. Brindamos soluciones
         integrales en hardware, software y servicios tecnológicos para empresas y persona</p>
-      <a href="quienessomos.html" target="_blank" class="btn-conocenos">Más sobre nosotros</a>
+      <a href="quienessomos.php#quienesSomos"  class="btn-conocenos">Más sobre nosotros</a>
     </div>
   </section>
   <section class="ofrecemos">

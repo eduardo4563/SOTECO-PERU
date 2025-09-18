@@ -15,17 +15,19 @@
       </a>
     </div>
     <ul class="soteco-links" id="sotecoLinks">
-      <li><a href="index.php">Inicio</a></li>
-      <li><a href="productos.php">Productos</a></li>
-      <li><a href="servicios.php">Servicios</a></li>
-      <li><a href="contactanos.php">Contáctanos</a></li>
-      <li><a href="contactanos.php">¿Quienes Somos?</a></li>
-      <li><a href="contactanos.php">Login</a></li>
-      <li><a href="contactanos.php">Registrar</a></li>
-      <div class="soteco-dark-toggle" id="toggleDark">
-        <i id="sotecoIconoModo" class="fas fa-sun"></i>
-      </div>
-    </ul>
+  <li><a href="index.php">Inicio</a></li>
+  <li><a href="productos.php">Productos</a></li>
+  <li><a href="servicios.php">Servicios</a></li>
+  <li><a href="contactanos.php">Contáctanos</a></li>
+  <li><a href="quienessomos.php">¿Quiénes Somos?</a></li>
+    <li><a href="quienessomos.php">Blog</a></li>
+  <li><a href="login.php">Login</a></li>
+ 
+  <div class="soteco-dark-toggle" id="toggleDark">
+    <i id="sotecoIconoModo" class="fas fa-sun"></i>
+  </div>
+</ul>
+
     <div class="soteco-menu-toggle" onclick="sotecoToggleMenu()">
       <span></span><span></span><span></span>
     </div>
@@ -62,25 +64,54 @@
       }
     });
 
-    document.addEventListener("DOMContentLoaded",()=>{
-  const links=document.querySelectorAll(".soteco-links a");
-  const activePage=localStorage.getItem("activeLink");
-  
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+  const links = document.querySelectorAll(".soteco-links a");
+
+  // Restaurar link activo desde localStorage
+  const activePage = localStorage.getItem("activeLink");
   if(activePage){
-    links.forEach(l=>{
-      if(l.getAttribute("href")===activePage){ 
-        l.classList.add("active"); 
-      }
-    });
-  } else {
-    document.querySelector('.soteco-links a[href="index.php"]').classList.add("active");
+    const linkStored = document.querySelector(`.soteco-links a[href="${activePage}"]`);
+    if(linkStored) {
+      links.forEach(l => l.classList.remove("active"));
+      linkStored.classList.add("active");
+    }
   }
 
-  links.forEach(l=>{
-    l.addEventListener("click",function(){
-      links.forEach(x=>x.classList.remove("active"));
+  // Detectar la página actual y el hash
+  function setActiveLinkAndScroll() {
+    links.forEach(l => l.classList.remove("active"));
+
+    const currentPath = window.location.pathname.split("/").pop(); // ejemplo: 'quienessomos.php'
+    const currentHash = window.location.hash; // ejemplo: '#quienesSomos'
+
+    // Activar link del navbar
+    links.forEach(l => {
+      if(l.getAttribute("href").includes(currentPath)){
+        l.classList.add("active");
+      }
+    });
+
+    // Hacer scroll a la sección si hay hash
+    if(currentHash){
+      const seccion = document.querySelector(currentHash);
+      if(seccion){
+        setTimeout(() => {
+          seccion.scrollIntoView({ behavior: "smooth" });
+        }, 100); // pequeño delay para asegurar que la página ya cargó
+      }
+    }
+  }
+
+  setActiveLinkAndScroll();
+
+  // Guardar link activo al hacer click
+  links.forEach(l => {
+    l.addEventListener("click", function(){
+      links.forEach(x => x.classList.remove("active"));
       this.classList.add("active");
-      localStorage.setItem("activeLink",this.getAttribute("href"));
+      localStorage.setItem("activeLink", this.getAttribute("href"));
     });
   });
 });

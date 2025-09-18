@@ -1,33 +1,37 @@
-/* Importar fuentes elegantes y modernas */
-@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@500;700&family=Manrope:wght@400;600&display=swap');
+/* Tipografías */
+@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@600;700&family=Manrope:wght@400;600&display=swap');
 
+/* Reset */
 * {
- margin: 0;
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Manrope", sans-serif; /* Fuente para párrafos */
 }
 body {
-  background: #0f172a;
+  background: #0d1117;
   color: #e5e7eb;
-  font-family: "Inter", sans-serif;
-  margin: 0;
+  font-family: "Manrope", sans-serif;
+  line-height: 1.6;
 }
-h1, h2, h3, h4, h5, h6 {
+
+/* Títulos */
+h1, h2, h3 {
   font-family: "Clash Display", sans-serif;
   font-weight: 700;
   letter-spacing: 0.5px;
-     color: #e2e8f0;
+  color: #f1f5f9;
 }
-/* Hero */
+
+/* HERO */
 .hero-contacto {
   text-align: center;
   padding: 80px 20px 60px;
- background: radial-gradient(1200px 600px at 50% -10%, rgba(0,245,160,.25), transparent),
-              radial-gradient(1200px 600px at 80% 10%, rgba(0,97,255,.20), transparent);
-            }
+  background: radial-gradient(1000px 600px at 50% -10%, rgba(0,245,160,.15), transparent),
+              radial-gradient(1000px 600px at 80% 10%, rgba(0,97,255,.15), transparent);
+}
 .hero-contacto h1 {
-        font-size: 2rem;
+  margin-top: 10px;
+         font-size: 2rem;
   margin-top: 45px;
   font-weight: 800;
   margin-bottom: 16px;
@@ -35,12 +39,14 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 .hero-contacto p {
-  max-width: 700px;
+  max-width: 680px;
   margin: 0 auto 40px;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  color: #cbd5e1;
 }
+
+/* KPIs */
 .hero-kpis {
   display: flex;
   gap: 20px;
@@ -49,158 +55,109 @@ h1, h2, h3, h4, h5, h6 {
 }
 .hero-kpis .kpi {
   flex: 1;
-  min-width: 200px;
-  max-width: 260px;   /* 🔹 Limita el ancho para que no se estiren demasiado */
-  background: rgba(255,255,255,0.05);
-  border-radius: 12px;
-  padding: 20px;
+  min-width: 220px;
+  max-width: 260px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 25px 20px;
   text-align: center;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   transition: all 0.3s ease;
 }
 .hero-kpis .kpi i {
   font-size: 2rem;
   margin-bottom: 10px;
-  color: #00f5a0;
+  color: #00d9f5;
 }
 .hero-kpis .kpi:hover {
   transform: translateY(-6px);
+  border-color: #00f5a0;
 }
 
-/* Contacto Grid */
+/* Contacto */
 .contacto {
-  padding: 70px 20px;
+  padding: 80px 20px;
 }
 .contacto-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: 50px;
   max-width: 1100px;
   margin: auto;
-  align-items: center;
+  align-items: start;
 }
 .contacto-info h2 {
-  color: #00d9f5;
+  color: #00f5a0;
   font-size: 2rem;
   margin-bottom: 15px;
+}
+.contacto-info p {
+  color: #cbd5e1;
+  margin-bottom: 20px;
 }
 .contacto-info ul {
   list-style: none;
   padding: 0;
-  margin-top: 20px;
 }
 .contacto-info li {
-  margin: 10px 0;
-  font-size: 1.1rem;
+  margin: 12px 0;
+  font-size: 1rem;
+  color: #e2e8f0;
 }
 .contacto-info i {
   margin-right: 10px;
-  color: #00f5a0;
+  color: #00d9f5;
 }
 
-#loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #0f172a;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 9999;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
-}
-
-/* Ocultar con fade-out */
-#loader.fade-out {
-  opacity: 0;
-  visibility: hidden;
-} 
-
-/* Spinner elegante */
-.spinner {
-  width: 80px;
-  height: 80px;
-  border: 6px solid rgba(0, 255, 200, 0.2);
-  border-top: 6px solid #00ffc8;
-  border-radius: 50%;
-  animation: spin 1.2s linear infinite, glow 2s ease-in-out infinite alternate;
-  box-shadow: 0 0 20px rgba(0, 255, 200, 0.4);
-}
-
-/* Animación de rotación */
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Efecto de brillo intermitente */
-@keyframes glow {
-  from { box-shadow: 0 0 10px rgba(0, 255, 200, 0.4); }
-  to { box-shadow: 0 0 30px rgba(0, 255, 200, 0.9); }
-}
-/* Texto elegante */
-.loader-text {
-  margin-top: 20px;
-  font-size: 1.2rem;
-  font-family: 'Clash Display', sans-serif;
-  background: linear-gradient(90deg, #00ffc8, #007bff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: fadeIn 1.5s ease-in-out infinite alternate;
-  letter-spacing: 1px;
-}
-/* Animación del texto */
-@keyframes fadeIn {
-  from { opacity: 0.5; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(-3px); }
-}
 /* Formulario */
 .contenedor-contacto {
-  background: #181c2b;
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 35px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
 }
 .campo {
   margin-bottom: 20px;
 }
 label {
   display: block;
-  margin-bottom: 12px;
-  color: white;
-  font-weight: 500;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #f8fafc;
 }
 input, textarea {
   width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 2px solid #333;
-  background: #0f172a;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
   color: #fff;
   font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 input:focus, textarea:focus {
   border-color: #00f5a0;
-  box-shadow: 0 0 8px rgba(0,245,160,0.5);
+  box-shadow: 0 0 10px rgba(0,245,160,0.3);
   outline: none;
 }
 button {
   width: 100%;
   padding: 14px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: none;
   font-size: 1.1rem;
   font-weight: 600;
   background: linear-gradient(90deg,#00f5a0,#00d9f5,#0061ff);
   color: #0e111a;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
 }
 button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 18px rgba(0,200,255,0.3);
+  box-shadow: 0 6px 18px rgba(0,200,255,0.25);
 }
 
 /* Responsive */
