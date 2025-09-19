@@ -40,7 +40,22 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="productos.css?622">
+  <link rel="stylesheet" href="productos.css?10">
+
+  <style>
+    /* ==== Animaciones Scroll ==== */
+    .reveal {opacity:0; transform:translateY(40px); transition:all .8s ease;}
+    .reveal.active {opacity:1; transform:translateY(0);}
+
+    .reveal-left {opacity:0; transform:translateX(-60px); transition:all .8s ease;}
+    .reveal-left.active {opacity:1; transform:translateX(0);}
+
+    .reveal-right {opacity:0; transform:translateX(60px); transition:all .8s ease;}
+    .reveal-right.active {opacity:1; transform:translateX(0);}
+
+    .reveal-zoom {opacity:0; transform:scale(.85); transition:all .8s ease;}
+    .reveal-zoom.active {opacity:1; transform:scale(1);}
+  </style>
 </head>
 <body>
   <!-- Loader -->
@@ -56,19 +71,18 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
   <section class="hero">
     <div class="bg" aria-hidden="true"></div>
     <div class="wrap content">
-
-      <h1 class="h1">Productos que potencian tu negocio</h1>
-      <p>Arma tu setup, equipa tu empresa y protege tus activos digitales. En SOTECO PERÚ unimos rendimiento y diseño para que tu tecnología se vea y funcione de 10.</p>
+      <h1 class="h1 reveal-left">Productos que potencian tu negocio</h1>
+      <p class="reveal">Arma tu setup, equipa tu empresa y protege tus activos digitales. En SOTECO PERÚ unimos rendimiento y diseño para que tu tecnología se vea y funcione de 10.</p>
     
       <div class="kpis">
-        <div class="kpi"><h4>+500</h4><small class="muted">Productos</small></div>
-        <div class="kpi"><h4>24/7</h4><small>Soporte</small></div>
-        <div class="kpi"><h4>48h</h4><small>Entregas Lima</small></div>
-        <div class="kpi"><h4>Garantía</h4><small>Oficial</small></div>
+        <div class="kpi reveal"><h4>+500</h4><small class="muted">Productos</small></div>
+        <div class="kpi reveal"><h4>24/7</h4><small>Soporte</small></div>
+        <div class="kpi reveal"><h4>48h</h4><small>Entregas Lima</small></div>
+        <div class="kpi reveal"><h4>Garantía</h4><small>Oficial</small></div>
       </div>
 
       <!-- Filtros / Buscador -->
-      <div class="toolbar">
+      <div class="toolbar reveal">
         <div class="filters">
           <button class="chip active" data-filter="all">Todo</button>
           <button class="chip" data-filter="laptop">Laptops</button>
@@ -119,17 +133,16 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
           <div class="stars" id="mStars" aria-hidden="true">★★★★★</div>
           <p id="mDesc" style="margin:10px 0 14px; color:#cbd5e1"></p>
 
-          <!-- Cantidad -->
-         <!-- Cantidad + Cotización -->
-<div class="cotizar-box">
-  <label for="mCantidad">Cantidad:</label>
-  <div class="cotizar-actions">
-    <input type="number" id="mCantidad" value="1" min="1">
-    <button class="btn-primary" id="mCotizar">
-      <i class="fa-solid fa-comment-dots"></i> Cotizar
-    </button>
-  </div>
-</div>
+          <!-- Cantidad + Cotización -->
+          <div class="cotizar-box">
+            <label for="mCantidad">Cantidad:</label>
+            <div class="cotizar-actions">
+              <input type="number" id="mCantidad" value="1" min="1">
+              <button class="btn-primary" id="mCotizar">
+                <i class="fa-solid fa-comment-dots"></i> Cotizar
+              </button>
+            </div>
+          </div>
 
         </div>
       </div>
@@ -148,7 +161,6 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
     const porPagina = 8;
     let query = '';
     let orden = 'popular';
-    const carrito = [];
     let seleccionado = null;
 
     const el = sel => document.querySelector(sel);
@@ -163,7 +175,7 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 
     function templateCard(p){
-      return `<article class="card" data-id="${p.id}">
+      return `<article class="card reveal-zoom" data-id="${p.id}">
         <span class="badge">${p.categoria}</span>
         <div class="media" style="background-image:url('${p.img}'); background-size:cover; background-position:center"></div>
         <div class="body">
@@ -184,6 +196,7 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
       const items = data.slice(desde, desde+porPagina);
       cont.insertAdjacentHTML('beforeend', items.map(templateCard).join(''));
       el('#btnMas').style.display = (desde+porPagina)>=data.length ? 'none' : 'inline-block';
+      initScrollAnimations(); // 👈 reactivar animaciones en nuevos items
     }
 
     // Abrir modal
@@ -220,12 +233,11 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
       el('#mClose').addEventListener('click', ()=> el('#modal').classList.remove('show'));
       el('#modalOverlay').addEventListener('click', ()=> el('#modal').classList.remove('show'));
 
-      // Contactar por WhatsApp
-  el('#mCotizar').addEventListener('click', ()=>{
-  if(!seleccionado) return;
-  const cantidad = parseInt(el('#mCantidad').value) || 1;
-
-  const mensaje = `👋 ¡Hola SOTECO PERÚ!  
+      // WhatsApp Cotizar
+      el('#mCotizar').addEventListener('click', ()=>{
+        if(!seleccionado) return;
+        const cantidad = parseInt(el('#mCantidad').value) || 1;
+        const mensaje = `👋 ¡Hola SOTECO PERÚ!  
 Me interesa solicitar una *cotización* de un producto:
 
 🔹 *Producto:* ${seleccionado.titulo}  
@@ -236,12 +248,27 @@ Me interesa solicitar una *cotización* de un producto:
 Por favor, ¿podrían enviarme la información de precios y disponibilidad?  
 Gracias 🙏`;
 
-  const telefono = "51987654321"; // <-- tu número con código de país
-  const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, "_blank");
-});
+        const telefono = "51987654321"; 
+        const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+        window.open(url, "_blank");
+      });
 
+      initScrollAnimations();
     });
+
+    // ==== Scroll Animations ====
+    function initScrollAnimations(){
+      const reveals = document.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-zoom");
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add("active");
+            observer.unobserve(entry.target); // solo una vez
+          }
+        });
+      }, {threshold:0.15});
+      reveals.forEach(r=>observer.observe(r));
+    }
   </script>
 </body>
 </html>

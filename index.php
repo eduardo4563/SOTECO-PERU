@@ -11,7 +11,7 @@
   <meta property="og:title" content="SOTECO PERÚ S.A.C. - Tecnología al alcance de tu mano">
   <meta property="og:image" content="img/image_no_bg (1).png">
   <meta property="og:description" content="Descubre nuestras ofertas y servicios tecnológicos.">
-  <link rel="stylesheet" href="cssIndex.css?555">
+  <link rel="stylesheet" href="cssIndex.css?4100">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="icon" href="img/image_no_bg-_1_.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
@@ -272,7 +272,7 @@
         </div>
         <h3>Top 5 laptops 2025</h3>
         <p>Conoce los mejores modelos del año según su rendimiento y precio.</p>
-        <a href="top-laptops-2025.php" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
+        <a href="blog.php" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
       </div>
       <div class="blog-card">
         <div class="blog-icon icon-rojo">
@@ -280,7 +280,7 @@
         </div>
         <h3>¿PC gamer o empresarial?</h3>
         <p>Guía rápida para elegir tu próxima computadora según tu uso.</p>
-        <a href="pc_novedades.php" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
+        <a href="blog.php" class="btn-leer">Leer más <i class="fas fa-arrow-right"></i></a>
       </div>
     </div>
   </section>

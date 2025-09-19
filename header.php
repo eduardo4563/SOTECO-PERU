@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SOTECO PERÚ S.A.C.</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="header.css?5200">
+  <link rel="stylesheet" href="header.css?5200000">
 </head>
 <body>
   <nav class="soteco-navbar" id="sotecoNavbar">
@@ -20,8 +20,8 @@
   <li><a href="servicios.php">Servicios</a></li>
   <li><a href="contactanos.php">Contáctanos</a></li>
   <li><a href="quienessomos.php">¿Quiénes Somos?</a></li>
-    <li><a href="quienessomos.php">Blog</a></li>
-  <li><a href="login.php">Login</a></li>
+    <li><a href="blog.php">Blog</a></li>
+
  
   <div class="soteco-dark-toggle" id="toggleDark">
     <i id="sotecoIconoModo" class="fas fa-sun"></i>
