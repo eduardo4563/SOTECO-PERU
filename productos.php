@@ -34,13 +34,19 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SOTECO PERÚ — Tienda Virtual</title>
-  <meta name="description" content="Tienda virtual de SOTECO PERÚ: hardware, software y ciberseguridad." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <title>Catálogo de Productos | SOTECO PERÚ S.A.C.</title>
+   <meta name="description" content="Explora el catálogo de productos de SOTECO PERÚ: laptops, PCs, periféricos, software y soluciones empresariales con garantía oficial.">
+  <meta name="keywords" content="laptops Perú, computadoras, hardware, software, periféricos, SOTECO PERÚ, tienda virtual, ciberseguridad, soporte técnico">
+  <meta name="author" content="SOTECO PERÚ S.A.C.">
+  <meta property="og:title" content="Catálogo de Productos | SOTECO PERÚ S.A.C.">
+  <meta property="og:image" content="img/image_no_bg (1).png">
+  <meta property="og:description" content="Compra tecnología de última generación: laptops, PCs, software y periféricos con garantía oficial.">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" href="img/image_no_bg-_1_.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="productos.css?10">
+  <link rel="stylesheet" href="productos.css?0555">
 
   <style>
     /* ==== Animaciones Scroll ==== */
@@ -63,6 +69,12 @@ $productosJSON = json_encode($data, JSON_UNESCAPED_UNICODE);
     <div class="spinner"></div>
     <p class="loader-text">Cargando SOTECO PERÚ...</p>
   </div>
+
+  <!-- Botón flotante de WhatsApp -->
+  <a href="https://wa.me/51941797953?text=Hola%20SOTECO%20PERÚ,%20necesito%20más%20información%20sobre%20sus%20servicios."
+    class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp" data-aos="zoom-in-left" data-aos-delay="600">
+    <i class="fab fa-whatsapp"></i>
+  </a>
 
   <!-- Header -->
   <?php include 'header.php'; ?>
@@ -248,7 +260,7 @@ Me interesa solicitar una *cotización* de un producto:
 Por favor, ¿podrían enviarme la información de precios y disponibilidad?  
 Gracias 🙏`;
 
-        const telefono = "51987654321"; 
+        const telefono = "51941797953"; 
         const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
         window.open(url, "_blank");
       });
@@ -270,5 +282,6 @@ Gracias 🙏`;
       reveals.forEach(r=>observer.observe(r));
     }
   </script>
+  <script src="ws.js"></script>
 </body>
 </html>

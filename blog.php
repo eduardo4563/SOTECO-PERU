@@ -3,7 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="description" content="Explora el blog de SOTECO PERÚ S.A.C. con artículos sobre innovación tecnológica, soporte técnico, ciberseguridad, desarrollo web y más.">
+  <meta name="keywords" content="blog de tecnología, innovación, soporte técnico, ciberseguridad, nube, desarrollo web, SOTECO PERÚ">
+  <meta name="author" content="SOTECO PERÚ S.A.C.">
   <title>Blog | SOTECO PERÚ</title>
+   <meta name="author" content="SOTECO PERÚ S.A.C.">
+  <meta property="og:title" content="Blog | SOTECO PERÚ S.A.C.">
+  <meta property="og:image" content="img/image_no_bg (1).png">
+  <meta property="og:description" content="Explora el blog de SOTECO PERÚ S.A.C. con artículos sobre innovación tecnológica, soporte técnico, ciberseguridad, desarrollo web y más.">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" href="img/image_no_bg-_1_.ico" type="image/x-icon">
   <link rel="stylesheet" href="blog.css?00051">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <!-- AOS CSS -->
@@ -32,35 +42,35 @@
       <div class="card" data-aos="flip-left">
         <div class="icono">🍏</div>
         <h3>Apple MacBook Pro M4</h3>
-        <img src="img/lap.png" alt="MacBook Pro M4" class="blog-img">
+        <img src="img/lap.webp" alt="MacBook Pro M4" class="blog-img">
         <p>Con el chip <b>M4</b>, logra un rendimiento un 40% superior. Batería de <b>18h</b>, pantalla Mini-LED y potencia ideal para diseño y desarrollo.</p>
       </div>
 
       <div class="card" data-aos="flip-left" data-aos-delay="100">
         <div class="icono">💻</div>
         <h3>Dell XPS 15 (2025)</h3>
-        <img src="img/lap2.png" alt="Dell XPS 15" class="blog-img">
+        <img src="img/lap2.webp" alt="Dell XPS 15" class="blog-img">
         <p>Diseño ultradelgado, pantalla OLED 4K y gran balance entre potencia, estética y portabilidad.</p>
       </div>
 
       <div class="card" data-aos="flip-left" data-aos-delay="200">
         <div class="icono">🎮</div>
         <h3>Asus ROG Zephyrus G16</h3>
-        <img src="img/lap3.png" alt="Asus ROG G16" class="blog-img">
+        <img src="img/lap34.webp" alt="Asus ROG G16" class="blog-img">
         <p>La mejor opción gamer: equipada con <b>NVIDIA RTX 5090</b>, pantalla 240Hz y refrigeración avanzada.</p>
       </div>
 
       <div class="card" data-aos="flip-left" data-aos-delay="300">
         <div class="icono">✨</div>
         <h3>HP Spectre x360</h3>
-        <img src="img/lap5.png" alt="HP Spectre" class="blog-img">
+        <img src="img/lap5.webp" alt="HP Spectre" class="blog-img">
         <p>Convertible 2 en 1, con diseño premium y batería de 16h. Perfecta para trabajo y estudio.</p>
       </div>
 
       <div class="card" data-aos="flip-left" data-aos-delay="400">
         <div class="icono">🏢</div>
         <h3>Lenovo ThinkPad X1 Carbon</h3>
-        <img src="img/lap6.png" alt="Lenovo ThinkPad X1" class="blog-img">
+        <img src="img/lap6.webp" alt="Lenovo ThinkPad X1" class="blog-img">
         <p>Resistente, ligera y con <b>seguridad empresarial</b>. Ideal para ejecutivos y empresas.</p>
       </div>
     </div>

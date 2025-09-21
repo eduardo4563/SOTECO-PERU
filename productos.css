@@ -344,18 +344,31 @@ footer{margin-top:64px; border-top:1px solid rgba(0,245,160,.1); background:#0d1
   color:white; font-weight:700
 }
 
-/* ===== WhatsApp ===== */
-.whatsapp{
-  position:fixed; right:22px; bottom:22px;
-  width:56px; height:56px; border-radius:50%;
-  background:#25d366; color:white;
-  display:grid; place-items:center;
-  box-shadow:0 8px 18px rgba(0,0,0,.35);
-  transform:scale(0);
-  transition:.25s ease
-}
-.whatsapp.show{transform:scale(1)}
+    .whatsapp-float {
+      text-decoration: none;
+      /* elimina la rayita */
+      display: none;
+      /* oculto al cargar */
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 9999;
+      width: 55px;
+      height: 55px;
+      background-color: #25d366;
+      color: white;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
 
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      background-color: #20c154;
+    }
 /* ===== Loader ===== */
 
 #loader {

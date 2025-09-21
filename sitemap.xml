@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.sotecoperu.com/Index.php</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.sotecoperu.com/quienessomos.php</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sotecoperu.com/servicios.php</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sotecoperu.com/productos.php</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sotecoperu.com/blog.php</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.sotecoperu.com/contacto.php</loc>
+    <priority>0.7</priority>
+  </url>
+</urlset>

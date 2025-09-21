@@ -373,7 +373,7 @@ font-weight: bold;
     }
 
     .categorias2 {
-      background-image: url('img/tipos-de-software-100-removebg-preview.png');
+      background-image: url('img/tipos-de-software-100-removebg-preview.webp');
     }
 
     .imagen:hover {
@@ -417,7 +417,10 @@ font-weight: bold;
       transition: transform 0.3s, box-shadow 0.3s;
       text-align: center;
     }
-
+    /* Scroll suave */
+   html, body {
+  overflow-x: hidden;
+}
     .beneficio-card:hover {
       transform: translateY(-8px);
       box-shadow: 0 10px 25px rgba(0, 255, 200, 0.2);
@@ -432,6 +435,7 @@ font-weight: bold;
  .beneficio-card h3 {
       margin: 10px 0 8px;
       color: #00f5a0;
+      font-size: 20px;
     }
 
     .beneficio-card p {

@@ -11,6 +11,17 @@ if ($data && $data["result"] === "success") {
     $tipo_cambio = round($data["rates"]["PEN"], 2);
 }
 
+// Función para limpiar caracteres especiales
+function limpiarTexto($texto) {
+    // Convertir a UTF-8 y quitar tildes/acentos
+    $texto = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $texto);
+    // Eliminar caracteres no permitidos (dejar solo letras, números, guiones y espacios)
+    $texto = preg_replace('/[^A-Za-z0-9\-\s]/', '', $texto);
+    // Reemplazar múltiples espacios por uno solo
+    $texto = preg_replace('/\s+/', ' ', $texto);
+    return trim($texto);
+}
+
 // Función para generar código de sistema aleatorio
 function generarCodigoSistema($longitud = 8) {
     $caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -35,7 +46,6 @@ if (isset($_FILES['archivo_html']) && $_FILES['archivo_html']['error'] === UPLOA
     $productos_cargados = 0;
     $categoria_actual = '';
 
-    // Preparar la consulta (agregamos codigosistema)
     $stmt = $conexion->prepare("INSERT INTO productos 
         (codigo, codigosistema, categoria, descripcion, marca, unidad, stock, precio_costo, precio_venta, preciooriginal) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -51,19 +61,19 @@ if (isset($_FILES['archivo_html']) && $_FILES['archivo_html']['error'] === UPLOA
             $bgcolor = $fila->getAttribute('bgcolor');
             if (strtoupper($bgcolor) === '#AFC2CF') {
                 $categoria_texto = trim($columnas->item(1)->nodeValue);
-                $categoria_actual = preg_replace('/\s+/', ' ', $categoria_texto);
-                $categoria_actual = trim($categoria_actual);
+                $categoria_actual = limpiarTexto($categoria_texto);
                 continue;
             }
         }
 
         if ($columnas->length < 9) continue;
 
-        // Código original
+        // Código
         $codigo_raw = trim($columnas->item(0)->nodeValue);
         $codigo_lineas = explode("\n", $codigo_raw);
         $codigo = trim($codigo_lineas[0]);
         $codigo = preg_replace('/[^A-Z0-9\-]/i', '', $codigo);
+        $codigo = limpiarTexto($codigo);
         if ($codigo == '' || stripos($codigo, 'CODIGO') !== false) continue;
 
         // Generar código de sistema
@@ -72,8 +82,7 @@ if (isset($_FILES['archivo_html']) && $_FILES['archivo_html']['error'] === UPLOA
         // Descripción
         $descripcion_raw = trim($columnas->item(1)->nodeValue);
         $descripcion = preg_replace('/\[.*?\]/', '', $descripcion_raw);
-        $descripcion = preg_replace('/\s+/', ' ', $descripcion);
-        $descripcion = trim($descripcion);
+        $descripcion = limpiarTexto($descripcion);
 
         // Stock
         $stock_text = trim($columnas->item(2)->nodeValue);
@@ -92,8 +101,8 @@ if (isset($_FILES['archivo_html']) && $_FILES['archivo_html']['error'] === UPLOA
         if ($stock <= 0 || $precio_dolares <= 0) continue;
 
         // Marca
-        $marca = trim($columnas->item(8)->nodeValue);
-        $marca = preg_replace('/\s+/', ' ', $marca);
+        $marca_raw = trim($columnas->item(8)->nodeValue);
+        $marca = limpiarTexto($marca_raw);
 
         // Cálculo de precios
         $precio_costo = round($precio_dolares * $tipo_cambio, 2);

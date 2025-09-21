@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Servicios | SOTECO PERÚ</title>
+   <title>Servicios Tecnológicos | SOTECO PERÚ S.A.C.</title>
+   <meta name="description" content="Conoce los servicios tecnológicos de SOTECO PERÚ: soporte técnico, desarrollo web, ciberseguridad, soluciones en la nube y mantenimiento de equipos.">
+  <meta name="keywords" content="servicios tecnológicos, soporte técnico, desarrollo web, ciberseguridad, nube, mantenimiento de equipos, SOTECO PERÚ, soluciones TI, Perú">
+  <meta name="author" content="SOTECO PERÚ S.A.C.">
+    <link rel="icon" href="img/image_no_bg-_1_.ico" type="image/x-icon">
+    <meta property="og:title" content="Servicios | SOTECO PERÚ S.A.C.">
+  <meta property="og:image" content="img/image_no_bg (1).png">
+  <meta property="og:description" content="Conoce los servicios tecnológicos de SOTECO PERÚ: soporte técnico, desarrollo web, ciberseguridad, soluciones en la nube y mantenimiento de equipos.">
+  <meta property="og:type" content="website">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="servicios.css?05">
 </head>

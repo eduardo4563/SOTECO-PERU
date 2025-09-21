@@ -152,3 +152,104 @@ header p{
   .timeline-item:nth-child(odd){text-align:left;padding-right:0}
   .timeline-item .timeline-dot{left:-8px}
 }
+
+
+
+
+    .whatsapp-float {
+      text-decoration: none;
+      /* elimina la rayita */
+      display: none;
+      /* oculto al cargar */
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 9999;
+      width: 55px;
+      height: 55px;
+      background-color: #25d366;
+      color: white;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      background-color: #20c154;
+    }
+
+
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0f172a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+/* Ocultar con fade-out */
+#loader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Spinner elegante */
+.spinner {
+  width: 80px;
+  height: 80px;
+  border: 6px solid rgba(0, 255, 200, 0.2);
+  border-top: 6px solid #00ffc8;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite, glow 2s ease-in-out infinite alternate;
+  box-shadow: 0 0 20px rgba(0, 255, 200, 0.4);
+}
+
+/* Animación de rotación */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Efecto de brillo intermitente */
+@keyframes glow {
+  from { box-shadow: 0 0 10px rgba(0, 255, 200, 0.4); }
+  to { box-shadow: 0 0 30px rgba(0, 255, 200, 0.9); }
+}
+
+/* Texto elegante */
+.loader-text {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  font-family: 'Clash Display', sans-serif;
+  background: linear-gradient(90deg, #00ffc8, #007bff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeIn 1.5s ease-in-out infinite alternate;
+  letter-spacing: 1px;
+}
+
+/* Animación del texto */
+@keyframes fadeIn {
+  from { opacity: 0.5; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(-3px); }
+}
+.partner-logos img {
+  max-width: 150px;
+  height: auto;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+.partner-logos img:hover {
+  filter: grayscale(0%);
+}
