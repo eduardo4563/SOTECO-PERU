@@ -155,7 +155,8 @@
     once: true        // animar solo la primera vez
   });
 </script>
-
+<script src="protection.js"></script>
 <?php include 'footer.php'; ?>
 </body>
+
 </html>

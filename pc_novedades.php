@@ -71,5 +71,6 @@
     }
   </script>
 <?php include 'footer.php'; ?>
+<script src="protection.js"></script>
 </body>
 </html>

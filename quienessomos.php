@@ -215,4 +215,5 @@
   <?php include 'footer.php'; ?>
 </body>
   <script src="ws.js"></script>
+  <script src="protection.js"></script>
 </html>

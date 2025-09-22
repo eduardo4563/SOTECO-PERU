@@ -165,4 +165,5 @@ window.onload = () => {
 };
 
 </script>
+<script src="protection.js"></script>
 </html>
